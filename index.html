@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balaji Online & Garments Store</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-color: #333;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: #1e293b;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* 1. Perfect Box Layout: Photo on top, Details inside a box below */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .product-details {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #ffffff;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #0f172a;
+        }
+
+        .product-info {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+        }
+
+        .price-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-top: auto;
+        }
+
+        .binding-badge {
+            display: inline-block;
+            background-color: #fee2e2;
+            color: #ef4444;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* Modal / Popup Box Styles for Frame & Pen Variants */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .variant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .variant-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .variant-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .variant-name {
+            padding: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Our Products Directory</h1>
+
+        <!-- 2. NOTES CATEGORY -->
+        <div class="category-section">
+            <div class="category-title">Notes & Document Printing</div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=500&q=80" alt="A4 Spiral Notes" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Standard A4 Printing Notes</h3>
+                        <p class="product-info">Size: A4 Size Regular<br>Perfect for exam prep and office records.</p>
+                        <div class="price-tag">₹1.50 / Page</div>
+                        <div><span class="binding-badge">+ Extra Binding Charge: ₹30</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=500&q=80" alt="Premium Project Notes" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Premium Project Notes</h3>
+                        <p class="product-info">Size: A4 Bond Paper<br>High-quality executive look.</p>
+                        <div class="price-tag">₹3.00 / Page</div>
+                        <div><span class="binding-badge">+ Extra Binding Charge: ₹30</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. VISITING CARD CATEGORY -->
+        <div class="category-section">
+            <div class="category-title">Visiting Cards</div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=500&q=80" alt="Standard Visiting Card" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Standard Glossy Card</h3>
+                        <p class="product-info">Size: 3.5 x 2 inches<br>High gloss premium finish coating.</p>
+                        <div class="price-tag">₹350 / 100 Pcs</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1611605698335-8b15d27e03f3?w=500&q=80" alt="Classic Matt Card" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Classic Matt Finish Card</h3>
+                        <p class="product-info">Size: 3.5 x 2 inches<br>Elegant, non-reflective smooth texture.</p>
+                        <div class="price-tag">₹400 / 100 Pcs</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1542435503-956c469947f6?w=500&q=80" alt="Premium Velvet Card" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Premium Velvet Touch Card</h3>
+                        <p class="product-info">Size: 3.5 x 2 inches<br>Ultra soft lamination with thick paper score.</p>
+                        <div class="price-tag">₹600 / 100 Pcs</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1526253038957-bce54e05968e?w=500&q=80" alt="Transparent Luxury Card" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Transparent Premium PVC Card</h3>
+                        <p class="product-info">Size: Standard CR80<br>Waterproof frosted premium finish PVC plastic.</p>
+                        <div class="price-tag">₹999 / 100 Pcs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PHOTO FRAME CATEGORY (WITH INTERACTIVE CLICK) -->
+        <div class="category-section">
+            <div class="category-title">Premium Photo Frames (Click to view themes)</div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openFrameModal('A4 (8x12 inches)')">
+                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=500&q=80" alt="A4 Photo Frame" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Standard A4 Photo Frame</h3>
+                        <p class="product-info">Size: 8×12 Inches<br><strong style="color:var(--primary-color);">➔ Click to see Birthday, Anniversary & Engagement designs</strong></p>
+                        <div class="price-tag">₹299 onwards</div>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openFrameModal('Large (12x18 inches)')">
+                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80" alt="12x18 Photo Frame" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Large Premium Photo Frame</h3>
+                        <p class="product-info">Size: 12×18 Inches<br><strong style="color:var(--primary-color);">➔ Click to see Birthday, Anniversary & Engagement designs</strong></p>
+                        <div class="price-tag">₹599 onwards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. PHOTO COLLAGE CATEGORY -->
+        <div class="category-section">
+            <div class="category-title">Photo Collage</div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&q=80" alt="Classic Grid Collage" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Classic Grid Collage</h3>
+                        <p class="product-info">Size: 12×12 Square<br>Perfect symmetric grid design for 4 to 9 photos.</p>
+                        <div class="price-tag">₹349</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1544273677-c433136021d4?w=500&q=80" alt="Heart Shape Collage" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Heart Shape Photo Collage</h3>
+                        <p class="product-info">Size: 12×18 Inches<br>Beautifully arranged heart structure for romantic gifting.</p>
+                        <div class="price-tag">₹499</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1520390138845-12006b4293a7?w=500&q=80" alt="Timeline Memories Collage" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Yearly Timeline Collage</h3>
+                        <p class="product-info">Size: 16×24 Large<br>Chronological display to capture growth or year milestones.</p>
+                        <div class="price-tag">₹799</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500&q=80" alt="Premium Infinite Collage" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Premium Mosaic Collage</h3>
+                        <p class="product-info">Size: 20×30 Giant<br>Hundreds of micro-photos combined into one portrait.</p>
+                        <div class="price-tag">₹1,249</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. SPIRIL CATEGORY -->
+        <div class="category-section">
+            <div class="category-title">Spiral Binding & Printing</div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&q=80" alt="Plastic Spiral Binding" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Standard Plastic Spiral Binding</h3>
+                        <p class="product-info">Size: Fits A4/FS Sizes<br>Flexible and highly durable plastic ring binding.</p>
+                        <div class="price-tag">₹45 / Book</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=500&q=80" alt="Heavy Metal Wire Binding" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Heavy Wire-O Metal Binding</h3>
+                        <p class="product-info">Size: Fits A4 Sizes<br>Premium look double loop metallic binding.</p>
+                        <div class="price-tag">₹75 / Book</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. CUSTOMIZED PEN CATEGORY (WITH INTERACTIVE CLICK) -->
+        <div class="category-section">
+            <div class="category-title">Customized Pens (Click to view Varieties)</div>
+            <div class="product-grid">
+                <div class="product-card" onclick="openPenModal('Premium Metal Laser Pen')">
+                    <img src="https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&q=80" alt="Laser Engraved Pen" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Premium Metal Laser Engraved Pen</h3>
+                        <p class="product-info">Type: Permanent Name Engraving<br><strong style="color:var(--primary-color);">➔ Click to see Royal Gold, Matte Black & Silver options</strong></p>
+                        <div class="price-tag">₹199</div>
+                    </div>
+                </div>
+                <div class="product-card" onclick="openPenModal('Full Printed Acrylic Pen')">
+                    <img src="https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500&q=80" alt="Printed Pen" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-name">Full Color Printed Acrylic Pen</h3>
+                        <p class="product-info">Type: Multi-color UV Printing<br><strong style="color:var(--primary-color);">➔ Click to see Logo & Pattern printing samples</strong></p>
+                        <div class="price-tag">₹149</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DYNAMIC POPUP BOXES (MODALS) -->
+    <!-- Frame Varieties Modal -->
+    <div id="frameModal" class="modal" onclick="closeModal('frameModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal('frameModal')">&times;</span>
+            <h2 id="modalFrameTitle" style="color: var(--primary-color);">Available Frame Samples</h2>
+            <p>Choose your preferred customized background pattern theme below:</p>
+            <div class="variant-grid">
+                <div class="variant-card">
+                    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80" alt="Birthday Frame" class="variant-image">
+                    <div class="variant-name">🎂 Birthday Frame Theme</div>
+                </div>
+                <div class="variant-card">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=400&q=80" alt="Anniversary Frame" class="variant-image">
+                    <div class="variant-name">💑 Anniversary Frame Theme</div>
+                </div>
+                <div class="variant-card">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80" alt="Engagement Frame" class="variant-image">
+                    <div class="variant-name">💍 Engagement Frame Theme</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pen Varieties Modal -->
+    <div id="penModal" class="modal" onclick="closeModal('penModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal('penModal')">&times;</span>
+            <h2 id="modalPenTitle" style="color: var(--primary-color);">Available Pen Varieties</h2>
+            <p>Select your favorite finish style and customization color variant:</p>
+            <div class="variant-grid">
+                <div class="variant-card">
+                    <img src="https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=400&q=80" alt="Royal Gold Pen" class="variant-image">
+                    <div class="variant-name">✨ Royal Gold Finish</div>
+                </div>
+                <div class="variant-card">
+                    <img src="https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&q=80" alt="Matte Black Pen" class="variant-image">
+                    <div class="variant-name">🖤 Executive Matte Black</div>
+                </div>
+                <div class="variant-card">
+                    <img src="https://images.unsplash.com/photo-1523875194681-bedd468c58bf?w=400&q=80" alt="Classic Silver Pen" class="variant-image">
+                    <div class="variant-name">⚔️ Sleek Metallic Silver</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Interaction Logic for Dynamic Popups
+        function openFrameModal(sizeDetails) {
+            document.getElementById('modalFrameTitle').innerText = "Premium Photo Frame Selection — " + sizeDetails;
+            document.getElementById('frameModal').style.display = 'flex';
+        }
+
+        function openPenModal(penType) {
+            document.getElementById('modalPenTitle').innerText = "Custom Design Varieties — " + penType;
+            document.getElementById('penModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
+</body>
+</html>
