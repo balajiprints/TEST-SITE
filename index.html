@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BALAJI PRINTS offers personalized printing services, visiting cards, wedding cards, photo gifts, notes printing, bill books, T-shirts and certificates with UPI payment and WhatsApp ordering.">
+  <meta name="keywords" content="Balaji Prints, personalized printing, visiting cards, wedding cards, photo mugs, Churu printing, notes printing">
+  <meta property="og:title" content="BALAJI PRINTS | Personalized Printing Store">
+  <meta property="og:description" content="Modern e-commerce store for custom printing, photo gifts and business stationery.">
+  <title>BALAJI PRINTS | Premium Personalized Printing Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --ink: #26221f;
+      --muted: #756b61;
+      --paper: #fffdf8;
+      --soft: #f3efe6;
+      --line: #ded6c8;
+      --maroon: #842d3a;
+      --saffron: #d6752b;
+      --teal: #176c68;
+      --green: #17884a;
+      --gold: #b98731;
+      --shadow: 0 18px 50px rgba(53, 43, 32, .14);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Manrope, sans-serif;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(38, 34, 31, .035) 1px, transparent 1px),
+        linear-gradient(rgba(38, 34, 31, .035) 1px, transparent 1px),
+        linear-gradient(135deg, #fffdf8 0%, #f1eadc 100%);
+      background-size: 36px 36px, 36px 36px, auto;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .topbar {
+      background: var(--ink);
+      color: #fff6e6;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(38, 34, 31, .12);
+      background: rgba(255, 253, 248, .94);
+      backdrop-filter: blur(14px);
+    }
+    .nav {
+      max-width: 1240px;
+      margin: auto;
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+    .brand { display: flex; gap: 12px; align-items: center; min-width: 230px; }
+    .mark {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--maroon);
+      color: #fff6e6;
+      font-family: Fraunces, serif;
+      font-size: 21px;
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,.18);
+    }
+    .brand strong {
+      display: block;
+      font-family: Fraunces, serif;
+      font-size: 29px;
+      line-height: 1;
+      color: var(--maroon);
+      letter-spacing: 0;
+    }
+    .brand span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+    .navlinks { display: flex; justify-content: center; gap: 18px; font-size: 13px; font-weight: 900; text-transform: uppercase; }
+    .navlinks a { padding: 11px 0; border-bottom: 2px solid transparent; }
+    .navlinks a:hover { border-color: var(--saffron); }
+    .nav-actions { display: flex; gap: 8px; align-items: center; }
+    .icon-btn, .primary, .secondary, .danger {
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 42px;
+      font-weight: 900;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .icon-btn {
+      min-width: 42px;
+      background: #fff9ee;
+      border-color: var(--line);
+      color: var(--ink);
+      position: relative;
+    }
+    .icon-btn b {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      min-width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 99px;
+      background: var(--saffron);
+      color: #fff;
+      font-size: 11px;
+    }
+    .primary, .secondary, .danger { padding: 0 15px; }
+    .primary { background: var(--teal); color: #fff; box-shadow: 0 12px 25px rgba(23,108,104,.18); }
+    .secondary { background: #fff9ee; color: var(--ink); border-color: var(--line); }
+    .danger { background: var(--maroon); color: #fff; }
+    .primary:hover, .secondary:hover, .danger:hover, .icon-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .hero {
+      max-width: 1240px;
+      margin: auto;
+      padding: 54px 18px 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(330px, .9fr);
+      gap: 42px;
+      align-items: center;
+    }
+    .hero h1 {
+      margin: 0;
+      max-width: 820px;
+      color: var(--maroon);
+      font-family: Fraunces, serif;
+      font-size: clamp(36px, 7vw, 88px);
+      line-height: .95;
+      letter-spacing: 0;
+    }
+    .hero p { max-width: 670px; color: #463d35; font-size: 18px; line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 24px; }
+    .hero-card {
+      min-height: 420px;
+      border-radius: 8px;
+      border: 1px solid rgba(38, 34, 31, .13);
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(145deg, rgba(132,45,58,.88), rgba(214,117,43,.75)),
+        var(--hero-url, linear-gradient(135deg,#efe0c6,#fff8ea));
+      box-shadow: var(--shadow);
+    }
+    .print-stack { position: absolute; inset: 28px; }
+    .sheet {
+      position: absolute;
+      border-radius: 6px;
+      background: #fff9ee;
+      box-shadow: 0 24px 38px rgba(38,34,31,.22);
+      border: 1px solid rgba(255,255,255,.55);
+    }
+    .sheet:nth-child(1) { width: 58%; height: 38%; left: 3%; top: 7%; transform: rotate(-7deg); }
+    .sheet:nth-child(2) { width: 44%; height: 53%; right: 4%; top: 2%; transform: rotate(4deg); background: #f7e2c4; }
+    .sheet:nth-child(3) { width: 82%; height: 28%; left: 9%; bottom: 15%; transform: rotate(-1deg); background: #fffdf8; }
+    .sheet::before, .sheet::after { content: ""; position: absolute; left: 18px; right: 18px; height: 10px; border-radius: 99px; background: var(--maroon); opacity: .7; }
+    .sheet::before { top: 26px; }
+    .sheet::after { top: 48px; width: 48%; right: auto; background: var(--teal); }
+    .hero-badge {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 8px;
+      background: rgba(255,253,248,.92);
+      padding: 18px;
+      font-weight: 900;
+      color: var(--maroon);
+    }
+    main { max-width: 1240px; margin: auto; padding: 10px 18px 60px; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin: 42px 0 18px; padding-top: 28px; border-top: 1px solid var(--line); }
+    .section-head h2 { margin: 0; color: var(--maroon); font-family: Fraunces, serif; font-size: clamp(28px, 4vw, 48px); }
+    .section-head p { margin: 0; max-width: 470px; color: var(--muted); font-weight: 700; line-height: 1.55; }
+    .toolbar { display: grid; grid-template-columns: 1fr 220px 180px; gap: 10px; margin-bottom: 18px; }
+    input, textarea, select {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffdf8;
+      color: var(--ink);
+      padding: 11px 13px;
+      font: 700 14px/1.35 Manrope, sans-serif;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    .category-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .category-tile {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.7);
+      padding: 16px;
+      min-height: 118px;
+      display: grid;
+      align-content: space-between;
+      box-shadow: 0 12px 26px rgba(53,43,32,.06);
+    }
+    .category-tile small { color: var(--muted); font-weight: 900; text-transform: uppercase; }
+    .category-tile strong { color: var(--ink); font-size: 17px; }
+    .products { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+    .product {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255,255,255,.84);
+      box-shadow: 0 13px 30px rgba(53,43,32,.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .visual {
+      height: 172px;
+      position: relative;
+      overflow: hidden;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+    }
+    .visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .placeholder {
+      position: absolute;
+      inset: 18px;
+      border-radius: 7px;
+      background: rgba(255,253,248,.9);
+      transform: rotate(var(--tilt));
+      box-shadow: 0 18px 34px rgba(38,34,31,.2);
+      padding: 18px;
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      color: var(--accent);
+      font-weight: 900;
+    }
+    .placeholder::before, .placeholder::after { content: ""; height: 9px; border-radius: 99px; background: currentColor; opacity: .75; }
+    .placeholder::after { width: 55%; }
+    .visual span { position: relative; z-index: 2; max-width: 86%; text-align: center; color: #fff; text-shadow: 0 2px 16px rgba(0,0,0,.28); font-family: Fraunces, serif; font-size: 24px; line-height: 1; }
+    .product-body { padding: 15px; display: flex; flex: 1; flex-direction: column; gap: 11px; }
+    .product h3 { margin: 0; font-size: 17px; line-height: 1.24; }
+    .meta { display: flex; justify-content: space-between; gap: 8px; align-items: center; color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+    .price { color: var(--teal); font-size: 22px; font-weight: 900; white-space: nowrap; }
+    .desc { color: #594f45; font-size: 13px; line-height: 1.55; margin: 0; flex: 1; }
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .thumb { height: 38px; border-radius: 5px; border: 1px solid rgba(255,255,255,.6); background: var(--accent); opacity: .9; }
+    .file-upload-wrapper { display: grid; gap: 6px; }
+    .file-upload-wrapper label { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+    .product-actions { display: grid; grid-template-columns: 50px 1fr; gap: 7px; align-items: center; margin-top: 5px; }
+    .product-actions .danger-btn { grid-column: 1 / -1; text-align: center; display: block; padding: 10px; border-radius: 8px; font-weight: 900; background: var(--maroon); color: #fff; }
+    .qty { padding: 0 6px; text-align: center; height: 42px; }
+    .wishlist { background: #fff2e5; border-color: #ead8c5; color: var(--maroon); width: 100%; margin-top: 5px; }
+    .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .review, .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.78);
+      padding: 18px;
+      box-shadow: 0 12px 26px rgba(53,43,32,.06);
+    }
+    .review p { color: #50483f; line-height: 1.6; margin: 0 0 13px; }
+    .review strong { color: var(--maroon); }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .cart-list { display: grid; gap: 10px; margin-bottom: 14px; }
+    .cart-item { display: grid; grid-template-columns: 1fr auto; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+    .cart-item small { color: var(--muted); font-weight: 800; }
+    .total { display: flex; justify-content: space-between; align-items: center; font-size: 21px; font-weight: 900; color: var(--teal); }
+    .payment-box {
+      display: none;
+      margin-top: 14px;
+      border: 1px dashed var(--gold);
+      border-radius: 8px;
+      padding: 15px;
+      background: #fff8e7;
+    }
+    .payment-box.show { display: block; }
+    .qr {
+      width: 170px;
+      height: 170px;
+      border: 10px solid #fff;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-weight: 900;
+      background:
+        linear-gradient(90deg, var(--ink) 12px, transparent 12px 22px, var(--ink) 22px 34px, transparent 34px),
+        linear-gradient(var(--ink) 10px, transparent 10px 20px, var(--ink) 20px 31px, transparent 31px);
+      background-size: 43px 43px;
+      box-shadow: inset 0 0 0 13px #fff;
+    }
+    .qr img { width: 100%; height: 100%; object-fit: cover; background: #fff; }
+    .confirm {
+      display: none;
+      border-left: 5px solid var(--green);
+      background: #eff9f1;
+      padding: 14px;
+      margin-top: 12px;
+      font-weight: 800;
+    }
+    .confirm.show { display: block; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .map { width: 100%; height: 260px; border: 0; border-radius: 8px; filter: saturate(.8); }
+    .admin {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(38,34,31,.42);
+      padding: 18px;
+      overflow: auto;
+    }
+    .admin.show { display: block; }
+    .admin-shell {
+      max-width: 1060px;
+      margin: auto;
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 18px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.26);
+    }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .admin-list { max-height: 380px; overflow: auto; display: grid; gap: 8px; }
+    .admin-row { display: grid; grid-template-columns: 1fr 90px auto; gap: 8px; align-items: center; border: 1px solid var(--line); padding: 8px; border-radius: 7px; }
+    .drawer {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: min(430px, 100%);
+      z-index: 80;
+      background: var(--paper);
+      border-left: 1px solid var(--line);
+      box-shadow: -20px 0 50px rgba(38,34,31,.16);
+      transform: translateX(105%);
+      transition: transform .24s ease;
+      padding: 18px;
+      overflow: auto;
+    }
+    .drawer.show { transform: translateX(0); }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .drawer-head h2 { margin: 0; color: var(--maroon); font-family: Fraunces, serif; }
+    .floatwa {
+      position: fixed;
+      right: 18px;
+      bottom: 74px; /* Bottom bar se takraye na isliye thoda upar */
+      z-index: 70;
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 16px 30px rgba(23,136,74,.32);
+    }
+    .mobile-sticky-bar { display: none; }
+    footer { background: var(--ink); color: #fff7e7; padding: 28px 18px 84px; text-align: center; font-weight: 800; line-height: 1.7; }
+    .help { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .hidden { display: none !important; }
+    
+    @media (max-width: 1050px) {
+      .products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .nav { grid-template-columns: 1fr auto; }
+      .navlinks { grid-column: 1 / -1; justify-content: flex-start; overflow-x: auto; }
+    }
+    @media (max-width: 760px) {
+      body { padding-bottom: 60px; }
+      .mobile-sticky-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: var(--paper);
+        border-top: 1px solid var(--line);
+        z-index: 99;
+        padding: 10px;
+        gap: 8px;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      }
+      .bar-btn {
+        flex: 1; text-align: center; padding: 12px;
+        background: var(--teal); color: #fff; font-weight: 800; border-radius: 8px; font-size: 14px;
+      }
+      .secondary-bar { background: var(--maroon); }
+      .hero { grid-template-columns: 1fr; padding: 28px 18px; }
+      .hero h1 { font-size: 34px !important; }
+      .hero-card { min-height: 200px; }
+      .print-stack { display: none; }
+      .split, .admin-grid { grid-template-columns: 1fr; }
+      .products { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px; }
+      .category-tile { min-height: 90px; padding: 12px; }
+      .reviews, .contact-grid, .toolbar { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 8px; }
+      .brand { min-width: 0; }
+      .brand strong { font-size: 22px; }
+      .mark { width: 47px; height: 47px; }
+      .nav-actions .secondary { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar" id="topbar"></div>
+  <header>
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#">
+        <span class="mark">BP</span>
+        <span><strong id="brandName">BALAJI PRINTS</strong><span id="brandTagline"></span></span>
+      </a>
+      <div class="navlinks">
+        <a href="#products">Products</a>
+        <a href="#categories">Categories</a>
+        <a href="#checkout">Checkout</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" type="button" id="wishlistBtn" title="Wishlist">♡<b id="wishCount">0</b></button>
+        <button class="icon-btn" type="button" id="cartBtn" title="Cart">Cart<b id="cartCount">0</b></button>
+        <button class="secondary" type="button" id="adminBtn">Admin</button>
+        <a class="primary" id="callBtn">Call</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1 id="heroTitle"></h1>
+      <p id="heroText"></p>
+      <div class="hero-actions">
+        <a class="primary" href="#products">Shop Products</a>
+        <a class="secondary" href="#checkout">Order Now</a>
+        <a class="secondary" id="heroWhatsapp">WhatsApp Order</a>
+      </div>
+    </div>
+    <div class="hero-card" id="heroCard" aria-label="Printing service preview">
+      <div class="print-stack"><i class="sheet"></i><i class="sheet"></i><i class="sheet"></i></div>
+      <div class="hero-badge" id="offerText"></div>
+    </div>
+  </section>
+
+  <main>
+    <section>
+      <div class="section-head">
+        <h2>Business Printing, Photo Gifts and Custom Orders</h2>
+        <p>BALAJI PRINTS is built for fast local ordering: choose a product, upload reference files, pay by UPI, and send a complete order summary on WhatsApp.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="panel"><strong>Fast Proofing</strong><p class="help">Design proof can be shared on WhatsApp before final printing.</p></div>
+        <div class="panel"><strong>Custom Uploads</strong><p class="help">Every product accepts design and photo upload details.</p></div>
+        <div class="panel"><strong>UPI Checkout</strong><p class="help">QR and UPI intent options are shown before confirmation.</p></div>
+      </div>
+    </section>
+
+    <section id="categories">
+      <div class="section-head">
+        <h2>Shop by Category</h2>
+        <p>Premium print categories with ready sample designs. Prices and images are editable from the configuration/admin tools.</p>
+      </div>
+      <div class="category-grid" id="categoryGrid"></div>
+    </section>
+
+    <section id="products">
+      <div class="section-head">
+        <h2>Featured Products</h2>
+        <p>Search, filter and add items to cart or buy directly. Placeholder previews can be replaced with real product images.</p>
+      </div>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search visiting cards, mugs, notes, certificates...">
+        <select id="categoryFilter"><option value="all">All categories</option></select>
+        <select id="sortFilter">
+          <option value="featured">Featured</option>
+          <option value="low">Price: low to high</option>
+          <option value="high">Price: high to low</option>
+        </select>
+      </div>
+      <div class="products" id="productGrid"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Customer Reviews</h2>
+        <p>Sample reviews from our happy customers.</p>
+      </div>
+      <div class="reviews">
+        <div class="review"><p>"Visiting card design proof came quickly and the final print looked clean."</p><strong>Rohit Soni, Churu</strong></div>
+        <div class="review"><p>"Photo mug and frame were packed well. WhatsApp ordering made it simple."</p><strong>Kavita Sharma, Ratangarh</strong></div>
+        <div class="review"><p>"Bill book format was corrected properly before printing. Good local service."</p><strong>Mahesh Traders</strong></div>
+      </div>
+    </section>
+
+    <section class="split" id="checkout">
+      <div class="panel">
+        <h2>Customer Checkout</h2>
+        <form id="checkoutForm">
+          <input id="fullName" placeholder="Full Name" autocomplete="name" required>
+          <input id="mobile" placeholder="Mobile Number" inputmode="tel" autocomplete="tel" required>
+          <textarea id="address" placeholder="Complete Address" required></textarea>
+          <div class="split">
+            <input id="city" placeholder="City" required>
+            <input id="state" placeholder="State" required>
+          </div>
+          <input id="pincode" placeholder="Pincode" inputmode="numeric" required>
+          <textarea id="sellerNotes" placeholder="Notes for seller"></textarea>
+          <button class="primary" type="button" id="payNow">Pay Now</button>
+          <div class="payment-box" id="paymentBox">
+            <h3>Pay by UPI</h3>
+            <p class="help">Scan the QR code or use the UPI button. After payment, confirm the order to open WhatsApp with full details.</p>
+            <div class="split">
+              <div class="qr" id="qrBox">UPI QR</div>
+              <div>
+                <p><strong>UPI ID:</strong> <span id="upiText"></span></p>
+                <a class="primary" id="upiLink">Open UPI App</a>
+              </div>
+            </div>
+            <button class="danger" type="submit" style="width:100%; margin-top:15px; padding:12px; font-weight:900;">Payment Done & Confirm Order</button>
+          </div>
+          <div class="confirm" id="confirmBox">Order confirmation created. WhatsApp opened with the order details.</div>
+        </form>
+      </div>
+      <div class="panel">
+        <h2>Order Summary</h2>
+        <div class="cart-list" id="cartList"></div>
+        <div class="total"><span>Total</span><span id="cartTotal">₹0</span></div>
+        <p class="help">Upload file names are stored in the order summary for WhatsApp confirmation. Actual files should be sent in the opened WhatsApp chat.</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-head">
+        <h2>Contact BALAJI PRINTS</h2>
+        <p>Use the contact form for price confirmation, bulk orders and design questions.</p>
+      </div>
+      <div class="split">
+        <div class="panel">
+          <form id="contactForm">
+            <input id="contactName" placeholder="Your name" required>
+            <input id="contactMobile" placeholder="Mobile number" required>
+            <textarea id="contactMessage" placeholder="What do you want to print?" required></textarea>
+            <button class="primary" type="submit">Send on WhatsApp</button>
+          </form>
+        </div>
+        <div class="panel">
+          <p><strong>Mobile:</strong> <span id="contactMobileText"></span></p>
+          <p><strong>WhatsApp:</strong> <span id="contactWhatsappText"></span></p>
+          <p><strong>Address:</strong> <span id="contactAddress"></span></p>
+          <p><strong>Hours:</strong> <span id="contactHours"></span></p>
+          <iframe class="map" id="mapFrame" loading="lazy" title="Google Maps location"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+  <a class="floatwa" id="floatWa" aria-label="WhatsApp BALAJI PRINTS">WA</a>
+
+  <div class="mobile-sticky-bar">
+    <a href="#products" class="bar-btn">Shop Items</a>
+    <a href="#checkout" class="bar-btn secondary-bar">View Cart (<span id="stickyCartCount">0</span>)</a>
+  </div>
+
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head"><h2 id="drawerTitle">Cart</h2><button class="icon-btn" id="closeDrawer" type="button">×</button></div>
+    <div id="drawerContent"></div>
+  </aside>
+
+  <div class="admin" id="adminPanel" aria-hidden="true">
+    <div class="admin-shell">
+      <div class="drawer-head">
+        <h2>Editable Admin Panel</h2>
+        <button class="icon-btn" id="closeAdmin" type="button">×</button>
+      </div>
+      <p class="help">Changes save in this browser. Use Export Config and copy the JSON values into <code>config.js</code> for permanent site defaults.</p>
+      <div class="admin-grid">
+        <div class="panel">
+          <h3>Business and Payment</h3>
+          <input id="adminMobile" placeholder="Mobile number">
+          <input id="adminWhatsapp" placeholder="WhatsApp number">
+          <input id="adminUpi" placeholder="UPI ID">
+          <input id="adminQr" placeholder="QR image URL">
+          <input id="adminHero" placeholder="Hero banner image URL">
+          <button class="primary" id="saveBusiness" type="button">Save Details</button>
+        </div>
+        <div class="panel">
+          <h3>Add Product</h3>
+          <select id="adminCategory"></select>
+          <input id="newName" placeholder="Product name">
+          <input id="newPrice" placeholder="Price">
+          <textarea id="newDesc" placeholder="Description"></textarea>
+          <input id="newImage" placeholder="Image URL">
+          <button class="primary" id="addProduct" type="button">Add Product</button>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:12px">
+        <h3>Products</h3>
+        <div class="admin-list" id="adminList"></div>
+        <div class="hero-actions">
+          <button class="secondary" id="exportConfig" type="button">Export Config</button>
+          <button class="danger" id="resetConfig" type="button">Reset Browser Edits</button>
+        </div>
+        <textarea id="exportBox" class="hidden" readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const baseConfig = JSON.parse(JSON.stringify(window.BALAJI_CONFIG));
+    let config = JSON.parse(localStorage.getItem("balajiConfig") || "null") || baseConfig;
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem("balajiCart") || "[]");
+    let wishlist = JSON.parse(localStorage.getItem("balajiWishlist") || "[]");
+
+    const rupee = (value) => value === 0.6 ? "₹0.60/page" : "₹" + Number(value).toLocaleString("en-IN");
+    const cleanPhone = (value) => "91" + String(value).replace(/\D/g, "").slice(-10);
+    const waUrl = (message = "Hello BALAJI PRINTS, I want to place an order.") => "https://wa.me/" + cleanPhone(config.business.whatsapp) + "?text=" + encodeURIComponent(message);
+    const productId = (category, index, name) => category.id + "-" + index + "-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+    function hydrateProducts() {
+      products = [];
+      config.categories.forEach((category) => {
+        category.products.forEach((item, index) => {
+          const object = Array.isArray(item) ? { name: item[0], price: item[1], description: item[2] } : item;
+          products.push({
+            id: object.id || productId(category, index, object.name),
+            categoryId: category.id,
+            categoryName: category.name,
+            accent: category.accent,
+            name: object.name,
+            price: Number(object.price),
+            description: object.description,
+            image: object.image || "",
+            gallery: object.gallery || [],
+            design: object.design || ["Modern", "Traditional", "Premium", "Minimal", "Photo Layout"][index % 5]
+          });
+        });
+      });
+    }
+
+    function initBrand() {
+      document.title = config.business.name + " | Premium Personalized Printing Store";
+      document.getElementById("topbar").textContent = `${config.business.name} | Mobile ${config.business.mobile} | UPI ${config.payment.upiId || config.business.upiId}`;
+      document.getElementById("brandName").textContent = config.business.name;
+      document.getElementById("brandTagline").textContent = config.business.tagline;
+      document.getElementById("heroTitle").textContent = config.banners.heroTitle;
+      document.getElementById("heroText").textContent = config.banners.heroText;
+      document.getElementById("offerText").textContent = config.banners.offerText;
+      if (config.banners.heroImage) document.getElementById("heroCard").style.setProperty("--hero-url", `url("${config.banners.heroImage}")`);
+      document.getElementById("callBtn").href = "tel:+91" + config.business.mobile;
+      document.getElementById("heroWhatsapp").href = waUrl();
+      document.getElementById("floatWa").href = waUrl();
+      document.getElementById("upiText").textContent = config.payment.upiId || config.business.upiId;
+      document.getElementById("contactMobileText").textContent = config.business.mobile;
+      document.getElementById("contactWhatsappText").textContent = config.business.whatsapp;
+      document.getElementById("contactAddress").textContent = config.business.address;
+      document.getElementById("contactHours").textContent = config.business.hours;
+      document.getElementById("footer").innerHTML = `${config.business.name}<br>${config.business.address}<br>Mobile / WhatsApp: ${config.business.mobile} | UPI: ${config.payment.upiId || config.business.upiId}`;
+      document.getElementById("mapFrame").src = "https://maps.google.com/maps?q=" + encodeURIComponent(config.business.mapQuery || config.business.address) + "&output=embed";
+      const qr = document.getElementById("qrBox");
+      qr.innerHTML = config.payment.qrImage ? `<img alt="UPI QR code" src="${config.payment.qrImage}">` : "UPI QR";
+    }
+
+    function renderCategories() {
+      const grid = document.getElementById("categoryGrid");
+      const filter = document.getElementById("categoryFilter");
+      const adminCategory = document.getElementById("adminCategory");
+      grid.innerHTML = "";
+      filter.innerHTML = '<option value="all">All categories</option>';
+      adminCategory.innerHTML = "";
+      config.categories.forEach((category) => {
+        const min = Math.min(...category.products.map((p) => Number(Array.isArray(p) ? p[1] : p.price)));
+        grid.insertAdjacentHTML("beforeend", `<a class="category-tile" href="#products" data-filter="${category.id}" style="border-top:4px solid ${category.accent}"><small>From ${rupee(min)}</small><strong>${category.name}</strong></a>`);
+        filter.insertAdjacentHTML("beforeend", `<option value="${category.id}">${category.name}</option>`);
+        adminCategory.insertAdjacentHTML("beforeend", `<option value="${category.id}">${category.name}</option>`);
+      });
+      grid.querySelectorAll("[data-filter]").forEach((tile) => tile.addEventListener("click", () => {
+        filter.value = tile.dataset.filter;
+        renderProducts();
+      }));
+    }
+
+    function productCard(product, index) {
+      const gallery = [product.image, ...product.gallery].filter(Boolean).slice(0, 3);
+      const thumbs = gallery.length ? gallery.map((src) => `<span class="thumb" style="background-image:url('${src}');background-size:cover"></span>`).join("") : [0,1,2].map((i) => `<span class="thumb" style="--accent:${shade(product.accent, i)}"></span>`).join("");
+      const visual = product.image ? `<img src="${product.image}" alt="${product.name} preview">` : `<div class="placeholder" style="--tilt:${(index % 5) - 2}deg"></div><span>${product.design}</span>`;
+      return `<article class="product" style="--accent:${product.accent}">
+        <div class="visual">${visual}</div>
+        <div class="product-body">
+          <div class="meta"><span>${product.categoryName}</span><span class="price">${rupee(product.price)}</span></div>
+          <h3>${product.name}</h3>
+          <p class="desc">${product.description}</p>
+          <div class="gallery">${thumbs}</div>
+          <div class="file-upload-wrapper">
+            <label>Design File:</label>
+            <input class="design-upload" type="file" data-id="${product.id}">
+            <label>Photo File:</label>
+            <input class="photo-upload" type="file" data-id="${product.id}">
+          </div>
+          <div class="product-actions">
+            <input class="qty" type="number" min="1" value="1" data-qty="${product.id}" aria-label="Quantity for ${product.name}">
+            <button class="secondary" type="button" data-cart="${product.id}">Add</button>
+            <button class="danger-btn" type="button" data-buy="${product.id}">Buy Now</button>
+          </div>
+          <button class="icon-btn wishlist" type="button" data-wish="${product.id}">${wishlist.includes(product.id) ? "♥" : "♡"} Wishlist</button>
+        </div>
+      </article>`;
+    }
+
+    function shade(hex, i) {
+      return ["linear-gradient(135deg," + hex + ",#f1d3a6)", "linear-gradient(135deg,#fff7e7," + hex + ")", "linear-gradient(135deg,#26221f," + hex + ")"][i];
+    }
+
+    function renderProducts() {
+      const query = document.getElementById("search").value.toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+      const sort = document.getElementById("sortFilter").value;
+      let list = products.filter((product) => (category === "all" || product.categoryId === category) && [product.name, product.description, product.categoryName].join(" ").toLowerCase().includes(query));
+      if (sort === "low") list.sort((a, b) => a.price - b.price);
+      if (sort === "high") list.sort((a, b) => b.price - a.price);
+      document.getElementById("productGrid").innerHTML = list.map(productCard).join("") || '<div class="panel">No products matched the search.</div>';
+      bindProductButtons();
+    }
+
+    function bindProductButtons() {
+      document.querySelectorAll("[data-cart]").forEach((button) => button.addEventListener("click", () => addToCart(button.dataset.cart, false)));
+      document.querySelectorAll("[data-buy]").forEach((button) => button.addEventListener("click", () => addToCart(button.dataset.buy, true)));
+      document.querySelectorAll("[data-wish]").forEach((button) => button.addEventListener("click", () => {
+        wishlist = wishlist.includes(button.dataset.wish) ? wishlist.filter((id) => id !== button.dataset.wish) : [...wishlist, button.dataset.wish];
+        saveState();
+        renderProducts();
+      }));
+    }
+
+    function addToCart(id, buyNow) {
+      const product = products.find((item) => item.id === id);
+      const qty = Number(document.querySelector(`[data-qty="${id}"]`)?.value || 1);
+      const designFile = document.querySelector(`.design-upload[data-id="${id}"]`)?.files[0]?.name || "Not uploaded";
+      const photoFile = document.querySelector(`.photo-upload[data-id="${id}"]`)?.files[0]?.name || "Not uploaded";
+      const existing = cart.find((item) => item.id === id && item.designFile === designFile && item.photoFile === photoFile);
+      if (existing) existing.qty += qty;
+      else cart.push({ id, name: product.name, price: product.price, categoryName: product.categoryName, design: product.design, qty, designFile, photoFile });
+      saveState();
+      renderCart();
+      if (buyNow) document.getElementById("checkout").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function saveState() {
+      localStorage.setItem("balajiCart", JSON.stringify(cart));
+      localStorage.setItem("balajiWishlist", JSON.stringify(wishlist));
+      localStorage.setItem("balajiConfig", JSON.stringify(config));
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById("cartCount").textContent = count;
+      document.getElementById("stickyCartCount").textContent = count;
+      document.getElementById("wishCount").textContent = wishlist.length;
+    }
+
+    function renderCart() {
+      const list = document.getElementById("cartList");
+      list.innerHTML = cart.map((item, index) => `<div class="cart-item"><div><strong>${item.name}</strong><br><small>${item.categoryName} | Qty ${item.qty}<br>Design: ${item.designFile} | Photo: ${item.photoFile}</small></div><div><strong>${rupee(item.price * item.qty)}</strong><br><button class="icon-btn" type="button" data-remove="${index}">×</button></div></div>`).join("") || '<p class="help">Cart is empty. Add a product or use Buy Now.</p>';
+      document.getElementById("cartTotal").textContent = rupee(cart.reduce((sum, item) => sum + item.price * item.qty, 0));
+      document.querySelectorAll("[data-remove]").forEach((button) => button.addEventListener("click", () => {
+        cart.splice(Number(button.dataset.remove), 1);
+        saveState();
+        renderCart();
+      }));
+      saveState();
+    }
+
+    function openDrawer(type) {
+      const drawer = document.getElementById("drawer");
+      document.getElementById("drawerTitle").textContent = type === "wishlist" ? "Wishlist" : "Cart";
+      const content = type === "wishlist" ? wishlist.map((id) => products.find((p) => p.id === id)).filter(Boolean).map((p) => `<div class="cart-item"><strong>${p.name}</strong><button class="secondary" data-cart="${p.id}">Add</button></div>`).join("") || '<p class="help">Wishlist is empty.</p>' : document.getElementById("cartList").innerHTML;
+      document.getElementById("drawerContent").innerHTML = content;
+      drawer.classList.add("show");
+      bindProductButtons();
+    }
+
+    function showPayment() {
+      if (!cart.length) return alert("Please add at least one product to cart.");
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const upi = config.payment.upiId || config.business.upiId;
+      document.getElementById("upiLink").href = `upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(config.business.name)}&am=${encodeURIComponent(total)}&cu=INR`;
+      document.getElementById("paymentBox").classList.add("show");
+    }
+
+    function buildOrderMessage() {
+      const lines = cart.map((item) => `${item.name} | Qty: ${item.qty} | Design Upload: ${item.designFile} | Photo Upload: ${item.photoFile} | Amount: ${rupee(item.price * item.qty)}`);
+      return [
+        "New order for " + config.business.name,
+        "Customer Name: " + document.getElementById("fullName").value,
+        "Mobile Number: " + document.getElementById("mobile").value,
+        "Address: " + document.getElementById("address").value + ", " + document.getElementById("city").value + ", " + document.getElementById("state").value + " - " + document.getElementById("pincode").value,
+        "Products:",
+        ...lines,
+        "Notes for seller: " + (document.getElementById("sellerNotes").value || "None"),
+        "Order Amount: " + document.getElementById("cartTotal").textContent,
+        "Payment: UPI payment submitted, please verify."
+      ].join("\n");
+    }
+
+    function renderAdmin() {
+      document.getElementById("adminMobile").value = config.business.mobile;
+      document.getElementById("adminWhatsapp").value = config.business.whatsapp;
+      document.getElementById("adminUpi").value = config.payment.upiId;
+      document.getElementById("adminQr").value = config.payment.qrImage || "";
+      document.getElementById("adminHero").value = config.banners.heroImage || "";
+      document.getElementById("adminList").innerHTML = products.map((product) => `<div class="admin-row"><input value="${product.name}" data-admin-name="${product.id}"><input value="${product.price}" data-admin-price="${product.id}"><button class="danger" data-admin-delete="${product.id}">Delete</button></div>`).join("");
+      document.querySelectorAll("[data-admin-name]").forEach((input) => input.addEventListener("change", updateAdminProduct));
+      document.querySelectorAll("[data-admin-price]").forEach((input) => input.addEventListener("change", updateAdminProduct));
+      document.querySelectorAll("[data-admin-delete]").forEach((button) => button.addEventListener("click", () => deleteProduct(button.dataset.adminDelete)));
+    }
+
+    function updateAdminProduct(event) {
+      const id = event.target.dataset.adminName || event.target.dataset.adminPrice;
+      config.categories.forEach((category) => category.products.forEach((item, index) => {
+        const object = Array.isArray(item) ? { name: item[0], price: item[1], description: item[2] } : item;
+        if ((object.id || productId(category, index, object.name)) === id) {
+          object.id = id;
+          if (event.target.dataset.adminName) object.name = event.target.value;
+          if (event.target.dataset.adminPrice) object.price = Number(event.target.value);
+          category.products[index] = object;
+        }
+      }));
+      refresh();
+    }
+
+    function deleteProduct(id) {
+      config.categories.forEach((category) => {
+        category.products = category.products.filter((item, index) => {
+          const object = Array.isArray(item) ? { name: item[0], price: item[1], description: item[2] } : item;
+          return (object.id || productId(category, index, object.name)) !== id;
+        });
+      });
+      refresh();
+    }
+
+    function refresh() {
+      hydrateProducts();
+      initBrand();
+      renderCategories();
+      renderProducts();
+      renderCart();
+      renderAdmin();
+      saveState();
+    }
+
+    document.getElementById("search").addEventListener("input", renderProducts);
+    document.getElementById("categoryFilter").addEventListener("change", renderProducts);
+    document.getElementById("sortFilter").addEventListener("change", renderProducts);
+    document.getElementById("cartBtn").addEventListener("click", () => openDrawer("cart"));
+    document.getElementById("wishlistBtn").addEventListener("click", () => openDrawer("wishlist"));
+    document.getElementById("closeDrawer").addEventListener("click", () => document.getElementById("drawer").classList.remove("show"));
+    document.getElementById("payNow").addEventListener("click", showPayment);
+    document.getElementById("checkoutForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      document.getElementById("confirmBox").classList.add("show");
+      window.open(waUrl(buildOrderMessage()), "_blank");
+    });
+    document.getElementById("contactForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const msg = `Contact request for ${config.business.name}\nName: ${contactName.value}\nMobile: ${contactMobile.value}\nMessage: ${contactMessage.value}`;
+      window.open(waUrl(msg), "_blank");
+    });
+    document.getElementById("adminBtn").addEventListener("click", () => { document.getElementById("adminPanel").classList.add("show"); renderAdmin(); });
+    document.getElementById("closeAdmin").addEventListener("click", () => document.getElementById("adminPanel").classList.remove("show"));
+    document.getElementById("saveBusiness").addEventListener("click", () => {
+      config.business.mobile = adminMobile.value;
+      config.business.whatsapp = adminWhatsapp.value;
+      config.payment.upiId = adminUpi.value;
+      config.business.upiId = adminUpi.value;
+      config.payment.qrImage = adminQr.value;
+      config.banners.heroImage = adminHero.value;
+      refresh();
+    });
+    document.getElementById("addProduct").addEventListener("click", () => {
+      const category = config.categories.find((item) => item.id === adminCategory.value);
+      category.products.push({ id: category.id + "-" + Date.now(), name: newName.value, price: Number(newPrice.value), description: newDesc.value, image: newImage.value, gallery: [] });
+      newName.value = newPrice.value = newDesc.value = newImage.value = "";
+      refresh();
+    });
+    document.getElementById("exportConfig").addEventListener("click", () => {
+      exportBox.classList.remove("hidden");
+      exportBox.value = "window.BALAJI_CONFIG = " + JSON.stringify(config, null, 2) + ";";
+      exportBox.select();
+    });
+    document.getElementById("resetConfig").addEventListener("click", () => {
+      localStorage.removeItem("balajiConfig");
+      config = JSON.parse(JSON.stringify(baseConfig));
+      refresh();
+    });
+
+    refresh();
+  </script>
+</body>
+</html>
