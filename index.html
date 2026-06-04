@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balaji Prints - Premium Custom Printing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <div class="bg-blue-900 text-white text-xs py-2 px-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <span><i class="fa-solid fa-phone text-amber-400 mr-1"></i> +91 <span id="top-phone">9414350535</span></span>
+                <span><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> <span id="top-address">Churu</span></span>
+            </div>
+            <div class="font-medium tracking-wide">✨ Premium Print & Personalized Design Service</div>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 py-4 px-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showCategoryView()">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-blue-600 to-amber-500 flex items-center justify-center text-white font-bold text-xl shadow-inner border-2 border-white overflow-hidden">
+                    <img id="logo-img" src="" alt="BP" class="w-full h-full object-cover hidden" onerror="this.style.display='none'">
+                    <span id="logo-placeholder">BP</span>
+                </div>
+                <div>
+                    <h1 id="brand-name" class="text-2xl font-extrabold text-blue-900 leading-tight tracking-tight">Balaji Prints</h1>
+                    <p id="brand-tagline" class="text-xs text-slate-500 font-medium"></p>
+                </div>
+            </div>
+            <button id="btn-global-back" onclick="showCategoryView()" class="hidden bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Home / Categories
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 min-h-[75vh]">
+        
+        <div id="category-view">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">Explore Our Printing Services</h2>
+                <p class="text-slate-500 mt-2">Select a category below to configure your design and view pricing</p>
+            </div>
+            <div id="category-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+        </div>
+
+        <div id="product-view" class="hidden">
+            <nav class="flex mb-6 text-sm text-slate-500 items-center gap-2">
+                <span class="cursor-pointer hover:text-blue-600" onclick="showCategoryView()">Categories</span>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                <span id="breadcrumb-category" class="text-slate-900 font-semibold">Current Category</span>
+            </nav>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">1. Select Product Variant</h3>
+                    <div id="products-list-container" class="space-y-4">
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm sticky top-24">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">2. Order & Customization Details</h3>
+                    
+                    <form id="customization-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div id="upload-container">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1" id="upload-label">
+                                Upload your Photo for Background / Design <span class="text-red-500">*</span>
+                            </label>
+                            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 bg-slate-50 text-center hover:border-blue-500 transition relative">
+                                <input type="file" id="form-file" required class="absolute inset-0 opacity-0 cursor-pointer" onchange="updateFileStatus()">
+                                <div id="upload-prompt" class="space-y-1">
+                                    <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400"></i>
+                                    <p class="text-xs font-medium text-slate-600">Click to upload image file</p>
+                                    <p class="text-[10px] text-slate-400">Option to remove background (BG) / upload layout available</p>
+                                </div>
+                                <div id="upload-success" class="hidden text-green-600 font-medium text-sm">
+                                    <i class="fa-solid fa-circle-check mr-1"></i> File selected successfully!
+                                </div>
+                            </div>
+                            <p id="badge-condition" class="hidden mt-1 text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded p-1.5 font-medium"></p>
+                        </div>
+
+                        <div id="pages-counter-container" class="hidden bg-blue-50 p-3 rounded-xl border border-blue-100">
+                            <label class="block text-sm font-semibold text-blue-900 mb-1">Total Number of Pages <span class="text-red-500">*</span></label>
+                            <input type="number" id="form-pages" min="1" value="1" oninput="calculateLiveTotal()" class="w-full px-3 py-2 border border-blue-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Quantity <span class="text-red-500">*</span></label>
+                            <input type="number" id="form-qty" min="1" value="1" oninput="calculateLiveTotal()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <p id="qty-rule-text" class="text-[11px] text-slate-400 mt-1"></p>
+                        </div>
+
+                        <hr class="border-slate-200 my-2">
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Your Full Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="form-name" required placeholder="Enter full name" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Mobile Number <span class="text-red-500">*</span></label>
+                            <input type="tel" id="form-mobile" required placeholder="Enter 10 digit mobile number" pattern="[0-9]{10}" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Delivery Address <span class="text-red-500">*</span></label>
+                            <textarea id="form-address" required rows="2" placeholder="Complete address with landmark" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Remarks / Alignment Notes <span class="text-slate-400 font-normal">(Optional)</span></label>
+                            <textarea id="form-remark" rows="2" placeholder="Custom text, names to print, alignment instruction..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+
+                        <div class="bg-slate-900 text-white p-4 rounded-xl mt-4">
+                            <div class="flex justify-between items-center text-sm opacity-80">
+                                <span>Base Price Breakdown:</span>
+                                <span id="live-calc">₹0.00</span>
+                            </div>
+                            <div class="flex justify-between items-center font-bold text-lg mt-1 border-t border-slate-700 pt-2 text-amber-400">
+                                <span>Total Amount:</span>
+                                <span id="live-total">₹0.00</span>
+                            </div>
+                            <p id="live-extra-badge" class="text-[10px] text-amber-200 mt-1 italic text-right hidden">*Delivery Charges Extra</p>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2 mt-2">
+                            Proceed to Payment <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="checkout-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100">
+                <div class="bg-gradient-to-r from-blue-900 to-blue-800 p-5 text-white flex justify-between items-center">
+                    <h4 class="font-bold text-lg">Secure UPI Checkout</h4>
+                    <button onclick="closeCheckout()" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="p-6 text-center">
+                    <p class="text-slate-500 text-sm">Pay securely via any UPI App</p>
+                    <div class="text-2xl font-black text-slate-900 mt-1 mb-4" id="modal-amount">₹0.00</div>
+                    
+                    <div class="w-44 h-44 mx-auto border-2 border-slate-200 rounded-2xl p-2 bg-slate-50 mb-6 flex items-center justify-center overflow-hidden">
+                        <img id="qr-img" src="" alt="Scan QR to Pay" class="w-full h-full object-contain hidden" onerror="this.src='https://placehold.co/200?text=Scan+QR'">
+                        <div id="qr-placeholder" class="text-slate-400 text-xs font-medium">QR Image Loading...</div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button onclick="triggerUPI('gpay')" class="w-full border border-slate-200 hover:border-blue-500 rounded-xl py-3 px-4 flex items-center justify-between font-semibold text-slate-700 hover:bg-slate-50 transition text-sm">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-mobile-screen text-emerald-500"></i> Open Google Pay</span>
+                            <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                        </button>
+                        <button onclick="triggerUPI('phonepe')" class="w-full border border-slate-200 hover:border-blue-500 rounded-xl py-3 px-4 flex items-center justify-between font-semibold text-slate-700 hover:bg-slate-50 transition text-sm">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-mobile-screen text-purple-600"></i> Open PhonePe</span>
+                            <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                        </button>
+                        <button onclick="triggerUPI('paytm')" class="w-full border border-slate-200 hover:border-blue-500 rounded-xl py-3 px-4 flex items-center justify-between font-semibold text-slate-700 hover:bg-slate-50 transition text-sm">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-mobile-screen text-sky-500"></i> Open Paytm / BHIM</span>
+                            <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                        </button>
+                    </div>
+
+                    <button onclick="simulateSuccess()" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition text-sm shadow-sm">
+                        Simulate Successful Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmation-view" class="hidden max-w-2xl mx-auto bg-white border border-emerald-100 rounded-3xl shadow-xl overflow-hidden">
+            <div class="bg-emerald-600 text-white p-8 text-center">
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 class="text-2xl font-bold">Order Received Successfully!</h2>
+                <p class="text-emerald-100 text-sm mt-1">Your layout configuration is locked. Transfer data to warehouse via WhatsApp.</p>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3">
+                    <div class="flex justify-between items-center text-sm border-b border-slate-200 pb-2">
+                        <span class="text-slate-500 font-medium">Unique Order Number:</span>
+                        <span class="font-bold text-slate-800 tracking-wider" id="conf-order-no">#BP-1001</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm pt-1">
+                        <span class="text-slate-500 font-medium">Selected Category:</span>
+                        <span class="font-semibold text-slate-800" id="conf-category">Category Title</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-medium">Product Design Name:</span>
+                        <span class="font-semibold text-slate-800 text-right max-w-xs truncate" id="conf-product">Product Variant Name</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-medium">Quantity Ordered:</span>
+                        <span class="font-bold text-slate-800" id="conf-qty">1 Qty</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm pt-2 border-t border-slate-200 font-bold text-slate-900 text-base">
+                        <span>Final Paid Price:</span>
+                        <span class="text-blue-700 text-lg" id="conf-price">₹0.00</span>
+                    </div>
+                    <p class="text-[11px] text-amber-600 text-center font-medium bg-amber-50 rounded p-1 mt-1 italic" id="conf-delivery-note">*Delivery Charges Extra based on exact distance.</p>
+                </div>
+
+                <div class="text-center space-y-3">
+                    <p class="text-xs text-slate-500 px-4 font-medium"><i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> <strong>Important Action Required:</strong> To upload your high-resolution files and start printing, please click the automated button below to send transaction mapping details to Balaji Prints store owner.</p>
+                    <button onclick="sendWhatsAppMessage()" class="w-full bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white text-base font-bold py-4 px-6 rounded-2xl transition shadow-md hover:shadow-xl flex items-center justify-center gap-3">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i> Send Order Details to WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 px-4 border-t border-slate-800 mt-12 text-sm text-center">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <p class="font-bold text-white text-base">Balaji Prints — Premium Print Logistics</p>
+            <p id="footer-contact-info">Mobile: 9414350535 | Address: Churu, Rajasthan</p>
+            <p class="text-xs text-slate-600">© 2026 Balaji Prints. All rights reserved. Built with precision for premium custom automation layouts.</p>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script>
+        // State variables
+        let selectedCategory = null;
+        let selectedProduct = null;
+        let currentOrderDetails = null;
+
+        // Initialize App UI layout from CONFIG
+        document.addEventListener("DOMContentLoaded", () => {
+            // Bind header data
+            document.getElementById("brand-name").innerText = CONFIG.brand.name;
+            document.getElementById("brand-tagline").innerText = CONFIG.brand.tagline;
+            document.getElementById("top-phone").innerText = CONFIG.brand.mobile;
+            document.getElementById("top-address").innerText = CONFIG.brand.address;
+            document.getElementById("footer-contact-info").innerText = `Mobile: ${CONFIG.brand.mobile} | Address: ${CONFIG.brand.address}`;
+            
+            // Images Binding safely if exists
+            if (CONFIG.brand.logoUrl) {
+                const logoImg = document.getElementById("logo-img");
+                logoImg.src = CONFIG.brand.logoUrl;
+                logoImg.classList.remove("hidden");
+                document.getElementById("logo-placeholder").classList.add("hidden");
+            }
+            if (CONFIG.brand.qrUrl) {
+                const qrImg = document.getElementById("qr-img");
+                qrImg.src = CONFIG.brand.qrUrl;
+                qrImg.classList.remove("hidden");
+                document.getElementById("qr-placeholder").classList.add("hidden");
+            }
+
+            renderCategories();
+        });
+
+        // 1. Render primary Category grid view
+        function renderCategories() {
+            const container = document.getElementById("category-grid");
+            container.innerHTML = "";
+
+            CONFIG.categories.forEach(cat => {
+                const card = document.createElement("div");
+                card.className = "category-card bg-white border border-slate-200 rounded-2xl overflow-hidden cursor-pointer shadow-sm transition duration-300 flex flex-col";
+                card.setAttribute("onclick", `selectCategory('${cat.id}')`);
+                
+                card.innerHTML = `
+                    <div class="h-44 bg-slate-100 overflow-hidden relative">
+                        <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-lg leading-snug">${cat.name}</h4>
+                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${cat.description}</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between text-blue-600 font-semibold text-xs">
+                            <span>Configure Setup</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 2. View Management Routing functions
+        function showCategoryView() {
+            document.getElementById("category-view").classList.remove("hidden");
+            document.getElementById("product-view").classList.add("hidden");
+            document.getElementById("confirmation-view").classList.add("hidden");
+            document.getElementById("btn-global-back").classList.add("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectCategory(catId) {
+            selectedCategory = CONFIG.categories.find(c => c.id === catId);
+            if (!selectedCategory) return;
+
+            // Update DOM paths
+            document.getElementById("breadcrumb-category").innerText = selectedCategory.name;
+            document.getElementById("category-view").classList.add("hidden");
+            document.getElementById("product-view").classList.remove("hidden");
+            document.getElementById("btn-global-back").classList.remove("hidden");
+            
+            // Format Custom Dynamic Fields based on specific category specifications
+            setupFormRules();
+            renderCategoryProducts();
+            
+            // Auto Select first product in array list layout
+            if(selectedCategory.products.length > 0) {
+                selectProduct(selectedCategory.products[0].id);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 3. Dynamic adjustment of inputs constraints rules based on business specs
+        function setupFormRules() {
+            const uploadLabel = document.getElementById("upload-label");
+            const fileInput = document.getElementById("form-file");
+            const condBadge = document.getElementById("badge-condition");
+            const pagesContainer = document.getElementById("pages-counter-container");
+            const qtyRuleText = document.getElementById("qty-rule-text");
+            const qtyInput = document.getElementById("form-qty");
+
+            // Reset Default styles
+            uploadLabel.innerHTML = 'Upload your Photo for Background / Design <span class="text-red-500">*</span>';
+            fileInput.accept = "image/*";
+            condBadge.classList.add("hidden");
+            pagesContainer.classList.add("hidden");
+            qtyRuleText.innerText = "";
+            qtyInput.min = "1";
+            qtyInput.disabled = false;
+            
+            // Rule Override: Category 2 (Notes Print)
+            if(selectedCategory.isNotesType) {
+                uploadLabel.innerHTML = 'Upload PDF Document <span class="text-red-500">*</span>';
+                fileInput.accept = ".pdf";
+                condBadge.innerText = "Condition: PDF background must be White.";
+                condBadge.classList.remove("hidden");
+                pagesContainer.classList.remove("hidden");
+                qtyInput.value = "1"; 
+            } 
+            // Rule Override: Category 3 (Visiting Cards)
+            else if (selectedCategory.id === "cat-3") {
+                qtyInput.value = "1000";
+                qtyInput.min = "1000";
+                qtyRuleText.innerText = "* Fixed Quantity Rule: Base batch is locked to exactly 1000 cards per configuration.";
+            } else {
+                qtyInput.value = "1";
+            }
+            
+            // Clear current file choice visual
+            fileInput.value = "";
+            document.getElementById("upload-prompt").classList.remove("hidden");
+            document.getElementById("upload-success").classList.add("hidden");
+        }
+
+        function updateFileStatus() {
+            const fileInput = document.getElementById("form-file");
+            if(fileInput.files.length > 0) {
+                document.getElementById("upload-prompt").classList.add("hidden");
+                document.getElementById("upload-success").classList.remove("hidden");
+            }
+        }
+
+        // 4. Render product cards under current active view context
+        function renderCategoryProducts() {
+            const container = document.getElementById("products-list-container");
+            container.innerHTML = "";
+
+            selectedCategory.products.forEach(prod => {
+                const isSelected = selectedProduct && selectedProduct.id === prod.id;
+                const div = document.createElement("div");
+                
+                // Constructing visual variations layout
+                div.id = `prod-card-${prod.id}`;
+                div.className = `p-4 border rounded-xl cursor-pointer transition flex items-start gap-4 ${
+                    isSelected ? 'border-blue-600 bg-blue-50/50 ring-2 ring-blue-500/20' : 'border-slate-200 bg-white hover:bg-slate-50'
+                }`;
+                div.setAttribute("onclick", `selectProduct('${prod.id}')`);
+
+                let displayPriceText = `₹${prod.price}`;
+                if(prod.isPerPage) displayPriceText = `₹${prod.price} Per Page`;
+                if(prod.isDynamic) displayPriceText = "Custom Pricing";
+
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center mt-1 flex-shrink-0 active-radio">
+                        <div class="w-3 h-3 rounded-full ${isSelected ? 'bg-blue-600' : 'bg-transparent'}"></div>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start gap-2">
+                            <h5 class="font-bold text-slate-900">${prod.name}</h5>
+                            <span class="font-extrabold text-blue-700 whitespace-nowrap">${displayPriceText}</span>
+                        </div>
+                        ${prod.note ? `<p class="text-xs text-amber-600 font-medium mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i>${prod.note}</p>` : ''}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Highlight selection radio and handle constraints modifications
+        function selectProduct(prodId) {
+            selectedProduct = selectedCategory.products.find(p => p.id === prodId);
+            if (!selectedProduct) return;
+            
+            // Re-render selection indicator dots
+            selectedCategory.products.forEach(p => {
+                const card = document.getElementById(`prod-card-${p.id}`);
+                if (!card) return;
+                const dot = card.querySelector(".active-radio > div");
+                if(p.id === prodId) {
+                    card.className = "p-4 border rounded-xl cursor-pointer transition flex items-start gap-4 border-blue-600 bg-blue-50/50 ring-2 ring-blue-500/20";
+                    if(dot) dot.className = "w-3 h-3 rounded-full bg-blue-600";
+                } else {
+                    card.className = "p-4 border rounded-xl cursor-pointer transition flex items-start gap-4 border-slate-200 bg-white hover:bg-slate-50";
+                    if(dot) dot.className = "w-3 h-3 rounded-full bg-transparent";
+                }
+            });
+
+            // Handle Pen Constraints dynamically inside category 8
+            const qtyInput = document.getElementById("form-qty");
+            const qtyRuleText = document.getElementById("qty-rule-text");
+            
+            if(selectedProduct.isPenPack) {
+                qtyInput.disabled = true;
+                qtyInput.value = selectedProduct.name.replace(/\D/g, ""); // Extract number mapping
+                qtyRuleText.innerText = "* Pack size fixed via custom configuration product node selection.";
+            } else if (selectedProduct.isSingleColor) {
+                qtyInput.disabled = false;
+                qtyInput.min = "100";
+                if(parseInt(qtyInput.value) < 100) qtyInput.value = "100";
+                qtyRuleText.innerText = "* Minimum single colour layout print quantity rule threshold set to 100 units.";
+            } else {
+                if(selectedCategory.id !== "cat-3") {
+                    qtyInput.disabled = false;
+                    qtyRuleText.innerText = "";
+                } else {
+                    qtyInput.disabled = false;
+                    qtyInput.min = "1000";
+                    if(parseInt(qtyInput.value) < 1000) qtyInput.value = "1000";
+                    qtyRuleText.innerText = "* Fixed Quantity Rule: Base batch is locked to exactly 1000 cards per configuration.";
+                }
+            }
+
+            calculateLiveTotal();
+        }
+
+        // 5. Live pricing engine matrix logic formulation
+        function calculateLiveTotal() {
+            if(!selectedProduct) return 0;
+
+            let qty = parseInt(document.getElementById("form-qty").value) || 0;
+            let total = 0;
+            let calculationString = "";
+
+            if(selectedCategory.isNotesType) {
+                let pages = parseInt(document.getElementById("form-pages").value) || 0;
+                total = selectedProduct.price * pages * qty;
+                calculationString = `₹${selectedProduct.price} × ${pages} Pages × ${qty} Qty`;
+                document.getElementById("live-extra-badge").classList.add("hidden");
+            } else if(selectedProduct.isPenPack) {
+                total = selectedProduct.price;
+                calculationString = `Fixed Pack Price Bundle`;
+                document.getElementById("live-extra-badge").classList.add("hidden");
+            } else if(selectedProduct.isDynamic) {
+                total = 0;
+                calculationString = "To be estimated";
+                document.getElementById("live-extra-badge").classList.add("hidden");
+            } else {
+                total = selectedProduct.price * qty;
+                calculationString = `₹${selectedProduct.price} × ${qty} Qty`;
+                
+                // Show extra delivery warning for Category 1
+                if(selectedCategory.id === "cat-1") {
+                    document.getElementById("live-extra-badge").classList.remove("hidden");
+                } else {
+                    document.getElementById("live-extra-badge").classList.add("hidden");
+                }
+            }
+
+            document.getElementById("live-calc").innerText = calculationString;
+            document.getElementById("live-total").innerText = `₹${total.toFixed(2)}`;
+            return total;
+        }
+
+        // 6. Validation Layer & Payment Modal Trigger Setup
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Verify mandatory fields are clean
+            const file = document.getElementById("form-file").files[0];
+            const name = document.getElementById("form-name").value.trim();
+            const mobile = document.getElementById("form-mobile").value.trim();
+            const address = document.getElementById("form-address").value.trim();
+            const remark = document.getElementById("form-remark").value.trim();
+            const qty = document.getElementById("form-qty").value;
+            
+            if(!file || !name || !mobile || !address) {
+                alert("❌ Please fill in all mandatory fields before processing design layout verification.");
+                return;
+            }
+
+            // Lock order object cache structure
+            currentOrderDetails = {
+                orderNo: `BP-${Math.floor(100000 + Math.random() * 900000)}`,
+                categoryName: selectedCategory.name,
+                productName: selectedProduct.name,
+                quantity: qty,
+                finalPrice: calculateLiveTotal(),
+                customerName: name,
+                customerMobile: mobile,
+                customerAddress: address,
+                customerRemark: remark || "None"
+            };
+
+            // Open Checkout UI Modal
+            document.getElementById("modal-amount").innerText = `₹${currentOrderDetails.finalPrice.toFixed(2)}`;
+            document.getElementById("checkout-modal").classList.remove("hidden");
+        }
+
+        function closeCheckout() {
+            document.getElementById("checkout-modal").classList.add("hidden");
+        }
+
+        function triggerUPI(platform) {
+            alert(`Redirecting to ${platform.toUpperCase()} standard payment interface...`);
+        }
+
+        function simulateSuccess() {
+            closeCheckout();
+            
+            // Bind confirmation screen data
+            document.getElementById("conf-order-no").innerText = `#${currentOrderDetails.orderNo}`;
+            document.getElementById("conf-category").innerText = currentOrderDetails.categoryName;
+            document.getElementById("conf-product").innerText = currentOrderDetails.productName;
+            document.getElementById("conf-qty").innerText = `${currentOrderDetails.quantity} Units`;
+            document.getElementById("conf-price").innerText = `₹${currentOrderDetails.finalPrice.toFixed(2)}`;
+            
+            // Route views
+            document.getElementById("product-view").classList.add("hidden");
+            document.getElementById("confirmation-view").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function sendWhatsAppMessage() {
+            if(!currentOrderDetails) return;
+
+            const message = `*NEW ORDER - BALAJI PRINTS*\n` +
+                            `---------------------------\n` +
+                            `*Order No:* ${currentOrderDetails.orderNo}\n` +
+                            `*Category:* ${currentOrderDetails.categoryName}\n` +
+                            `*Product Layout:* ${currentOrderDetails.productName}\n` +
+                            `*Quantity:* ${currentOrderDetails.quantity}\n` +
+                            `*Amount Paid:* ₹${currentOrderDetails.finalPrice.toFixed(2)}\n\n` +
+                            `*Customer Info:*\n` +
+                            `*Name:* ${currentOrderDetails.customerName}\n` +
+                            `*Mobile:* ${currentOrderDetails.customerMobile}\n` +
+                            `*Address:* ${currentOrderDetails.customerAddress}\n` +
+                            `*Remark:* ${currentOrderDetails.customerRemark}\n` +
+                            `---------------------------\n` +
+                            `Please review my file and start printing.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${CONFIG.brand.mobile}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
