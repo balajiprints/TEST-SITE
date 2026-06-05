@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balaji Prints - Premium Design & Customised Print</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .step-hidden { display: none; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <header class="border-b border-gray-100 bg-white sticky top-0 z-50 py-4 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4 text-center sm:text-left">
+                <div class="w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-2xl shadow-md shrink-0">
+                    BP
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900">Balaji Prints</h1>
+                    <p class="text-sm font-medium text-indigo-600">Premium Design & Customised Print</p>
+                    <p class="text-xs text-gray-500 mt-0.5"><i class="fa-solid fa-location-dot mr-1"></i>Churu, Rajasthan</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center sm:items-end gap-1">
+                <a href="tel:9414350535" class="inline-flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-semibold border border-gray-200 transition">
+                    <i class="fa-solid fa-phone text-indigo-600"></i> +91 9414350535
+                </a>
+                <div id="cart-counter-nav" class="text-xs font-medium text-gray-500 mt-1 cursor-pointer" onclick="navigateTo('cart')">
+                    <i class="fa-solid fa-shopping-bag text-indigo-600 mr-1"></i> Cart: <span id="nav-cart-count" class="font-bold text-gray-900">0</span> items
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div id="breadcrumb" class="mb-6 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
+            <span class="cursor-pointer hover:text-indigo-600 font-medium" onclick="resetToCategories()">Home</span>
+            <span id="bc-separator-1" class="hidden"><i class="fa-solid fa-chevron-right text-xs"></i></span>
+            <span id="bc-category" class="hidden cursor-pointer hover:text-indigo-600 font-medium"></span>
+            <span id="bc-separator-2" class="hidden"><i class="fa-solid fa-chevron-right text-xs"></i></span>
+            <span id="bc-product" class="hidden font-semibold text-gray-900"></span>
+        </div>
+
+        <section id="category-layer">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Select a Category
+            </h2>
+            <div id="categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <section id="product-layer" class="step-hidden">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Choose Options
+            </h2>
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <section id="subproduct-layer" class="step-hidden">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Select Variant & Specifications
+            </h2>
+            <div id="subproducts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <section id="cart-layer" class="step-hidden max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Complete Your Custom Order</h2>
+            
+            <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow mb-6">
+                <h3 class="text-lg font-semibold mb-4 border-b border-gray-100 pb-2">Selected Item</h3>
+                <div id="cart-item-details" class="flex flex-col sm:flex-row gap-4 items-center"></div>
+            </div>
+
+            <div id="checkout-step-1" class="space-y-6">
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow space-y-4">
+                    <h3 class="text-lg font-semibold border-b border-gray-100 pb-2">Step 1: Upload Design Files</h3>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload Photo / JPG Design File <span class="text-red-500">*</span></label>
+                        <div class="flex items-center justify-center w-full">
+                            <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <i class="fa-solid fa-cloud-arrow-up text-gray-400 text-2xl mb-2"></i>
+                                    <p class="text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-400">JPG or PNG (Max 10MB)</p>
+                                </div>
+                                <input type="file" id="design-file" class="hidden" accept="image/jpeg, image/png, image/jpg" required onchange="updateFileStatus()" />
+                            </label>
+                        </div>
+                        <p id="file-status-text" class="text-xs text-emerald-600 font-medium mt-2 hidden"><i class="fa-solid fa-circle-check"></i> File selected successfully.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow space-y-4">
+                    <h3 class="text-lg font-semibold border-b border-gray-100 pb-2">Step 2: Customer Details</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="cust-name" required class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="Enter Full Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number <span class="text-red-500">*</span></label>
+                            <input type="tel" id="cust-mobile" pattern="[0-9]{10}" required class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="10 Digit Number">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Complete Address <span class="text-red-500">*</span></label>
+                        <textarea id="cust-address" rows="3" required class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="House/Shop No., Street Name, Landmark, City, Pincode"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Remarks / Special Instructions <span class="text-gray-400">(Optional)</span></label>
+                        <textarea id="cust-remark" rows="2" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="Any specific instructions for custom printing..."></textarea>
+                    </div>
+                </div>
+
+                <button type="button" onclick="validateAndGoToPayment()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
+                    Proceed to Payment <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div id="checkout-step-2" class="step-hidden mt-6 space-y-6">
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <h3 class="text-lg font-semibold">Step 3: Secure Payment / Order Method</h3>
+                        <button type="button" onclick="backToDetails()" class="text-sm font-semibold text-indigo-600 hover:text-indigo-900 transition">
+                            <i class="fa-solid fa-arrow-left"></i> Edit Customer Details
+                        </button>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-4 flex justify-between items-center mb-4">
+                        <span class="font-medium text-gray-700">Total Payable Amount:</span>
+                        <span id="checkout-total-price" class="text-2xl font-bold text-gray-900">₹0</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div id="wrapper-pay-qr" class="border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition" onclick="selectPaymentOption('qr')">
+                            <input type="radio" id="pay-qr" name="payment-method" value="QR" class="accent-indigo-600 mb-2" checked>
+                            <label for="pay-qr" class="font-semibold block mb-2 cursor-pointer text-xs sm:text-sm">Option 1: UPI QR Code</label>
+                            <div class="p-2 bg-white border border-gray-100 rounded-lg shadow-sm mb-2">
+                                <img id="upi-qr-image" src="" alt="UPI QR Code" class="w-28 h-28 mx-auto">
+                            </div>
+                            <span class="text-[10px] text-gray-400">Scan using any UPI App</span>
+                        </div>
+
+                        <div id="wrapper-pay-direct" class="border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition" onclick="selectPaymentOption('direct')">
+                            <input type="radio" id="pay-direct" name="payment-method" value="DIRECT" class="accent-indigo-600 mb-2">
+                            <label for="pay-direct" class="font-semibold block mb-2 cursor-pointer text-xs sm:text-sm">Option 2: Direct UPI App</label>
+                            <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mb-2">
+                                <i class="fa-solid fa-mobile-screen-button text-indigo-600 text-xl"></i>
+                            </div>
+                            <p class="text-[10px] text-gray-500 px-1">Launches available UPI Apps installed on your device.</p>
+                        </div>
+
+                        <div id="wrapper-pay-cod" class="border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition" onclick="selectPaymentOption('cod')">
+                            <input type="radio" id="pay-cod" name="payment-method" value="COD" class="accent-indigo-600 mb-2">
+                            <label for="pay-cod" class="font-semibold block mb-2 cursor-pointer text-xs sm:text-sm text-amber-700">Option 3: Cash On Delivery</label>
+                            <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-2">
+                                <i class="fa-brands fa-whatsapp text-amber-600 text-xl"></i>
+                            </div>
+                            <p class="text-[10px] text-amber-700 font-medium px-1">Cash on delivery के लिए WhatsApp 9414350535 पर संपर्क करें।</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100 space-y-3">
+                        <p class="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
+                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर क्लिक करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
+                        </p>
+                        <button type="button" onclick="handleOrderSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
+                            <i class="fa-solid fa-lock"></i> Process & Generate Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="confirmation-layer" class="step-hidden max-w-2xl mx-auto text-center py-12">
+            <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Order Initiated Successfully!</h2>
+            <p class="text-sm text-red-600 font-semibold mb-8 bg-red-50 p-3 rounded-xl inline-block border border-red-100">
+                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका ऑर्डर अभी सिर्फ इनिशिएट हुआ है! कंफर्म तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
+            </p>
+
+            <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow text-left space-y-4 mb-8">
+                <h3 class="text-lg font-bold border-b border-gray-100 pb-2 text-indigo-600 flex justify-between">
+                    <span>Order Receipt (Initiated)</span>
+                    <span id="conf-order-id" class="text-gray-900">#00000</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-y-3 text-sm">
+                    <span class="text-gray-500 font-medium">Category:</span>
+                    <span id="conf-category" class="font-semibold text-gray-800 text-right"></span>
+
+                    <span class="text-gray-500 font-medium">Product Name:</span>
+                    <span id="conf-product" class="font-semibold text-gray-800 text-right"></span>
+
+                    <span class="text-gray-500 font-medium">Sub Product Variant:</span>
+                    <span id="conf-subproduct" class="font-semibold text-gray-800 text-right"></span>
+
+                    <span class="text-gray-500 font-medium">Quantity Ordered:</span>
+                    <span id="conf-qty" class="font-semibold text-gray-800 text-right">1</span>
+
+                    <span class="text-gray-500 font-medium">Total Price:</span>
+                    <span id="conf-price" class="font-bold text-indigo-600 text-right text-base"></span>
+
+                    <span class="text-gray-500 font-medium">Uploaded File:</span>
+                    <span id="conf-file-name" class="font-semibold text-amber-600 text-right italic break-all"></span>
+
+                    <span class="text-gray-500 font-medium">Customer Details:</span>
+                    <span id="conf-cust-details" class="font-semibold text-gray-800 text-right whitespace-pre-line"></span>
+
+                    <span class="text-gray-500 font-medium">Order Status:</span>
+                    <span class="text-right"><span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-bold">INITIATED / PENDING CONFIRMATION</span></span>
+                </div>
+            </div>
+
+            <button onclick="sendWhatsAppNotification()" class="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-lg">
+                <i class="fa-brands fa-whatsapp text-2xl"></i> Share Details on WhatsApp to Confirm Order
+            </button>
+            
+            <button onclick="resetToCategories()" class="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Back to Homepage
+            </button>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-50 border-t border-gray-100 py-6 text-center text-xs text-gray-400 mt-12">
+        <p>&copy; 2026 Balaji Prints. All Rights Reserved. Custom Web Solutions Dev.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="config.js"></script>
+
+    <script>
+        const UPI_ID = "9414350535@okbizaxis";
+        const MERCHANT_NAME = "Balaji Prints";
+        const WHATSAPP_NUM = "9414350535";
+
+        const DATA = [
+            {
+                id: "cat_vcard",
+                name: "Visiting Card",
+                image: "https://images.unsplash.com/photo-1616763355548-1b606f439f86?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_v_gloss", name: "Gloss Lamination", image: "https://images.unsplash.com/photo-1589330694653-ded6df53f6ee?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Side", price:199}, {name:"2 Side", price:299}] },
+                    { id: "p_v_matt", name: "Matt Lamination", image: "https://images.unsplash.com/photo-1547483238-2cbf88bf2443?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Side", price:249}, {name:"2 Side", price:349}] },
+                    { id: "p_v_pvc", name: "PVC Visiting Card", image: "https://images.unsplash.com/photo-1620283085439-39620a1e21c4?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Side", price:499}, {name:"2 Side", price:699}] }
+                ]
+            },
+            {
+                id: "cat_pen",
+                name: "Personalised Pen",
+                image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_pen_laser", name: "Laser Print Pen", image: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Pen", price:99},{name:"2 Pen", price:179},{name:"5 Pen", price:399},{name:"10 Pen", price:699},{name:"20 Pen", price:1299},{name:"30 Pen", price:1799},{name:"40 Pen", price:2299},{name:"50 Pen", price:2699}] },
+                    { id: "p_pen_single", name: "Single Print Pen (Min Qty 100)", image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=500&auto=format&fit=crop&q=60", subs: Array.from({length: 13}, (_, i) => ({ name: `Design ${String(i+1).padStart(2, '0')}`, price: 999 + (i * 100) })) }
+                ]
+            },
+            {
+                id: "cat_frames",
+                name: "Photo Frames",
+                image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_fr_a4", name: "A4 (8×12)", image: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=500&auto=format&fit=crop&q=60", subs: [{name:"Birthday Frame", price:399}, {name:"Anniversary Frame", price:399}, {name:"Engagement Frame", price:399}] },
+                    { id: "p_fr_1218", name: "12×18", image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&auto=format&fit=crop&q=60", subs: [{name:"Birthday Frame", price:699}, {name:"Anniversary Frame", price:699}, {name:"Engagement Frame", price:699}] }
+                ]
+            },
+            {
+                id: "cat_collage",
+                name: "Photo Collage Frame",
+                image: "https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_col_a4", name: "A4 (8×12)", image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=500&auto=format&fit=crop&q=60", subs: [{name:"2 Photo Collage", price:399}, {name:"6 Photo Collage", price:599}, {name:"8 Photo Collage", price:699}, {name:"12 Photo Collage", price:999}] }
+                ]
+            },
+            {
+                id: "cat_spiral",
+                name: "Spiral Photo Book",
+                image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_spi_main", name: "Spiral Photo Album Configured", image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=500&auto=format&fit=crop&q=60", subs: [{name:"20 Photos", price:599}, {name:"40 Photos", price:999}] }
+                ]
+            },
+            {
+                id: "cat_notes",
+                name: "Notes Printing",
+                image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_note_binding", name: "High Quality Pages", image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&auto=format&fit=crop&q=60", subs: [{name:"Standard Printing Price (₹0.60 per page + Binding Extra ₹30)", price:30}] }
+                ]
+            },
+            {
+                id: "cat_atm",
+                name: "ATM Pouch",
+                image: "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_atm_matt", name: "Matt Lamination", image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=500&auto=format&fit=crop&q=60", subs: [{name:"2 Side", price:299}] },
+                    { id: "p_atm_gloss", name: "Gloss Lamination", image: "https://images.unsplash.com/photo-1613243555988-441166d4d6fd?w=500&auto=format&fit=crop&q=60", subs: [{name:"2 Side", price:349}] }
+                ]
+            },
+            {
+                id: "cat_cert",
+                name: "Certificate Print",
+                image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_cert_a4", name: "A4 (8×12)", image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=500&auto=format&fit=crop&q=60", subs: [{name:"With Frame", price:399}, {name:"Without Frame", price:199}] }
+                ]
+            },
+            {
+                id: "cat_bill",
+                name: "Bill Book",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_bill_a4", name: "A4 Two Copy", image: "https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=500&auto=format&fit=crop&q=60", subs: [{name:"Quantity Based Pricing", price:299}] }
+                ]
+            },
+            {
+                id: "cat_invite",
+                name: "Invitation Card",
+                image: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=500&auto=format&fit=crop&q=60",
+                products: [
+                    { id: "p_invite_simple", name: "Simple Invitation Card", image: "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=500&auto=format&fit=crop&q=60", subs: [{name:"Premium Design Template Variant", price:499}] }
+                ]
+            }
+        ];
+
+        let state = {
+            activeCategory: null,
+            activeProduct: null,
+            activeSubProduct: null,
+            cart: null,
+            lastOrder: null,
+            selectedPaymentMethod: 'QR' // Default
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            resetToCategories();
+        });
+
+        function navigateTo(layerId) {
+            document.getElementById('category-layer').classList.add('step-hidden');
+            document.getElementById('product-layer').classList.add('step-hidden');
+            document.getElementById('subproduct-layer').classList.add('step-hidden');
+            document.getElementById('cart-layer').classList.add('step-hidden');
+            document.getElementById('confirmation-layer').classList.add('step-hidden');
+
+            document.getElementById(layerId + '-layer').classList.remove('step-hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateBreadcrumbs();
+        }
+
+        function updateBreadcrumbs() {
+            const bcSep1 = document.getElementById('bc-separator-1');
+            const bcCat = document.getElementById('bc-category');
+            const bcSep2 = document.getElementById('bc-separator-2');
+            const bcProd = document.getElementById('bc-product');
+
+            if (state.activeCategory) {
+                bcSep1.classList.remove('hidden');
+                bcCat.classList.remove('hidden');
+                bcCat.textContent = state.activeCategory.name;
+                bcCat.onclick = () => selectCategory(state.activeCategory.id);
+            } else {
+                bcSep1.classList.add('hidden');
+                bcCat.classList.add('hidden');
+            }
+
+            if (state.activeProduct) {
+                bcSep2.classList.remove('hidden');
+                bcProd.classList.remove('hidden');
+                bcProd.textContent = state.activeProduct.name;
+            } else {
+                bcSep2.classList.add('hidden');
+                bcProd.classList.add('hidden');
+            }
+        }
+
+        function resetToCategories() {
+            state.activeCategory = null;
+            state.activeProduct = null;
+            state.activeSubProduct = null;
+            navigateTo('category');
+        }
+
+        function renderCategories() {
+            const grid = document.getElementById('categories-grid');
+            grid.innerHTML = '';
+            DATA.forEach(category => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col";
+                card.onclick = () => selectCategory(category.id);
+                card.innerHTML = `
+                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
+                        <img src="${category.image}" alt="${category.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mt-auto">
+                        <h3 class="font-bold text-gray-900 text-lg">${category.name}</h3>
+                        <span class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600"><i class="fa-solid fa-arrow-right text-xs"></i></span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCategory(catId) {
+            const category = DATA.find(c => c.id === catId);
+            state.activeCategory = category;
+            state.activeProduct = null;
+            state.activeSubProduct = null;
+
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            category.products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col";
+                card.onclick = () => selectProduct(product.id);
+                card.innerHTML = `
+                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mt-auto">
+                        <h3 class="font-bold text-gray-900 text-base">${product.name}</h3>
+                        <span class="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2.5 py-1 rounded-full flex items-center gap-1">Configure <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            navigateTo('product');
+        }
+
+        function selectProduct(prodId) {
+            const product = state.activeCategory.products.find(p => p.id === prodId);
+            state.activeProduct = product;
+
+            const grid = document.getElementById('subproducts-grid');
+            grid.innerHTML = '';
+
+            product.subs.forEach(sub => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-gray-100 rounded-2xl p-5 card-shadow flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
+                        <img src="${product.image}" alt="${sub.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-base mb-1">${sub.name}</h4>
+                        <p class="text-xl font-extrabold text-indigo-600 mb-4">₹${sub.price}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <button onclick="addToCart('${sub.name}', ${sub.price}, false)" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-cart-plus"></i> Add To Cart
+                        </button>
+                        <button onclick="addToCart('${sub.name}', ${sub.price}, true)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
+                            Buy Now
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            navigateTo('subproduct');
+        }
+
+        function addToCart(subName, price, immediateCheckout) {
+            state.activeSubProduct = { name: subName, price: price };
+            state.cart = {
+                category: state.activeCategory.name,
+                product: state.activeProduct.name,
+                subProduct: subName,
+                price: price,
+                quantity: 1
+            };
+
+            document.getElementById('nav-cart-count').textContent = "1";
+            
+            const cartDetailsContainer = document.getElementById('cart-item-details');
+            cartDetailsContainer.innerHTML = `
+                <div class="w-20 h-20 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden shrink-0">
+                    <img src="${state.activeProduct.image}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-grow w-full">
+                    <h4 class="font-bold text-gray-900">${state.cart.product}</h4>
+                    <p class="text-xs text-gray-500">${state.cart.category} &bull; ${state.cart.subProduct}</p>
+                    <div class="flex items-center gap-4 mt-2">
+                        <span class="text-indigo-600 font-extrabold text-lg" id="cart-item-price-display">₹${state.cart.price}</span>
+                        <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                            <button type="button" onclick="updateQty(-1)" class="px-2.5 py-1 text-gray-600 hover:bg-gray-200 font-bold transition">-</button>
+                            <span id="cart-qty-val" class="px-3 py-1 font-bold text-sm bg-white border-x border-gray-200 text-gray-900">1</span>
+                            <button type="button" onclick="updateQty(1)" class="px-2.5 py-1 text-gray-600 hover:bg-gray-200 font-bold transition">+</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Reset File and inputs
+            document.getElementById('design-file').value = "";
+            document.getElementById('file-status-text').classList.add('hidden');
+            document.getElementById('checkout-step-1').classList.remove('step-hidden');
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
+
+            navigateTo('cart');
+        }
+
+        function updateQty(amt) {
+            if(!state.cart) return;
+            let newQty = state.cart.quantity + amt;
+            if (newQty < 1) newQty = 1;
+            state.cart.quantity = newQty;
+            
+            document.getElementById('cart-qty-val').textContent = newQty;
+            document.getElementById('cart-item-price-display').textContent = `₹${state.cart.price * newQty}`;
+        }
+
+        function updateFileStatus() {
+            const fileInput = document.getElementById('design-file');
+            const statusText = document.getElementById('file-status-text');
+            if(fileInput.files.length > 0) {
+                statusText.innerHTML = `<i class="fa-solid fa-circle-check"></i> File: <strong>${fileInput.files[0].name}</strong> selected successfully.`;
+                statusText.classList.remove('hidden');
+            } else {
+                statusText.classList.add('hidden');
+            }
+        }
+
+        function validateAndGoToPayment() {
+            const fileInput = document.getElementById('design-file');
+            const name = document.getElementById('cust-name').value.trim();
+            const mobile = document.getElementById('cust-mobile').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            if(fileInput.files.length === 0) {
+                alert("Please upload a Photo / JPG design file first!");
+                return;
+            }
+            if(!name || !mobile || !address) {
+                alert("Please fill all required customer details fields!");
+                return;
+            }
+            if(!/[0-9]{10}/.test(mobile)) {
+                alert("Please enter a valid 10-digit mobile number!");
+                return;
+            }
+
+            // Calculation
+            const total = state.cart.price * state.cart.quantity;
+            document.getElementById('checkout-total-price').textContent = `₹${total}`;
+
+            // Build QR Code link URL dynamically
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
+            document.getElementById('upi-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+
+            // UI step switch
+            document.getElementById('checkout-step-1').classList.add('step-hidden');
+            document.getElementById('checkout-step-2').classList.remove('step-hidden');
+            selectPaymentOption('qr'); // reset wrapper visual states to QR
+        }
+
+        function backToDetails() {
+            document.getElementById('checkout-step-1').classList.remove('step-hidden');
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
+        }
+
+        function selectPaymentOption(type) {
+            state.selectedPaymentMethod = type.toUpperCase();
+            
+            document.getElementById('pay-qr').checked = (type === 'qr');
+            document.getElementById('pay-direct').checked = (type === 'direct');
+            document.getElementById('pay-cod').checked = (type === 'cod');
+
+            // Reset border design highlights
+            document.getElementById('wrapper-pay-qr').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-direct').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-cod').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+
+            if(type === 'qr') {
+                document.getElementById('wrapper-pay-qr').classList.replace('border-gray-200', 'border-indigo-500');
+            } else if(type === 'direct') {
+                document.getElementById('wrapper-pay-direct').classList.replace('border-gray-200', 'border-indigo-500');
+                // Trigger Direct Device UPI Intent if supported
+                const total = state.cart.price * state.cart.quantity;
+                window.location.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
+            } else if(type === 'cod') {
+                document.getElementById('wrapper-pay-cod').classList.replace('border-gray-200', 'border-amber-500');
+            }
+        }
+
+        function handleOrderSubmission() {
+            const orderId = "BP" + Math.floor(100000 + Math.random() * 900000);
+            const total = state.cart.price * state.cart.quantity;
+            const fileInput = document.getElementById('design-file');
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "N/A";
+
+            const orderPayload = {
+                orderId: orderId,
+                category: state.cart.category,
+                product: state.cart.product,
+                subProduct: state.cart.subProduct,
+                quantity: state.cart.quantity,
+                totalPrice: total,
+                fileName: fileName,
+                customerName: document.getElementById('cust-name').value.trim(),
+                customerMobile: document.getElementById('cust-mobile').value.trim(),
+                customerAddress: document.getElementById('cust-address').value.trim(),
+                customerRemark: document.getElementById('cust-remark').value.trim() || "None",
+                paymentMethod: state.selectedPaymentMethod,
+                status: "INITIATED"
+            };
+
+            state.lastOrder = orderPayload;
+
+            // Submit payload to Firebase Realtime Database asynchronously if initialized
+            if (typeof database !== 'undefined') {
+                database.ref('orders/' + orderId).set(orderPayload);
+            }
+
+            // Fill receipt interface elements safely
+            document.getElementById('conf-order-id').textContent = "#" + orderId;
+            document.getElementById('conf-category').textContent = orderPayload.category;
+            document.getElementById('conf-product').textContent = orderPayload.product;
+            document.getElementById('conf-subproduct').textContent = orderPayload.subProduct;
+            document.getElementById('conf-qty').textContent = orderPayload.quantity;
+            document.getElementById('conf-price').textContent = "₹" + orderPayload.totalPrice + ` (${orderPayload.paymentMethod})`;
+            document.getElementById('conf-file-name').textContent = orderPayload.fileName;
+            document.getElementById('conf-cust-details').textContent = 
+                `${orderPayload.customerName}\n📞 ${orderPayload.customerMobile}\n📍 ${orderPayload.customerAddress}\n📝 Remark: ${orderPayload.customerRemark}`;
+
+            // Switch view to Receipt Screen
+            navigateTo('confirmation');
+        }
+
+        function sendWhatsAppNotification() {
+            if(!state.lastOrder) return;
+            const o = state.lastOrder;
+            
+            // Structured message for perfect listing in your WhatsApp console
+            const textMessage = 
+`*BALAJI PRINTS - NEW INITIATED ORDER*
+---------------------------------------
+*Order ID:* #${o.orderId}
+*Status:* INITIATED / PENDING
+
+*📦 PRODUCT DETAILS:*
+• *Category:* ${o.category}
+• *Product:* ${o.product}
+• *Variant:* ${o.subProduct}
+• *Quantity:* ${o.quantity}
+• *Total Payable:* ₹${o.totalPrice}
+• *Method:* ${o.paymentMethod}
+
+*📎 DESIGN FILE INFO:*
+• *File Name:* ${o.fileName}
+_(कृपया यह फोटो/फ़ाइल यहाँ अलग से भी सेंड करें)_
+
+*👤 CUSTOMER INFO:*
+• *Name:* ${o.customerName}
+• *Mobile:* ${o.customerMobile}
+• *Address:* ${o.customerAddress}
+• *Remark:* ${o.customerRemark}
+---------------------------------------
+*नोट:* कृपया कस्टमर से उपर्युक्त फ़ाइल व्हाट्सएप पर प्राप्त कर ऑर्डर मैन्युफैक्चरिंग प्रक्रिया शुरू करें।`;
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=91${WHATSAPP_NUM}&text=${encodeURIComponent(textMessage)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
