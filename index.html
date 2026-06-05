@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALAJI PRINTS - Premium Design & Customised Print</title>
+    <title>Balaji Prints - Premium Design & Customised Print</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,24 +65,21 @@
             <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Select a Category
             </h2>
-            <div id="categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                </div>
+            <div id="categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
         <section id="product-layer" class="step-hidden">
             <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Choose Options
             </h2>
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                </div>
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
         <section id="subproduct-layer" class="step-hidden">
             <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <span class="w-1.5 h-6 bg-indigo-600 rounded-full"></span> Select Variant & Specifications
             </h2>
-            <div id="subproducts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                </div>
+            <div id="subproducts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </section>
 
         <section id="cart-layer" class="step-hidden max-w-3xl mx-auto">
@@ -90,8 +87,7 @@
             
             <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow mb-6">
                 <h3 class="text-lg font-semibold mb-4 border-b border-gray-100 pb-2">Selected Item</h3>
-                <div id="cart-item-details" class="flex flex-col sm:flex-row gap-4 items-center">
-                    </div>
+                <div id="cart-item-details" class="flex flex-col sm:flex-row gap-4 items-center"></div>
             </div>
 
             <div id="checkout-step-1" class="space-y-6">
@@ -145,7 +141,7 @@
             <div id="checkout-step-2" class="step-hidden mt-6 space-y-6">
                 <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow space-y-4">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                        <h3 class="text-lg font-semibold">Step 3: Secure Payment</h3>
+                        <h3 class="text-lg font-semibold">Step 3: Secure Payment / Order Method</h3>
                         <button type="button" onclick="backToDetails()" class="text-sm font-semibold text-indigo-600 hover:text-indigo-900 transition">
                             <i class="fa-solid fa-arrow-left"></i> Edit Customer Details
                         </button>
@@ -156,32 +152,41 @@
                         <span id="checkout-total-price" class="text-2xl font-bold text-gray-900">₹0</span>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer hover:border-indigo-500 transition" onclick="selectPaymentOption('qr')">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div id="wrapper-pay-qr" class="border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition" onclick="selectPaymentOption('qr')">
                             <input type="radio" id="pay-qr" name="payment-method" value="QR" class="accent-indigo-600 mb-2" checked>
-                            <label for="pay-qr" class="font-semibold block mb-2 cursor-pointer">Option 1: UPI QR Code</label>
+                            <label for="pay-qr" class="font-semibold block mb-2 cursor-pointer text-xs sm:text-sm">Option 1: UPI QR Code</label>
                             <div class="p-2 bg-white border border-gray-100 rounded-lg shadow-sm mb-2">
-                                <img id="upi-qr-image" src="" alt="UPI QR Code" class="w-36 h-36">
+                                <img id="upi-qr-image" src="" alt="UPI QR Code" class="w-28 h-28 mx-auto">
                             </div>
-                            <span class="text-xs text-gray-400">Scan using any UPI App</span>
+                            <span class="text-[10px] text-gray-400">Scan using any UPI App</span>
                         </div>
 
-                        <div class="border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer hover:border-indigo-500 transition" onclick="selectPaymentOption('direct')">
+                        <div id="wrapper-pay-direct" class="border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition" onclick="selectPaymentOption('direct')">
                             <input type="radio" id="pay-direct" name="payment-method" value="DIRECT" class="accent-indigo-600 mb-2">
-                            <label for="pay-direct" class="font-semibold block mb-2 cursor-pointer">Option 2: Direct UPI Payment</label>
-                            <div class="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center mb-3">
-                                <i class="fa-solid fa-mobile-screen-button text-indigo-600 text-2xl"></i>
+                            <label for="pay-direct" class="font-semibold block mb-2 cursor-pointer text-xs sm:text-sm">Option 2: Direct UPI App</label>
+                            <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mb-2">
+                                <i class="fa-solid fa-mobile-screen-button text-indigo-600 text-xl"></i>
                             </div>
-                            <p class="text-xs text-gray-500 px-4">Clicking the pay button below will launch available UPI Apps installed on your device.</p>
+                            <p class="text-[10px] text-gray-500 px-1">Launches available UPI Apps installed on your device.</p>
+                        </div>
+
+                        <div id="wrapper-pay-cod" class="border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition" onclick="selectPaymentOption('cod')">
+                            <input type="radio" id="pay-cod" name="payment-method" value="COD" class="accent-indigo-600 mb-2">
+                            <label for="pay-cod" class="font-semibold block mb-2 cursor-pointer text-xs sm:text-sm text-amber-700">Option 3: Cash On Delivery</label>
+                            <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-2">
+                                <i class="fa-brands fa-whatsapp text-amber-600 text-xl"></i>
+                            </div>
+                            <p class="text-[10px] text-amber-700 font-medium px-1">Cash on delivery के लिए WhatsApp 9414350535 पर संपर्क करें।</p>
                         </div>
                     </div>
 
                     <div class="pt-4 border-t border-gray-100 space-y-3">
                         <p class="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
-                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> UPI Payment complete karne ke baad hi niche diye gaye button par click karein taki aapka order instant confirm ho sake.
+                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर क्लिक करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
                         </p>
                         <button type="button" onclick="handleOrderSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
-                            <i class="fa-solid fa-lock"></i> Payment Done & Confirm Order
+                            <i class="fa-solid fa-lock"></i> Process & Generate Receipt
                         </button>
                     </div>
                 </div>
@@ -189,15 +194,17 @@
         </section>
 
         <section id="confirmation-layer" class="step-hidden max-w-2xl mx-auto text-center py-12">
-            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
-                <i class="fa-solid fa-check-double"></i>
+            <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
+                <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Order Placed Successfully!</h2>
-            <p class="text-gray-500 mb-8">Thank you for ordering with Balaji Prints. Your order details are captured below.</p>
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Order Initiated Successfully!</h2>
+            <p class="text-sm text-red-600 font-semibold mb-8 bg-red-50 p-3 rounded-xl inline-block border border-red-100">
+                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका ऑर्डर अभी सिर्फ इनिशिएट हुआ है! कंफर्म तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
+            </p>
 
             <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow text-left space-y-4 mb-8">
                 <h3 class="text-lg font-bold border-b border-gray-100 pb-2 text-indigo-600 flex justify-between">
-                    <span>Order Invoice</span>
+                    <span>Order Receipt (Initiated)</span>
                     <span id="conf-order-id" class="text-gray-900">#00000</span>
                 </h3>
                 <div class="grid grid-cols-2 gap-y-3 text-sm">
@@ -214,18 +221,21 @@
                     <span id="conf-qty" class="font-semibold text-gray-800 text-right">1</span>
 
                     <span class="text-gray-500 font-medium">Total Price:</span>
-                    <span id="conf-price" class="font-bold text-emerald-600 text-right text-base"></span>
+                    <span id="conf-price" class="font-bold text-indigo-600 text-right text-base"></span>
+
+                    <span class="text-gray-500 font-medium">Uploaded File:</span>
+                    <span id="conf-file-name" class="font-semibold text-amber-600 text-right italic break-all"></span>
 
                     <span class="text-gray-500 font-medium">Customer Details:</span>
                     <span id="conf-cust-details" class="font-semibold text-gray-800 text-right whitespace-pre-line"></span>
 
-                    <span class="text-gray-500 font-medium">Payment Status:</span>
-                    <span class="text-right"><span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-bold">PAID / SUCCESS</span></span>
+                    <span class="text-gray-500 font-medium">Order Status:</span>
+                    <span class="text-right"><span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-bold">INITIATED / PENDING CONFIRMATION</span></span>
                 </div>
             </div>
 
             <button onclick="sendWhatsAppNotification()" class="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-3 text-lg">
-                <i class="fa-brands fa-whatsapp text-2xl"></i> Share Order Details via WhatsApp
+                <i class="fa-brands fa-whatsapp text-2xl"></i> Share Details on WhatsApp to Confirm Order
             </button>
             
             <button onclick="resetToCategories()" class="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
@@ -246,16 +256,17 @@
     <script>
         const UPI_ID = "9414350535@okbizaxis";
         const MERCHANT_NAME = "Balaji Prints";
+        const WHATSAPP_NUM = "9414350535";
 
         const DATA = [
             {
                 id: "cat_vcard",
                 name: "Visiting Card",
-                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgN-3aCvz3KfEqH2Awc4CHn5n5TYgmIGVx6YoqTopPtspWzv-O2EjpPvLXVP7N3IKg89gMcKwrhe36cVD_lqmazIFxEpM8D7AX7s-juLKofL8HswjzBefjK90mhkBeCqfCo522nza3iCtkR4Nlal0rJKASjJk0jF5tZWzl8gGg6HBVNQNjNuSu61wcheqk/s334/vc.jpg",
+                image: "https://images.unsplash.com/photo-1616763355548-1b606f439f86?w=500&auto=format&fit=crop&q=60",
                 products: [
-                    { id: "p_v_gloss", name: "Gloss Lamination", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgN-3aCvz3KfEqH2Awc4CHn5n5TYgmIGVx6YoqTopPtspWzv-O2EjpPvLXVP7N3IKg89gMcKwrhe36cVD_lqmazIFxEpM8D7AX7s-juLKofL8HswjzBefjK90mhkBeCqfCo522nza3iCtkR4Nlal0rJKASjJk0jF5tZWzl8gGg6HBVNQNjNuSu61wcheqk/s334/vc.jpg", subs: [{name:"1 Side", price:199}, {name:"2 Side", price:299}] },
-                    { id: "p_v_matt", name: "Matt Lamination", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgN-3aCvz3KfEqH2Awc4CHn5n5TYgmIGVx6YoqTopPtspWzv-O2EjpPvLXVP7N3IKg89gMcKwrhe36cVD_lqmazIFxEpM8D7AX7s-juLKofL8HswjzBefjK90mhkBeCqfCo522nza3iCtkR4Nlal0rJKASjJk0jF5tZWzl8gGg6HBVNQNjNuSu61wcheqk/s334/vc.jpg", subs: [{name:"1 Side", price:249}, {name:"2 Side", price:349}] },
-                    { id: "p_v_pvc", name: "PVC Visiting Card", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgN-3aCvz3KfEqH2Awc4CHn5n5TYgmIGVx6YoqTopPtspWzv-O2EjpPvLXVP7N3IKg89gMcKwrhe36cVD_lqmazIFxEpM8D7AX7s-juLKofL8HswjzBefjK90mhkBeCqfCo522nza3iCtkR4Nlal0rJKASjJk0jF5tZWzl8gGg6HBVNQNjNuSu61wcheqk/s334/vc.jpg", subs: [{name:"1 Side", price:499}, {name:"2 Side", price:699}] }
+                    { id: "p_v_gloss", name: "Gloss Lamination", image: "https://images.unsplash.com/photo-1589330694653-ded6df53f6ee?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Side", price:199}, {name:"2 Side", price:299}] },
+                    { id: "p_v_matt", name: "Matt Lamination", image: "https://images.unsplash.com/photo-1547483238-2cbf88bf2443?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Side", price:249}, {name:"2 Side", price:349}] },
+                    { id: "p_v_pvc", name: "PVC Visiting Card", image: "https://images.unsplash.com/photo-1620283085439-39620a1e21c4?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Side", price:499}, {name:"2 Side", price:699}] }
                 ]
             },
             {
@@ -263,18 +274,8 @@
                 name: "Personalised Pen",
                 image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60",
                 products: [
-                    {
-                        id: "p_pen_laser",
-                        name: "Laser Print Pen",
-                        image: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500&auto=format&fit=crop&q=60",
-                        subs: [{name:"1 Pen", price:99},{name:"2 Pen", price:179},{name:"5 Pen", price:399},{name:"10 Pen", price:699},{name:"20 Pen", price:1299},{name:"30 Pen", price:1799},{name:"40 Pen", price:2299},{name:"50 Pen", price:2699}]
-                    },
-                    {
-                        id: "p_pen_single",
-                        name: "Single Print Pen (Min Qty 100)",
-                        image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=500&auto=format&fit=crop&q=60",
-                        subs: Array.from({length: 13}, (_, i) => ({ name: `Design ${String(i+1).padStart(2, '0')}`, price: 999 + (i * 100) }))
-                    }
+                    { id: "p_pen_laser", name: "Laser Print Pen", image: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500&auto=format&fit=crop&q=60", subs: [{name:"1 Pen", price:99},{name:"2 Pen", price:179},{name:"5 Pen", price:399},{name:"10 Pen", price:699},{name:"20 Pen", price:1299},{name:"30 Pen", price:1799},{name:"40 Pen", price:2299},{name:"50 Pen", price:2699}] },
+                    { id: "p_pen_single", name: "Single Print Pen (Min Qty 100)", image: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=500&auto=format&fit=crop&q=60", subs: Array.from({length: 13}, (_, i) => ({ name: `Design ${String(i+1).padStart(2, '0')}`, price: 999 + (i * 100) })) }
                 ]
             },
             {
@@ -291,12 +292,7 @@
                 name: "Photo Collage Frame",
                 image: "https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=500&auto=format&fit=crop&q=60",
                 products: [
-                    { 
-                        id: "p_col_a4", 
-                        name: "A4 (8×12)", 
-                        image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=500&auto=format&fit=crop&q=60", 
-                        subs: [{name:"2 Photo Collage", price:399}, {name:"6 Photo Collage", price:599}, {name:"8 Photo Collage", price:699}, {name:"12 Photo Collage", price:999}] 
-                    }
+                    { id: "p_col_a4", name: "A4 (8×12)", image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=500&auto=format&fit=crop&q=60", subs: [{name:"2 Photo Collage", price:399}, {name:"6 Photo Collage", price:599}, {name:"8 Photo Collage", price:699}, {name:"12 Photo Collage", price:999}] }
                 ]
             },
             {
@@ -355,7 +351,8 @@
             activeProduct: null,
             activeSubProduct: null,
             cart: null,
-            lastOrder: null
+            lastOrder: null,
+            selectedPaymentMethod: 'QR' // Default
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -510,117 +507,113 @@
                     <h4 class="font-bold text-gray-900">${state.cart.product}</h4>
                     <p class="text-xs text-gray-500">${state.cart.category} &bull; ${state.cart.subProduct}</p>
                     <div class="flex items-center gap-4 mt-2">
-                        <span class="text-indigo-600 font-extrabold text-lg">₹${state.cart.price}</span>
+                        <span class="text-indigo-600 font-extrabold text-lg" id="cart-item-price-display">₹${state.cart.price}</span>
                         <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-                            <button type="button" onclick="changeQty(-1)" class="px-2.5 py-1 hover:bg-gray-200 text-sm font-bold">-</button>
-                            <span id="cart-item-qty" class="px-3 py-1 bg-white text-xs font-bold text-gray-800">1</span>
-                            <button type="button" onclick="changeQty(1)" class="px-2.5 py-1 hover:bg-gray-200 text-sm font-bold">+</button>
+                            <button type="button" onclick="updateQty(-1)" class="px-2.5 py-1 text-gray-600 hover:bg-gray-200 font-bold transition">-</button>
+                            <span id="cart-qty-val" class="px-3 py-1 font-bold text-sm bg-white border-x border-gray-200 text-gray-900">1</span>
+                            <button type="button" onclick="updateQty(1)" class="px-2.5 py-1 text-gray-600 hover:bg-gray-200 font-bold transition">+</button>
                         </div>
                     </div>
                 </div>
             `;
 
-            // Reset view to Step 1 Form state
+            // Reset File and inputs
+            document.getElementById('design-file').value = "";
+            document.getElementById('file-status-text').classList.add('hidden');
             document.getElementById('checkout-step-1').classList.remove('step-hidden');
             document.getElementById('checkout-step-2').classList.add('step-hidden');
 
-            updateTotalPriceDisplay();
             navigateTo('cart');
         }
 
-        function changeQty(amount) {
-            if (!state.cart) return;
-            let newQty = state.cart.quantity + amount;
-            if (newQty < 1) return;
+        function updateQty(amt) {
+            if(!state.cart) return;
+            let newQty = state.cart.quantity + amt;
+            if (newQty < 1) newQty = 1;
             state.cart.quantity = newQty;
-            document.getElementById('cart-item-qty').textContent = newQty;
-            updateTotalPriceDisplay();
-        }
-
-        function updateTotalPriceDisplay() {
-            if (!state.cart) return;
-            const total = state.cart.price * state.cart.quantity;
-            document.getElementById('checkout-total-price').textContent = "₹" + total;
             
-            const upiPayloadUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
-            document.getElementById('upi-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiPayloadUrl)}`;
+            document.getElementById('cart-qty-val').textContent = newQty;
+            document.getElementById('cart-item-price-display').textContent = `₹${state.cart.price * newQty}`;
         }
 
         function updateFileStatus() {
             const fileInput = document.getElementById('design-file');
             const statusText = document.getElementById('file-status-text');
             if(fileInput.files.length > 0) {
+                statusText.innerHTML = `<i class="fa-solid fa-circle-check"></i> File: <strong>${fileInput.files[0].name}</strong> selected successfully.`;
                 statusText.classList.remove('hidden');
             } else {
                 statusText.classList.add('hidden');
             }
         }
 
-        function selectPaymentOption(option) {
-            if (option === 'qr') {
-                document.getElementById('pay-qr').checked = true;
-            } else {
-                document.getElementById('pay-direct').checked = true;
-            }
-        }
-
-        // STEP BY STEP CONTROL: VALIDATE CUSTOMER DATA BEFORE PAYMENT SCREEN
         function validateAndGoToPayment() {
             const fileInput = document.getElementById('design-file');
             const name = document.getElementById('cust-name').value.trim();
             const mobile = document.getElementById('cust-mobile').value.trim();
             const address = document.getElementById('cust-address').value.trim();
 
-            if (!fileInput.files[0]) {
-                alert("Please upload your Photo or JPG Design file first.");
+            if(fileInput.files.length === 0) {
+                alert("Please upload a Photo / JPG design file first!");
                 return;
             }
-            if (!name) {
-                alert("Please enter your Full Name.");
-                document.getElementById('cust-name').focus();
+            if(!name || !mobile || !address) {
+                alert("Please fill all required customer details fields!");
                 return;
             }
-            if (!mobile || mobile.length !== 10 || isNaN(mobile)) {
-                alert("Please enter a valid 10-digit Mobile Number.");
-                document.getElementById('cust-mobile').focus();
-                return;
-            }
-            if (!address) {
-                alert("Please enter your Complete Address.");
-                document.getElementById('cust-address').focus();
+            if(!/[0-9]{10}/.test(mobile)) {
+                alert("Please enter a valid 10-digit mobile number!");
                 return;
             }
 
-            // Successfully Verified -> Move to Payment view screen
+            // Calculation
+            const total = state.cart.price * state.cart.quantity;
+            document.getElementById('checkout-total-price').textContent = `₹${total}`;
+
+            // Build QR Code link URL dynamically
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
+            document.getElementById('upi-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+
+            // UI step switch
             document.getElementById('checkout-step-1').classList.add('step-hidden');
             document.getElementById('checkout-step-2').classList.remove('step-hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            selectPaymentOption('qr'); // reset wrapper visual states to QR
         }
 
         function backToDetails() {
-            document.getElementById('checkout-step-2').classList.add('step-hidden');
             document.getElementById('checkout-step-1').classList.remove('step-hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
         }
 
-        // FINAL SUBMISSION ACTION
-        function handleOrderSubmission() {
-            const fileInput = document.getElementById('design-file');
-            const name = document.getElementById('cust-name').value.trim();
-            const mobile = document.getElementById('cust-mobile').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-            const remark = document.getElementById('cust-remark').value.trim();
+        function selectPaymentOption(type) {
+            state.selectedPaymentMethod = type.toUpperCase();
+            
+            document.getElementById('pay-qr').checked = (type === 'qr');
+            document.getElementById('pay-direct').checked = (type === 'direct');
+            document.getElementById('pay-cod').checked = (type === 'cod');
 
-            // Re-validate fields to protect script data integrity
-            if (!fileInput.files[0] || !name || !mobile || !address) {
-                alert("Crucial fields missing. Going back to details step.");
-                backToDetails();
-                return;
+            // Reset border design highlights
+            document.getElementById('wrapper-pay-qr').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-direct').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-cod').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+
+            if(type === 'qr') {
+                document.getElementById('wrapper-pay-qr').classList.replace('border-gray-200', 'border-indigo-500');
+            } else if(type === 'direct') {
+                document.getElementById('wrapper-pay-direct').classList.replace('border-gray-200', 'border-indigo-500');
+                // Trigger Direct Device UPI Intent if supported
+                const total = state.cart.price * state.cart.quantity;
+                window.location.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
+            } else if(type === 'cod') {
+                document.getElementById('wrapper-pay-cod').classList.replace('border-gray-200', 'border-amber-500');
             }
+        }
 
-            const totalAmount = state.cart.price * state.cart.quantity;
-            const orderId = "BP" + Date.now().toString().slice(-6);
-            const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+        function handleOrderSubmission() {
+            const orderId = "BP" + Math.floor(100000 + Math.random() * 900000);
+            const total = state.cart.price * state.cart.quantity;
+            const fileInput = document.getElementById('design-file');
+            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "N/A";
 
             const orderPayload = {
                 orderId: orderId,
@@ -628,81 +621,70 @@
                 product: state.cart.product,
                 subProduct: state.cart.subProduct,
                 quantity: state.cart.quantity,
-                amount: totalAmount,
-                customerName: name,
-                customerMobile: mobile,
-                customerAddress: address,
-                customerRemark: remark,
-                fileName: fileInput.files[0].name,
-                paymentMethod: selectedPaymentMethod,
-                timestamp: new Date().toISOString()
+                totalPrice: total,
+                fileName: fileName,
+                customerName: document.getElementById('cust-name').value.trim(),
+                customerMobile: document.getElementById('cust-mobile').value.trim(),
+                customerAddress: document.getElementById('cust-address').value.trim(),
+                customerRemark: document.getElementById('cust-remark').value.trim() || "None",
+                paymentMethod: state.selectedPaymentMethod,
+                status: "INITIATED"
             };
 
-            // Trigger Direct Application Intent Interceptor
-            if (selectedPaymentMethod === 'DIRECT') {
-                const intentLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${totalAmount}&cu=INR`;
-                window.location.href = intentLink;
-            }
+            state.lastOrder = orderPayload;
 
-            // Save inside Firebase Storage Pipeline
+            // Submit payload to Firebase Realtime Database asynchronously if initialized
             if (typeof database !== 'undefined') {
-                database.ref('orders/' + orderId).set(orderPayload)
-                .then(() => proceedToConfirmation(orderPayload))
-                .catch((err) => {
-                    console.error("Firebase network fail, fallback tracking sequence triggered", err);
-                    proceedToConfirmation(orderPayload);
-                });
-            } else {
-                proceedToConfirmation(orderPayload);
+                database.ref('orders/' + orderId).set(orderPayload);
             }
-        }
 
-        function proceedToConfirmation(order) {
-            state.lastOrder = order;
+            // Fill receipt interface elements safely
+            document.getElementById('conf-order-id').textContent = "#" + orderId;
+            document.getElementById('conf-category').textContent = orderPayload.category;
+            document.getElementById('conf-product').textContent = orderPayload.product;
+            document.getElementById('conf-subproduct').textContent = orderPayload.subProduct;
+            document.getElementById('conf-qty').textContent = orderPayload.quantity;
+            document.getElementById('conf-price').textContent = "₹" + orderPayload.totalPrice + ` (${orderPayload.paymentMethod})`;
+            document.getElementById('conf-file-name').textContent = orderPayload.fileName;
+            document.getElementById('conf-cust-details').textContent = 
+                `${orderPayload.customerName}\n📞 ${orderPayload.customerMobile}\n📍 ${orderPayload.customerAddress}\n📝 Remark: ${orderPayload.customerRemark}`;
 
-            document.getElementById('conf-order-id').textContent = "#" + order.orderId;
-            document.getElementById('conf-category').textContent = order.category;
-            document.getElementById('conf-product').textContent = order.product;
-            document.getElementById('conf-subproduct').textContent = order.subProduct;
-            document.getElementById('conf-qty').textContent = order.quantity;
-            document.getElementById('conf-price').textContent = "₹" + order.amount;
-            document.getElementById('conf-cust-details').textContent = `${order.customerName}\n${order.customerMobile}\n${order.customerAddress}${order.customerRemark ? '\nRemark: ' + order.customerRemark : ''}`;
-
-            state.cart = null;
-            document.getElementById('nav-cart-count').textContent = "0";
-            
-            // Clean DOM inputs fields
-            document.getElementById('design-file').value = "";
-            document.getElementById('cust-name').value = "";
-            document.getElementById('cust-mobile').value = "";
-            document.getElementById('cust-address').value = "";
-            document.getElementById('cust-remark').value = "";
-            document.getElementById('file-status-text').classList.add('hidden');
-
+            // Switch view to Receipt Screen
             navigateTo('confirmation');
         }
 
         function sendWhatsAppNotification() {
-            if (!state.lastOrder) return;
+            if(!state.lastOrder) return;
             const o = state.lastOrder;
             
-            const messageText = `*NEW ORDER PLACED - BALAJI PRINTS*\n` +
-                                `---------------------------------\n` +
-                                `*Order Number:* #${o.orderId}\n` +
-                                `*Category:* ${o.category}\n` +
-                                `*Product:* ${o.product}\n` +
-                                `*Sub Product:* ${o.subProduct}\n` +
-                                `*Quantity:* ${o.quantity}\n` +
-                                `*Amount Paid:* ₹${o.amount}\n\n` +
-                                `*CUSTOMER DETAILS:*\n` +
-                                `*Name:* ${o.customerName}\n` +
-                                `*Mobile:* ${o.customerMobile}\n` +
-                                `*Address:* ${o.customerAddress}\n` +
-                                `${o.customerRemark ? `*Remark:* ${o.customerRemark}\n` : ''}` +
-                                `---------------------------------\n` +
-                                `_Design file attached via website portal context._`;
+            // Structured message for perfect listing in your WhatsApp console
+            const textMessage = 
+`*BALAJI PRINTS - NEW INITIATED ORDER*
+---------------------------------------
+*Order ID:* #${o.orderId}
+*Status:* INITIATED / PENDING
 
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=919414350535&text=${encodeURIComponent(messageText)}`;
+*📦 PRODUCT DETAILS:*
+• *Category:* ${o.category}
+• *Product:* ${o.product}
+• *Variant:* ${o.subProduct}
+• *Quantity:* ${o.quantity}
+• *Total Payable:* ₹${o.totalPrice}
+• *Method:* ${o.paymentMethod}
+
+*📎 DESIGN FILE INFO:*
+• *File Name:* ${o.fileName}
+_(कृपया यह फोटो/फ़ाइल यहाँ अलग से भी सेंड करें)_
+
+*👤 CUSTOMER INFO:*
+• *Name:* ${o.customerName}
+• *Mobile:* ${o.customerMobile}
+• *Address:* ${o.customerAddress}
+• *Remark:* ${o.customerRemark}
+---------------------------------------
+*नोट:* कृपया कस्टमर से उपर्युक्त फ़ाइल व्हाट्सएप पर प्राप्त कर ऑर्डर मैन्युफैक्चरिंग प्रक्रिया शुरू करें।`;
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=91${WHATSAPP_NUM}&text=${encodeURIComponent(textMessage)}`;
             window.open(whatsappUrl, '_blank');
         }
     </script>
