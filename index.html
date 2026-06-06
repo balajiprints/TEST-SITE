@@ -216,7 +216,7 @@
                             <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-2">
                                 <i class="fa-brands fa-whatsapp text-amber-600 text-xl"></i>
                             </div>
-                            <p class="text-[10px] text-amber-700 font-medium px-1">Cash on delivery के लिए WhatsApp 9414350535 पर contact करें।</p>
+                            <p class="text-[10px] text-amber-700 font-medium px-1">Cash on delivery के लिए WhatsApp 9414350535 पर संपर्क करें।</p>
                         </div>
                     </div>
 
@@ -238,7 +238,7 @@
             </div>
             <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Order Initiated Successfully!</h2>
             <p class="text-sm text-red-600 font-semibold mb-8 bg-red-50 p-3 rounded-xl inline-block border border-red-100">
-                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका ORDER अभी सिर्फ इनिशिएट हुआ है! कंफर्म तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
+                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका ORDER अभी सिर्फ इनिशिएट हुआ है! कंफर्म तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर share करेंगे।
             </p>
 
             <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow text-left space-y-4 mb-8">
@@ -413,16 +413,12 @@
             document.getElementById(layerId + '-layer').classList.remove('step-hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Progress Bar Handler logic
             if(layerId === 'cart') {
                 document.getElementById('checkout-progress-bar').classList.remove('hidden');
                 document.getElementById('prog-step-1').className = "text-indigo-600 flex items-center gap-1 font-bold";
                 document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
                 document.getElementById('prog-step-3').className = "hidden";
                 document.getElementById('prog-line-2').classList.add('hidden');
-                
-                // Set UPI QR Code dynamic URL when cart/payment screen is navigated
-                updatePaymentQrCode();
             } else if (layerId === 'confirmation') {
                 document.getElementById('checkout-progress-bar').classList.remove('hidden');
                 document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
@@ -431,23 +427,6 @@
                 document.getElementById('prog-line-2').classList.remove('hidden');
             }
             updateBreadcrumbs();
-        }
-
-        // Function to update QR image dynamically based on amount
-        function updatePaymentQrCode() {
-            setTimeout(() => {
-                const priceElement = document.getElementById('checkout-total-price');
-                let amount = "0";
-                if (priceElement) {
-                    amount = priceElement.textContent.replace('₹', '').trim();
-                }
-                const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
-                const qrImgSrc = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(upiUrl)}&choe=UTF-8`;
-                const qrImageTag = document.getElementById('upi-qr-image');
-                if (qrImageTag) {
-                    qrImageTag.src = qrImgSrc;
-                }
-            }, 100);
         }
 
         function updateBreadcrumbs() {
@@ -465,6 +444,287 @@
                 bcSep1.classList.add('hidden');
                 bcCat.classList.add('hidden');
             }
+
+            if (state.activeProduct) {
+                bcSep2.classList.remove('hidden');
+                bcProd.classList.remove('hidden');
+                bcProd.textContent = state.activeProduct.name;
+            } else {
+                bcSep2.classList.add('hidden');
+                bcProd.classList.add('hidden');
+            }
+        }
+
+        function renderCategories() {
+            const grid = document.getElementById('categories-grid');
+            grid.innerHTML = DATA.map(cat => `
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden card-shadow cursor-pointer flex flex-col" onclick="selectCategory('${cat.id}')">
+                    <div class="h-48 overflow-hidden bg-gray-50 relative">
+                        <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                    </div>
+                    <div class="p-5 flex-grow flex items-center justify-between">
+                        <h3 class="font-bold text-gray-900 text-lg">${cat.name}</h3>
+                        <span class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition"><i class="fa-solid fa-arrow-right text-xs"></i></span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectCategory(catId) {
+            const cat = DATA.find(c => c.id === catId);
+            state.activeCategory = cat;
+            state.activeProduct = null;
+            state.activeSubProduct = null;
+
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = cat.products.map(p => `
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden card-shadow cursor-pointer flex flex-col" onclick="selectProduct('${p.id}')">
+                    <div class="h-48 overflow-hidden bg-gray-50">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5 flex-grow flex items-center justify-between">
+                        <h3 class="font-bold text-gray-900 text-base">${p.name}</h3>
+                        <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">View Options</span>
+                    </div>
+                </div>
+            `).join('');
+
+            navigateTo('product');
+        }
+
+        function selectProduct(prodId) {
+            const prod = state.activeCategory.products.find(p => p.id === prodId);
+            state.activeProduct = prod;
+
+            const grid = document.getElementById('subproducts-grid');
+            grid.innerHTML = prod.subs.map((sub, index) => `
+                <div class="bg-white border border-gray-100 rounded-2xl p-5 card-shadow cursor-pointer flex flex-col justify-between" onclick="selectSubProduct(${index})">
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-base mb-2">${sub.name}</h3>
+                        <p class="text-xs text-gray-400 mb-4"><i class="fa-solid fa-circle-check text-indigo-500 mr-1"></i> Professional Grade Custom Print</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-gray-50">
+                        <span class="text-xl font-extrabold text-indigo-600">₹${sub.price}</span>
+                        <span class="bg-indigo-600 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-sm hover:bg-indigo-700 transition">Select</span>
+                    </div>
+                </div>
+            `).join('');
+
+            navigateTo('subproduct');
+        }
+
+        function selectSubProduct(index) {
+            const sub = state.activeProduct.subs[index];
+            state.activeSubProduct = sub;
+            state.itemQty = 1;
+            state.baseSelectedPrice = sub.price;
+
+            document.getElementById('cart-item-qty').textContent = "1";
+
+            const detailsBox = document.getElementById('cart-item-details');
+            detailsBox.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shrink-0 border border-indigo-100">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">${state.activeProduct.name}</h4>
+                        <p class="text-xs text-gray-500 mt-0.5">${state.activeCategory.name} &bull; ${sub.name}</p>
+                    </div>
+                </div>
+                <div class="text-right sm:text-right mt-2 sm:mt-0">
+                    <span id="cart-live-total" class="text-2xl font-black text-indigo-600">₹${sub.price}</span>
+                    <p class="text-[10px] text-gray-400 font-medium">Inclusive of all local setup fees</p>
+                </div>
+            `;
+
+            const notesBox = document.getElementById('notes-calculator-box');
+            if (state.activeCategory.id === 'cat_notes') {
+                notesBox.classList.remove('hidden');
+            } else {
+                notesBox.classList.add('hidden');
+            }
+
+            calculateLivePrice();
+            navigateTo('cart');
+        }
+
+        function adjustQty(amount) {
+            state.itemQty = Math.max(1, state.itemQty + amount);
+            document.getElementById('cart-item-qty').textContent = state.itemQty;
+            calculateLivePrice();
+        }
+
+        function calculateLivePrice() {
+            let total = state.baseSelectedPrice;
+
+            if (state.activeCategory && state.activeCategory.id === 'cat_notes') {
+                const pages = parseInt(document.getElementById('notes-page-count').value) || 1;
+                const isBinding = document.getElementById('notes-binding-check').checked;
+                total = pages * 0.60;
+                if (isBinding) total += 30;
+            }
+
+            const finalPayable = Math.round(total * state.itemQty);
+            document.getElementById('cart-live-total').textContent = "₹" + finalPayable;
+            document.getElementById('checkout-total-price').textContent = "₹" + finalPayable;
+            
+            // Dynamic UPI QR generation URL
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${finalPayable}&cu=INR`)}`;
+            document.getElementById('upi-qr-image').src = qrUrl;
+        }
+
+        function resetToCategories() {
+            state.activeCategory = null;
+            state.activeProduct = null;
+            state.activeSubProduct = null;
+            navigateTo('category');
+        }
+
+        function updateFileStatus() {
+            const input = document.getElementById('design-file');
+            const statusText = document.getElementById('file-status-text');
+            const previewWrapper = document.getElementById('file-preview-wrapper');
+            const previewImg = document.getElementById('file-preview-img');
+
+            if (input.files && input.files[0]) {
+                statusText.classList.remove('hidden');
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewWrapper.classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                statusText.classList.add('hidden');
+                previewWrapper.classList.add('hidden');
+            }
+        }
+
+        function validateAndGoToPayment() {
+            const fileInput = document.getElementById('design-file');
+            const name = document.getElementById('cust-name').value.trim();
+            const mobile = document.getElementById('cust-mobile').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const phoneError = document.getElementById('phone-error');
+
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Please upload your custom design print file first.');
+                return;
+            }
+            if (!name || !mobile || !address) {
+                alert('Please fill all the mandatory profile fields marked with (*).');
+                return;
+            }
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                phoneError.classList.remove('hidden');
+                return;
+            } else {
+                phoneError.classList.add('hidden');
+            }
+
+            document.getElementById('checkout-step-1').classList.add('step-hidden');
+            document.getElementById('checkout-step-2').classList.remove('step-hidden');
+            document.getElementById('prog-step-2').className = "text-indigo-600 flex items-center gap-1 font-bold";
+        }
+
+        function backToDetails() {
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
+            document.getElementById('checkout-step-1').classList.remove('step-hidden');
+            document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
+        }
+
+        function selectPaymentOption(type) {
+            state.selectedPaymentMethod = type.toUpperCase();
+            
+            document.getElementById('pay-qr').checked = (type === 'qr');
+            document.getElementById('pay-direct').checked = (type === 'direct');
+            document.getElementById('pay-cod').checked = (type === 'cod');
+
+            document.getElementById('wrapper-pay-qr').className = type === 'qr' ? "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition" : "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-direct').className = type === 'direct' ? "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition" : "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-cod').className = type === 'cod' ? "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition" : "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+        
+            if(type === 'direct') {
+                const price = document.getElementById('checkout-total-price').textContent.replace('₹','');
+                window.location.href = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${price}&cu=INR`;
+            }
+        }
+
+        function copyUpiId(event) {
+            event.stopPropagation();
+            navigator.clipboard.writeText(UPI_ID).then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.textContent = "Copied!";
+                setTimeout(() => { btnText.textContent = "Copy UPI ID"; }, 2000);
+            });
+        }
+
+        function handleOrderSubmission() {
+            const orderId = "BP" + Math.floor(10000 + Math.random() * 90000);
+            state.generatedOrderId = orderId;
+
+            document.getElementById('conf-order-id').textContent = "#" + orderId;
+            document.getElementById('conf-category').textContent = state.activeCategory.name;
+            document.getElementById('conf-product').textContent = state.activeProduct.name;
+            document.getElementById('conf-subproduct').textContent = state.activeSubProduct.name;
+            document.getElementById('conf-qty').textContent = state.itemQty;
+            document.getElementById('conf-price').textContent = document.getElementById('checkout-total-price').textContent;
+            document.getElementById('conf-file-name').textContent = document.getElementById('design-file').files[0].name;
+            
+            const name = document.getElementById('cust-name').value;
+            const mobile = document.getElementById('cust-mobile').value;
+            const address = document.getElementById('cust-address').value;
+            document.getElementById('conf-cust-details').textContent = `${name}\nPhone: ${mobile}\nAddress: ${address}`;
+
+            // Firebase integration block
+            if (typeof database !== 'undefined') {
+                database.ref('orders/' + orderId).set({
+                    category: state.activeCategory.name,
+                    product: state.activeProduct.name,
+                    variant: state.activeSubProduct.name,
+                    qty: state.itemQty,
+                    price: document.getElementById('checkout-total-price').textContent,
+                    customer: { name, mobile, address, remarks: document.getElementById('cust-remark').value },
+                    paymentMethod: state.selectedPaymentMethod,
+                    status: 'INITIATED',
+                    timestamp: new Date().toISOString()
+                }).catch(err => console.log("Firebase storage context isolated skip:", err));
+            }
+
+            navigateTo('confirmation');
+        }
+
+        function sendWhatsAppNotification() {
+            const orderId = state.generatedOrderId;
+            const cat = state.activeCategory.name;
+            const prod = state.activeProduct.name;
+            const varName = state.activeSubProduct.name;
+            const qty = state.itemQty;
+            const price = document.getElementById('checkout-total-price').textContent;
+            const name = document.getElementById('cust-name').value;
+            const mobile = document.getElementById('cust-mobile').value;
+            const address = document.getElementById('cust-address').value;
+            const remark = document.getElementById('cust-remark').value || 'None';
+            const method = state.selectedPaymentMethod;
+
+            const text = `*NEW ORDER INITIATED - BALAJI PRINTS*\n\n` +
+                         `*Order ID:* #${orderId}\n` +
+                         `*Category:* ${cat}\n` +
+                         `*Product:* ${prod}\n` +
+                         `*Variant:* ${varName}\n` +
+                         `*Quantity:* ${qty}\n` +
+                         `*Total Amount:* ${price}\n` +
+                         `*Method Selected:* ${method}\n\n` +
+                         `*CUSTOMER DETAILS:*\n` +
+                         `*Name:* ${name}\n` +
+                         `*Mobile:* ${mobile}\n` +
+                         `*Address:* ${address}\n` +
+                         `*Remarks:* ${remark}\n\n` +
+                         `कृपया इस ऑर्डर को वेरिफ़ाई कर कंफ़र्म करें। डिज़ाइन फ़ाइल ऊपर अटैच कर दी गई है।`;
+
+            window.open(`https://api.whatsapp.com/send?phone=91${WHATSAPP_NUM}&text=${encodeURIComponent(text)}`, '_blank');
         }
     </script>
 </body>
