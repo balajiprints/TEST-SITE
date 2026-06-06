@@ -24,35 +24,15 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
         .step-hidden { display: none; }
-        
-        /* New Smooth Transitions for FAQ Accordion */
-        .faq-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
-        }
-        .faq-item.active .faq-content {
-            max-height: 200px;
-            padding-bottom: 1rem;
-        }
-        .faq-item.active .faq-icon {
-            transform: rotate(180deg);
-        }
     </style>
 </head>
-<body class="text-gray-800 antialiased min-h-screen flex flex-col relative">
-
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-        <a href="https://wa.me/919414350535" target="_blank" class="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-2xl shadow-lg hover:scale-110 transition duration-300">
-            <i class="fa-brands fa-whatsapp"></i>
-        </a>
-    </div>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
 
     <header class="border-b border-gray-100 bg-white sticky top-0 z-50 py-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4 text-center sm:text-left">
-                <div class="w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-2xl shadow-md shrink-0">
-                    BP
+                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-2xl shadow-md shrink-0 animate-pulse">
+                    <i class="fa-solid fa-print text-xl"></i>
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900">Balaji Prints</h1>
@@ -73,39 +53,22 @@
 
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <div id="hero-marketing-banner" class="mb-10 bg-gradient-to-r from-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="space-y-4 max-w-2xl text-center md:text-left">
-                <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Premium Quality Printing</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">High-Quality Custom Prints Delivered Fast!</h2>
-                <p class="text-slate-300 text-sm sm:text-base">Apne business cards, personalized pens, photo frames aur documents ko behtareen quality me print karwayen direct Churu se.</p>
-                <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
-                    <div class="flex items-center gap-2 text-xs font-medium text-slate-200 bg-white/5 px-3 py-1.5 rounded-lg"><i class="fa-solid fa-truck text-indigo-400"></i> Fast Delivery</div>
-                    <div class="flex items-center gap-2 text-xs font-medium text-slate-200 bg-white/5 px-3 py-1.5 rounded-lg"><i class="fa-solid fa-circle-check text-emerald-400"></i> 100% Satisfaction</div>
-                </div>
-            </div>
-            <div class="hidden md:block w-64 h-48 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm p-4 relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-600/30 rounded-full blur-2xl"></div>
-                <i class="fa-solid fa-print text-7xl text-indigo-400/20 absolute right-4 top-4"></i>
-                <div class="space-y-2 mt-12">
-                    <div class="text-xs font-semibold text-indigo-300">Balaji Prints Smart System</div>
-                    <div class="text-lg font-bold leading-tight">Select. Upload.<br>Order via WhatsApp.</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="search-filter-container" class="mb-8 max-w-md">
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
-                <input type="text" id="main-search-input" onkeyup="filterCategories()" placeholder="Search categories (e.g., Frame, Pen, Card)..." class="w-full bg-white border border-gray-200 rounded-2xl pl-11 pr-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none shadow-xs transition">
-            </div>
-        </div>
-        
         <div id="breadcrumb" class="mb-6 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
             <span class="cursor-pointer hover:text-indigo-600 font-medium" onclick="resetToCategories()">Home</span>
             <span id="bc-separator-1" class="hidden"><i class="fa-solid fa-chevron-right text-xs"></i></span>
             <span id="bc-category" class="hidden cursor-pointer hover:text-indigo-600 font-medium"></span>
             <span id="bc-separator-2" class="hidden"><i class="fa-solid fa-chevron-right text-xs"></i></span>
             <span id="bc-product" class="hidden font-semibold text-gray-900"></span>
+        </div>
+
+        <div id="checkout-progress-bar" class="max-w-3xl mx-auto mb-8 hidden">
+            <div class="flex items-center justify-between text-xs font-semibold text-gray-400 px-2">
+                <span id="prog-step-1" class="text-indigo-600 flex items-center gap-1"><i class="fa-solid fa-circle-user"></i> Details & File</span>
+                <span id="prog-line-1" class="flex-grow h-0.5 mx-4 bg-gray-200"></span>
+                <span id="prog-step-2" class="flex items-center gap-1"><i class="fa-solid fa-credit-card"></i> Secure Payment</span>
+                <span id="prog-line-2" class="flex-grow h-0.5 mx-4 bg-gray-200 hidden"></span>
+                <span id="prog-step-3" class="items-center gap-1 hidden"><i class="fa-solid fa-circle-check"></i> Order Summary</span>
+            </div>
         </div>
 
         <section id="category-layer">
@@ -134,7 +97,29 @@
             
             <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow mb-6">
                 <h3 class="text-lg font-semibold mb-4 border-b border-gray-100 pb-2">Selected Item</h3>
-                <div id="cart-item-details" class="flex flex-col sm:flex-row gap-4 items-center"></div>
+                <div id="cart-item-details" class="flex flex-col sm:flex-row gap-4 items-center justify-between"></div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100">
+                    <div id="notes-calculator-box" class="hidden bg-indigo-50/50 p-3 rounded-xl border border-indigo-100 space-y-2">
+                        <p class="text-xs font-bold text-indigo-900"><i class="fa-solid fa-calculator"></i> Notes Printing Setup:</p>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-medium text-gray-600">Total Pages:</label>
+                            <input type="number" id="notes-page-count" value="10" min="1" class="w-20 border border-gray-300 rounded-lg px-2 py-1 text-sm text-center bg-white" oninput="calculateLivePrice()">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="notes-binding-check" checked class="accent-indigo-600" onchange="calculateLivePrice()">
+                            <label for="notes-binding-check" class="text-xs font-medium text-gray-700 cursor-pointer">Add Spiral Binding (+ ₹30)</label>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-200 ml-auto w-full sm:w-auto min-w-[200px]">
+                        <span class="text-sm font-semibold text-gray-600">Quantity:</span>
+                        <div class="flex items-center gap-3">
+                            <button type="button" onclick="adjustQty(-1)" class="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-100 transition shadow-sm">-</button>
+                            <span id="cart-item-qty" class="font-bold text-gray-900 text-base">1</span>
+                            <button type="button" onclick="adjustQty(1)" class="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-100 transition shadow-sm">+</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="checkout-step-1" class="space-y-6">
@@ -143,8 +128,8 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Upload Photo / JPG Design File <span class="text-red-500">*</span></label>
-                        <div class="flex items-center justify-center w-full">
-                            <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                        <div class="flex flex-col sm:flex-row gap-4 items-center w-full">
+                            <label class="flex flex-col items-center justify-center flex-grow h-32 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition w-full">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <i class="fa-solid fa-cloud-arrow-up text-gray-400 text-2xl mb-2"></i>
                                     <p class="text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
@@ -152,6 +137,9 @@
                                 </div>
                                 <input type="file" id="design-file" class="hidden" accept="image/jpeg, image/png, image/jpg" required onchange="updateFileStatus()" />
                             </label>
+                            <div id="file-preview-wrapper" class="hidden w-32 h-32 rounded-xl border border-gray-200 overflow-hidden shrink-0 bg-gray-50 flex items-center justify-center p-1 relative">
+                                <img id="file-preview-img" src="" class="w-full h-full object-cover rounded-lg">
+                            </div>
                         </div>
                         <p id="file-status-text" class="text-xs text-emerald-600 font-medium mt-2 hidden"><i class="fa-solid fa-circle-check"></i> File selected successfully.</p>
                     </div>
@@ -168,6 +156,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number <span class="text-red-500">*</span></label>
                             <input type="tel" id="cust-mobile" pattern="[0-9]{10}" required class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="10 Digit Number">
+                            <p id="phone-error" class="text-xs text-red-500 font-medium mt-1 hidden"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid 10-digit mobile number.</p>
                         </div>
                     </div>
                     <div>
@@ -206,6 +195,9 @@
                             <div class="p-2 bg-white border border-gray-100 rounded-lg shadow-sm mb-2">
                                 <img id="upi-qr-image" src="" alt="UPI QR Code" class="w-28 h-28 mx-auto">
                             </div>
+                            <button type="button" onclick="copyUpiId(event)" class="mt-1 mb-2 bg-gray-100 hover:bg-indigo-50 text-indigo-600 border border-indigo-200 text-[11px] font-bold py-1 px-2 rounded-lg flex items-center gap-1 transition">
+                                <i class="fa-solid fa-copy"></i> <span id="copy-btn-text">Copy UPI ID</span>
+                            </button>
                             <span class="text-[10px] text-gray-400">Scan using any UPI App</span>
                         </div>
 
@@ -230,7 +222,7 @@
 
                     <div class="pt-4 border-t border-gray-100 space-y-3">
                         <p class="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
-                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके wood ही नीचे दिए गए बटन पर क्लिक करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
+                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर klik करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
                         </p>
                         <button type="button" onclick="handleOrderSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
                             <i class="fa-solid fa-lock"></i> Process & Generate Receipt
@@ -246,7 +238,7 @@
             </div>
             <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Order Initiated Successfully!</h2>
             <p class="text-sm text-red-600 font-semibold mb-8 bg-red-50 p-3 rounded-xl inline-block border border-red-100">
-                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका Order अभी सिर्फ इनिशिएट हुआ है! कंफrm तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
+                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका ORDER अभी सिर्फ इनिशिएट हुआ है! कंफर्म तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
             </p>
 
             <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow text-left space-y-4 mb-8">
@@ -288,61 +280,6 @@
             <button onclick="resetToCategories()" class="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
                 <i class="fa-solid fa-arrow-left mr-1"></i> Back to Homepage
             </button>
-        </section>
-
-        <section id="features-marketing-section" class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 border-t border-gray-100 pt-12">
-            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
-                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <div>
-                    <h4 class="font-bold text-gray-900 text-sm mb-1">Premium Design</h4>
-                    <p class="text-xs text-gray-500">Expert custom template layout styles for dynamic requirements.</p>
-                </div>
-            </div>
-            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
-                <div>
-                    <h4 class="font-bold text-gray-900 text-sm mb-1">Secure Checkouts</h4>
-                    <p class="text-xs text-gray-500">Direct instant configuration via secure digital UPI routing paths.</p>
-                </div>
-            </div>
-            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
-                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-bolt"></i></div>
-                <div>
-                    <h4 class="font-bold text-gray-900 text-sm mb-1">Fast Execution</h4>
-                    <p class="text-xs text-gray-500">Instant order initiation modules straight to automated processing.</p>
-                </div>
-            </div>
-            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
-                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-headset"></i></div>
-                <div>
-                    <h4 class="font-bold text-gray-900 text-sm mb-1">Dedicated Support</h4>
-                    <p class="text-xs text-gray-500">Direct active assistance link modules via official WhatsApp line.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="faq-marketing-section" class="mt-16 max-w-3xl mx-auto border-t border-gray-100 pt-12">
-            <h3 class="text-xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h3>
-            <div class="space-y-4">
-                <div class="faq-item border border-gray-100 rounded-xl bg-white card-shadow px-5 pt-4 cursor-pointer" onclick="toggleFaq(this)">
-                    <div class="flex items-center justify-between pb-4">
-                        <span class="font-semibold text-gray-800 text-sm sm:text-base">Order confirm kaise hoga?</span>
-                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 faq-icon transition duration-300"></i>
-                    </div>
-                    <div class="faq-content text-xs sm:text-sm text-gray-500">
-                        Website par checkout complete karne ke baad "Share Details on WhatsApp" button par click karein. Details hamare paas aate hi order confirm ho jayega.
-                    </div>
-                </div>
-                <div class="faq-item border border-gray-100 rounded-xl bg-white card-shadow px-5 pt-4 cursor-pointer" onclick="toggleFaq(this)">
-                    <div class="flex items-center justify-between pb-4">
-                        <span class="font-semibold text-gray-800 text-sm sm:text-base">Kya main apni custom design file upload kar sakta hu?</span>
-                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 faq-icon transition duration-300"></i>
-                    </div>
-                    <div class="faq-content text-xs sm:text-sm text-gray-500">
-                        Ji haan! Checkout step 1 par aap apni tayaar design (JPG ya PNG format) high quality me upload kar sakte hain.
-                    </div>
-                </div>
-            </div>
         </section>
 
     </main>
@@ -454,7 +391,10 @@
             activeSubProduct: null,
             cart: null,
             lastOrder: null,
-            selectedPaymentMethod: 'QR' // Default
+            selectedPaymentMethod: 'QR',
+            itemQty: 1,
+            baseSelectedPrice: 0,
+            generatedOrderId: ''
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -468,20 +408,25 @@
             document.getElementById('subproduct-layer').classList.add('step-hidden');
             document.getElementById('cart-layer').classList.add('step-hidden');
             document.getElementById('confirmation-layer').classList.add('step-hidden');
-
-            // NEW UI HIDING LOGIC (Hide Hero Banner & Search on deep checkout pages)
-            const heroBanner = document.getElementById('hero-marketing-banner');
-            const searchBox = document.getElementById('search-filter-container');
-            if(layerId === 'category') {
-                if(heroBanner) heroBanner.classList.remove('hidden');
-                if(searchBox) searchBox.classList.remove('hidden');
-            } else {
-                if(heroBanner) heroBanner.classList.add('hidden');
-                if(searchBox) searchBox.classList.add('hidden');
-            }
+            document.getElementById('checkout-progress-bar').classList.add('hidden');
 
             document.getElementById(layerId + '-layer').classList.remove('step-hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Progress Bar Handler logic
+            if(layerId === 'cart') {
+                document.getElementById('checkout-progress-bar').classList.remove('hidden');
+                document.getElementById('prog-step-1').className = "text-indigo-600 flex items-center gap-1 font-bold";
+                document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
+                document.getElementById('prog-step-3').className = "hidden";
+                document.getElementById('prog-line-2').classList.add('hidden');
+            } else if (layerId === 'confirmation') {
+                document.getElementById('checkout-progress-bar').classList.remove('hidden');
+                document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
+                document.getElementById('prog-step-2').className = "text-emerald-600 flex items-center gap-1";
+                document.getElementById('prog-step-3').className = "text-indigo-600 flex items-center gap-1 font-bold";
+                document.getElementById('prog-line-2').classList.remove('hidden');
+            }
             updateBreadcrumbs();
         }
 
@@ -515,6 +460,7 @@
             state.activeCategory = null;
             state.activeProduct = null;
             state.activeSubProduct = null;
+            state.itemQty = 1;
             navigateTo('category');
         }
 
@@ -523,8 +469,7 @@
             grid.innerHTML = '';
             DATA.forEach(category => {
                 const card = document.createElement('div');
-                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col category-card-element";
-                card.setAttribute('data-name', category.name.toLowerCase());
+                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col";
                 card.onclick = () => selectCategory(category.id);
                 card.innerHTML = `
                     <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
@@ -600,22 +545,302 @@
             navigateTo('subproduct');
         }
 
-        /* NEW JAVASCRIPT LOGIC FUNCTIONS (Bina purane functions ko disturb kiye) */
-        function filterCategories() {
-            const searchVal = document.getElementById('main-search-input').value.toLowerCase();
-            const cards = document.getElementsByClassName('category-card-element');
-            Array.from(cards).forEach(card => {
-                const name = card.getAttribute('data-name');
-                if(name.includes(searchVal)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
+        function addToCart(subName, price, immediateCheckout) {
+            state.activeSubProduct = { name: subName, price: price };
+            state.baseSelectedPrice = price;
+            state.itemQty = 1;
+            
+            state.cart = {
+                category: state.activeCategory.name,
+                product: state.activeProduct.name,
+                subProduct: subName,
+                originalPrice: price,
+                totalCalculatedPrice: price
+            };
+
+            // Custom Display Handle logic
+            document.getElementById('nav-cart-count').textContent = "1";
+            document.getElementById('cart-item-qty').textContent = "1";
+
+            const itemDetailsDiv = document.getElementById('cart-item-details');
+            itemDetailsDiv.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shrink-0 border border-gray-100">
+                        <img src="${state.activeProduct.image}" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">${state.cart.product}</h4>
+                        <p class="text-xs text-gray-500 font-medium">${state.cart.category} ➔ ${state.cart.subProduct}</p>
+                    </div>
+                </div>
+                <div class="text-right mt-2 sm:mt-0">
+                    <span id="cart-item-live-total" class="text-xl font-black text-indigo-600">₹${price}</span>
+                </div>
+            `;
+
+            // Display Notes printing custom area condition logic
+            const notesCalcBox = document.getElementById('notes-calculator-box');
+            if(state.activeCategory.id === 'cat_notes') {
+                notesCalcBox.classList.remove('hidden');
+            } else {
+                notesCalcBox.classList.add('hidden');
+            }
+
+            calculateLivePrice();
+
+            // Default State Handler reset
+            document.getElementById('checkout-step-1').classList.remove('step-hidden');
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
+
+            navigateTo('cart');
+        }
+
+        // Live Dynamic Multiplier and Price Calculator engine
+        function calculateLivePrice() {
+            if(!state.cart) return;
+
+            let finalUnitPrice = state.baseSelectedPrice;
+
+            if(state.activeCategory.id === 'cat_notes') {
+                const totalPages = parseInt(document.getElementById('notes-page-count').value) || 1;
+                const isBindingChecked = document.getElementById('notes-binding-check').checked;
+                const bindingCost = isBindingChecked ? 30 : 0;
+                finalUnitPrice = (totalPages * 0.60) + bindingCost;
+            }
+
+            const totalPayable = Math.round(finalUnitPrice * state.itemQty);
+            state.cart.totalCalculatedPrice = totalPayable;
+
+            const liveTotalDisplay = document.getElementById('cart-item-live-total');
+            if(liveTotalDisplay) liveTotalDisplay.textContent = `₹${totalPayable}`;
+            document.getElementById('checkout-total-price').textContent = `₹${totalPayable}`;
+        }
+
+        function adjustQty(amount) {
+            let currentQty = state.itemQty + amount;
+            if (currentQty < 1) currentQty = 1;
+            state.itemQty = currentQty;
+            document.getElementById('cart-item-qty').textContent = currentQty;
+            calculateLivePrice();
+        }
+
+        // Live Upload Image Thumbnail render engine
+        function updateFileStatus() {
+            const fileInput = document.getElementById('design-file');
+            const statusText = document.getElementById('file-status-text');
+            const previewWrapper = document.getElementById('file-preview-wrapper');
+            const previewImg = document.getElementById('file-preview-img');
+
+            if(fileInput.files && fileInput.files[0]) {
+                statusText.classList.remove('hidden');
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewWrapper.classList.remove('hidden');
+                    previewImg.src = e.target.result;
                 }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                statusText.classList.add('hidden');
+                previewWrapper.classList.add('hidden');
+            }
+        }
+
+        function validateAndGoToPayment() {
+            const fileInput = document.getElementById('design-file');
+            const nameInput = document.getElementById('cust-name');
+            const mobileInput = document.getElementById('cust-mobile');
+            const addressInput = document.getElementById('cust-address');
+            const phoneError = document.getElementById('phone-error');
+
+            if(!fileInput.files || !fileInput.files[0]) {
+                alert("Please upload your JPG/PNG design file to proceed.");
+                return;
+            }
+            if(!nameInput.value.trim() || !mobileInput.value.trim() || !addressInput.value.trim()) {
+                alert("Please fill all the mandatory fields marked with (*).");
+                return;
+            }
+
+            // Mobile input custom regex filter evaluation
+            const phonePattern = /^[0-9]{10}$/;
+            if(!phonePattern.test(mobileInput.value.trim())) {
+                phoneError.classList.remove('hidden');
+                mobileInput.focus();
+                return;
+            } else {
+                phoneError.classList.add('hidden');
+            }
+
+            // Step status linear shifting mechanics logic
+            document.getElementById('checkout-step-1').classList.add('step-hidden');
+            document.getElementById('checkout-step-2').classList.remove('step-hidden');
+            
+            document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
+            document.getElementById('prog-step-2').className = "text-indigo-600 flex items-center gap-1 font-bold";
+
+            setupPaymentLogic();
+        }
+
+        function backToDetails() {
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
+            document.getElementById('checkout-step-1').classList.remove('step-hidden');
+            
+            document.getElementById('prog-step-1').className = "text-indigo-600 flex items-center gap-1 font-bold";
+            document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
+        }
+
+        // Dynamic Real-Time UPI payment encoding architecture
+        function setupPaymentLogic() {
+            const orderAmount = state.cart.totalCalculatedPrice;
+            
+            // Real-Time Random Generated unique serial tracker code execution
+            const randNum = Math.floor(1000 + Math.random() * 9000);
+            const dateObj = new Date();
+            state.generatedOrderId = `BP-${dateObj.getFullYear()}${String(dateObj.getMonth()+1).padStart(2,'0')}-${randNum}`;
+
+            // Dynamic Live Encoded Google API QR calculation link schema strings
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${orderAmount}&cu=INR&tn=${encodeURIComponent('Order ' + state.generatedOrderId)}`;
+            const qrApiUrl = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(upiUrl)}&choe=UTF-8`;
+            
+            document.getElementById('upi-qr-image').src = qrApiUrl;
+            selectPaymentOption(state.selectedPaymentMethod.toLowerCase());
+        }
+
+        // UI Interactive Selection engine wrapper toggle logic
+        function selectPaymentOption(type) {
+            state.selectedPaymentMethod = type.toUpperCase();
+            
+            const qrBox = document.getElementById('wrapper-pay-qr');
+            const directBox = document.getElementById('wrapper-pay-direct');
+            const codBox = document.getElementById('wrapper-pay-cod');
+
+            qrBox.className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
+            directBox.className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+            codBox.className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+
+            if(type === 'qr') {
+                document.getElementById('pay-qr').checked = true;
+                qrBox.className = "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition shadow-sm";
+            } else if(type === 'direct') {
+                document.getElementById('pay-direct').checked = true;
+                directBox.className = "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition shadow-sm";
+            } else if(type === 'cod') {
+                document.getElementById('pay-cod').checked = true;
+                codBox.className = "border-2 border-amber-500 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition shadow-sm";
+            }
+        }
+
+        // Clipboard Copy Action Script function logic
+        function copyUpiId(event) {
+            event.stopPropagation(); // Avoid triggering card selection click reset
+            navigator.clipboard.writeText(UPI_ID).then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.textContent = "UPI ID Copied!";
+                setTimeout(() => {
+                    btnText.textContent = "Copy UPI ID";
+                }, 2000);
+            }).catch(err => {
+                alert("Failed to copy text string link.");
             });
         }
 
-        function toggleFaq(element) {
-            element.classList.toggle('active');
+        function handleOrderSubmission() {
+            const fileInput = document.getElementById('design-file');
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : "No file";
+
+            // Direct UPI app automation handler intent link routine execution
+            if(state.selectedPaymentMethod === 'DIRECT') {
+                const orderAmount = state.cart.totalCalculatedPrice;
+                const directIntentUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${orderAmount}&cu=INR&tn=${encodeURIComponent('Order ' + state.generatedOrderId)}`;
+                window.location.href = directIntentUrl;
+            }
+
+            // Populating Confirmation Layer variables UI values injection routing
+            document.getElementById('conf-order-id').textContent = `#${state.generatedOrderId}`;
+            document.getElementById('conf-category').textContent = state.cart.category;
+            document.getElementById('conf-product').textContent = state.cart.product;
+            document.getElementById('conf-subproduct').textContent = state.cart.subProduct;
+            document.getElementById('conf-qty').textContent = state.itemQty;
+            document.getElementById('conf-price').textContent = `₹${state.cart.totalCalculatedPrice}`;
+            document.getElementById('conf-file-name').textContent = fileName;
+
+            // Extra variables text metadata integration for Note Printing if context is active
+            let customNoteStr = "";
+            if(state.activeCategory.id === 'cat_notes') {
+                const pages = document.getElementById('notes-page-count').value;
+                const binding = document.getElementById('notes-binding-check').checked ? "Yes" : "No";
+                customNoteStr = ` [Pages: ${pages}, Spiral Binding: ${binding}]`;
+                document.getElementById('conf-subproduct').textContent += customNoteStr;
+            }
+
+            const cName = document.getElementById('cust-name').value;
+            const cMobile = document.getElementById('cust-mobile').value;
+            const cAddress = document.getElementById('cust-address').value;
+            const cRemark = document.getElementById('cust-remark').value || "None";
+
+            document.getElementById('conf-cust-details').innerHTML = `<strong>Name:</strong> ${cName}\n<strong>Mobile:</strong> ${cMobile}\n<strong>Address:</strong> ${cAddress}\n<strong>Method:</strong> ${state.selectedPaymentMethod}\n<strong>Instruction:</strong> ${cRemark}`;
+
+            // Optional Native Core Firebase Logic implementation context backup check point
+            if (typeof firebase !== 'undefined' && firebase.database) {
+                try {
+                    firebase.database().ref('orders/' + state.generatedOrderId).set({
+                        orderId: state.generatedOrderId,
+                        category: state.cart.category,
+                        product: state.cart.product,
+                        subProduct: state.cart.subProduct + customNoteStr,
+                        quantity: state.itemQty,
+                        totalPrice: state.cart.totalCalculatedPrice,
+                        fileName: fileName,
+                        customerName: cName,
+                        customerMobile: cMobile,
+                        customerAddress: cAddress,
+                        paymentMethod: state.selectedPaymentMethod,
+                        customerRemark: cRemark,
+                        timestamp: new Date().toISOString()
+                    });
+                } catch(e) { console.log("Firebase DB error fallback: ", e); }
+            }
+
+            navigateTo('confirmation');
+        }
+
+        // High Quality Premium WhatsApp Emojis Text Message layout engine format
+        function sendWhatsAppNotification() {
+            const fileName = document.getElementById('design-file').files[0] ? document.getElementById('design-file').files[0].name : "N/A";
+            const cName = document.getElementById('cust-name').value;
+            const cMobile = document.getElementById('cust-mobile').value;
+            const cAddress = document.getElementById('cust-address').value;
+            const cRemark = document.getElementById('cust-remark').value || "None";
+
+            let variantString = state.cart.subProduct;
+            if(state.activeCategory.id === 'cat_notes') {
+                const pages = document.getElementById('notes-page-count').value;
+                const binding = document.getElementById('notes-binding-check').checked ? "Yes" : "No";
+                variantString += ` (${pages} Pages, Spiral Binding: ${binding})`;
+            }
+
+            const txt = `📦 *NEW CUSTOM ORDER* 📦\n` +
+                        `-----------------------------------------\n` +
+                        `🆔 *Order ID:* #${state.generatedOrderId}\n\n` +
+                        `📂 *Category:* ${state.cart.category}\n` +
+                        `🛍️ *Product:* ${state.cart.product}\n` +
+                        `⚙️ *Variant:* ${variantString}\n` +
+                        `🔢 *Quantity:* ${state.itemQty}\n` +
+                        `💰 *Total Amount:* ₹${state.cart.totalCalculatedPrice}\n` +
+                        `💳 *Payment Method:* ${state.selectedPaymentMethod}\n` +
+                        `📄 *File Name:* _${fileName}_\n` +
+                        `-----------------------------------------\n` +
+                        `👤 *CUSTOMER DETAILS*\n` +
+                        `📝 *Name:* ${cName}\n` +
+                        `📞 *Mobile:* ${cMobile}\n` +
+                        `📍 *Address:* ${cAddress}\n` +
+                        `💭 *Special Instructions:* ${cRemark}\n` +
+                        `-----------------------------------------\n` +
+                        `⚠️ *Note:* Please review the files attached and confirm the payment status.`;
+
+            const waUrl = `https://api.whatsapp.com/send?phone=91${WHATSAPP_NUM}&text=${encodeURIComponent(txt)}`;
+            window.open(waUrl, '_blank');
         }
     </script>
 </body>
