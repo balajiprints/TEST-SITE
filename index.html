@@ -216,7 +216,7 @@
                             <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-2">
                                 <i class="fa-brands fa-whatsapp text-amber-600 text-xl"></i>
                             </div>
-                            <p class="text-[10px] text-amber-700 font-medium px-1">Cash on delivery के लिए WhatsApp 9414350535 पर संपर्क करें।</p>
+                            <p class="text-[10px] text-amber-700 font-medium px-1">Cash on delivery के लिए WhatsApp 9414350535 पर contact करें।</p>
                         </div>
                     </div>
 
@@ -420,6 +420,9 @@
                 document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
                 document.getElementById('prog-step-3').className = "hidden";
                 document.getElementById('prog-line-2').classList.add('hidden');
+                
+                // Set UPI QR Code dynamic URL when cart/payment screen is navigated
+                updatePaymentQrCode();
             } else if (layerId === 'confirmation') {
                 document.getElementById('checkout-progress-bar').classList.remove('hidden');
                 document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
@@ -428,6 +431,23 @@
                 document.getElementById('prog-line-2').classList.remove('hidden');
             }
             updateBreadcrumbs();
+        }
+
+        // Function to update QR image dynamically based on amount
+        function updatePaymentQrCode() {
+            setTimeout(() => {
+                const priceElement = document.getElementById('checkout-total-price');
+                let amount = "0";
+                if (priceElement) {
+                    amount = priceElement.textContent.replace('₹', '').trim();
+                }
+                const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
+                const qrImgSrc = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(upiUrl)}&choe=UTF-8`;
+                const qrImageTag = document.getElementById('upi-qr-image');
+                if (qrImageTag) {
+                    qrImageTag.src = qrImgSrc;
+                }
+            }, 100);
         }
 
         function updateBreadcrumbs() {
@@ -445,402 +465,6 @@
                 bcSep1.classList.add('hidden');
                 bcCat.classList.add('hidden');
             }
-
-            if (state.activeProduct) {
-                bcSep2.classList.remove('hidden');
-                bcProd.classList.remove('hidden');
-                bcProd.textContent = state.activeProduct.name;
-            } else {
-                bcSep2.classList.add('hidden');
-                bcProd.classList.add('hidden');
-            }
-        }
-
-        function resetToCategories() {
-            state.activeCategory = null;
-            state.activeProduct = null;
-            state.activeSubProduct = null;
-            state.itemQty = 1;
-            navigateTo('category');
-        }
-
-        function renderCategories() {
-            const grid = document.getElementById('categories-grid');
-            grid.innerHTML = '';
-            DATA.forEach(category => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col";
-                card.onclick = () => selectCategory(category.id);
-                card.innerHTML = `
-                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
-                        <img src="${category.image}" alt="${category.name}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-center justify-between mt-auto">
-                        <h3 class="font-bold text-gray-900 text-lg">${category.name}</h3>
-                        <span class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600"><i class="fa-solid fa-arrow-right text-xs"></i></span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function selectCategory(catId) {
-            const category = DATA.find(c => c.id === catId);
-            state.activeCategory = category;
-            state.activeProduct = null;
-            state.activeSubProduct = null;
-
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = '';
-
-            category.products.forEach(product => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col";
-                card.onclick = () => selectProduct(product.id);
-                card.innerHTML = `
-                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-center justify-between mt-auto">
-                        <h3 class="font-bold text-gray-900 text-base">${product.name}</h3>
-                        <span class="text-xs text-indigo-600 font-semibold bg-indigo-50 px-2.5 py-1 rounded-full flex items-center gap-1">Configure <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            navigateTo('product');
-        }
-
-        function selectProduct(prodId) {
-            const product = state.activeCategory.products.find(p => p.id === prodId);
-            state.activeProduct = product;
-
-            const grid = document.getElementById('subproducts-grid');
-            grid.innerHTML = '';
-
-            product.subs.forEach(sub => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-gray-100 rounded-2xl p-5 card-shadow flex flex-col justify-between";
-                card.innerHTML = `
-                    <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
-                        <img src="${product.image}" alt="${sub.name}" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-900 text-base mb-1">${sub.name}</h4>
-                        <p class="text-xl font-extrabold text-indigo-600 mb-4">₹${sub.price}</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 mt-2">
-                        <button onclick="addToCart('${sub.name}', ${sub.price}, false)" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-cart-plus"></i> Add To Cart
-                        </button>
-                        <button onclick="addToCart('${sub.name}', ${sub.price}, true)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
-                            Buy Now
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            navigateTo('subproduct');
-        }
-
-        function addToCart(subName, price, immediateCheckout) {
-            state.activeSubProduct = { name: subName, price: price };
-            state.baseSelectedPrice = price;
-            state.itemQty = 1;
-            
-            state.cart = {
-                category: state.activeCategory.name,
-                product: state.activeProduct.name,
-                subProduct: subName,
-                originalPrice: price,
-                totalCalculatedPrice: price
-            };
-
-            // Custom Display Handle logic
-            document.getElementById('nav-cart-count').textContent = "1";
-            document.getElementById('cart-item-qty').textContent = "1";
-
-            const itemDetailsDiv = document.getElementById('cart-item-details');
-            itemDetailsDiv.innerHTML = `
-                <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 shrink-0 border border-gray-100">
-                        <img src="${state.activeProduct.image}" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-900">${state.cart.product}</h4>
-                        <p class="text-xs text-gray-500 font-medium">${state.cart.category} ➔ ${state.cart.subProduct}</p>
-                    </div>
-                </div>
-                <div class="text-right mt-2 sm:mt-0">
-                    <span id="cart-item-live-total" class="text-xl font-black text-indigo-600">₹${price}</span>
-                </div>
-            `;
-
-            // Display Notes printing custom area condition logic
-            const notesCalcBox = document.getElementById('notes-calculator-box');
-            if(state.activeCategory.id === 'cat_notes') {
-                notesCalcBox.classList.remove('hidden');
-            } else {
-                notesCalcBox.classList.add('hidden');
-            }
-
-            calculateLivePrice();
-
-            // Default State Handler reset
-            document.getElementById('checkout-step-1').classList.remove('step-hidden');
-            document.getElementById('checkout-step-2').classList.add('step-hidden');
-
-            navigateTo('cart');
-        }
-
-        // Live Dynamic Multiplier and Price Calculator engine
-        function calculateLivePrice() {
-            if(!state.cart) return;
-
-            let finalUnitPrice = state.baseSelectedPrice;
-
-            if(state.activeCategory.id === 'cat_notes') {
-                const totalPages = parseInt(document.getElementById('notes-page-count').value) || 1;
-                const isBindingChecked = document.getElementById('notes-binding-check').checked;
-                const bindingCost = isBindingChecked ? 30 : 0;
-                finalUnitPrice = (totalPages * 0.60) + bindingCost;
-            }
-
-            const totalPayable = Math.round(finalUnitPrice * state.itemQty);
-            state.cart.totalCalculatedPrice = totalPayable;
-
-            const liveTotalDisplay = document.getElementById('cart-item-live-total');
-            if(liveTotalDisplay) liveTotalDisplay.textContent = `₹${totalPayable}`;
-            document.getElementById('checkout-total-price').textContent = `₹${totalPayable}`;
-        }
-
-        function adjustQty(amount) {
-            let currentQty = state.itemQty + amount;
-            if (currentQty < 1) currentQty = 1;
-            state.itemQty = currentQty;
-            document.getElementById('cart-item-qty').textContent = currentQty;
-            calculateLivePrice();
-        }
-
-        // Live Upload Image Thumbnail render engine
-        function updateFileStatus() {
-            const fileInput = document.getElementById('design-file');
-            const statusText = document.getElementById('file-status-text');
-            const previewWrapper = document.getElementById('file-preview-wrapper');
-            const previewImg = document.getElementById('file-preview-img');
-
-            if(fileInput.files && fileInput.files[0]) {
-                statusText.classList.remove('hidden');
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewWrapper.classList.remove('hidden');
-                    previewImg.src = e.target.result;
-                }
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                statusText.classList.add('hidden');
-                previewWrapper.classList.add('hidden');
-            }
-        }
-
-        function validateAndGoToPayment() {
-            const fileInput = document.getElementById('design-file');
-            const nameInput = document.getElementById('cust-name');
-            const mobileInput = document.getElementById('cust-mobile');
-            const addressInput = document.getElementById('cust-address');
-            const phoneError = document.getElementById('phone-error');
-
-            if(!fileInput.files || !fileInput.files[0]) {
-                alert("Please upload your JPG/PNG design file to proceed.");
-                return;
-            }
-            if(!nameInput.value.trim() || !mobileInput.value.trim() || !addressInput.value.trim()) {
-                alert("Please fill all the mandatory fields marked with (*).");
-                return;
-            }
-
-            // Mobile input custom regex filter evaluation
-            const phonePattern = /^[0-9]{10}$/;
-            if(!phonePattern.test(mobileInput.value.trim())) {
-                phoneError.classList.remove('hidden');
-                mobileInput.focus();
-                return;
-            } else {
-                phoneError.classList.add('hidden');
-            }
-
-            // Step status linear shifting mechanics logic
-            document.getElementById('checkout-step-1').classList.add('step-hidden');
-            document.getElementById('checkout-step-2').classList.remove('step-hidden');
-            
-            document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
-            document.getElementById('prog-step-2').className = "text-indigo-600 flex items-center gap-1 font-bold";
-
-            setupPaymentLogic();
-        }
-
-        function backToDetails() {
-            document.getElementById('checkout-step-2').classList.add('step-hidden');
-            document.getElementById('checkout-step-1').classList.remove('step-hidden');
-            
-            document.getElementById('prog-step-1').className = "text-indigo-600 flex items-center gap-1 font-bold";
-            document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
-        }
-
-        // Dynamic Real-Time UPI payment encoding architecture
-        function setupPaymentLogic() {
-            const orderAmount = state.cart.totalCalculatedPrice;
-            
-            // Real-Time Random Generated unique serial tracker code execution
-            const randNum = Math.floor(1000 + Math.random() * 9000);
-            const dateObj = new Date();
-            state.generatedOrderId = `BP-${dateObj.getFullYear()}${String(dateObj.getMonth()+1).padStart(2,'0')}-${randNum}`;
-
-            // Dynamic Live Encoded Google API QR calculation link schema strings
-            const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${orderAmount}&cu=INR&tn=${encodeURIComponent('Order ' + state.generatedOrderId)}`;
-            const qrApiUrl = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${encodeURIComponent(upiUrl)}&choe=UTF-8`;
-            
-            document.getElementById('upi-qr-image').src = qrApiUrl;
-            selectPaymentOption(state.selectedPaymentMethod.toLowerCase());
-        }
-
-        // UI Interactive Selection engine wrapper toggle logic
-        function selectPaymentOption(type) {
-            state.selectedPaymentMethod = type.toUpperCase();
-            
-            const qrBox = document.getElementById('wrapper-pay-qr');
-            const directBox = document.getElementById('wrapper-pay-direct');
-            const codBox = document.getElementById('wrapper-pay-cod');
-
-            qrBox.className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
-            directBox.className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
-            codBox.className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
-
-            if(type === 'qr') {
-                document.getElementById('pay-qr').checked = true;
-                qrBox.className = "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition shadow-sm";
-            } else if(type === 'direct') {
-                document.getElementById('pay-direct').checked = true;
-                directBox.className = "border-2 border-indigo-500 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition shadow-sm";
-            } else if(type === 'cod') {
-                document.getElementById('pay-cod').checked = true;
-                codBox.className = "border-2 border-amber-500 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition shadow-sm";
-            }
-        }
-
-        // Clipboard Copy Action Script function logic
-        function copyUpiId(event) {
-            event.stopPropagation(); // Avoid triggering card selection click reset
-            navigator.clipboard.writeText(UPI_ID).then(() => {
-                const btnText = document.getElementById('copy-btn-text');
-                btnText.textContent = "UPI ID Copied!";
-                setTimeout(() => {
-                    btnText.textContent = "Copy UPI ID";
-                }, 2000);
-            }).catch(err => {
-                alert("Failed to copy text string link.");
-            });
-        }
-
-        function handleOrderSubmission() {
-            const fileInput = document.getElementById('design-file');
-            const fileName = fileInput.files[0] ? fileInput.files[0].name : "No file";
-
-            // Direct UPI app automation handler intent link routine execution
-            if(state.selectedPaymentMethod === 'DIRECT') {
-                const orderAmount = state.cart.totalCalculatedPrice;
-                const directIntentUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${orderAmount}&cu=INR&tn=${encodeURIComponent('Order ' + state.generatedOrderId)}`;
-                window.location.href = directIntentUrl;
-            }
-
-            // Populating Confirmation Layer variables UI values injection routing
-            document.getElementById('conf-order-id').textContent = `#${state.generatedOrderId}`;
-            document.getElementById('conf-category').textContent = state.cart.category;
-            document.getElementById('conf-product').textContent = state.cart.product;
-            document.getElementById('conf-subproduct').textContent = state.cart.subProduct;
-            document.getElementById('conf-qty').textContent = state.itemQty;
-            document.getElementById('conf-price').textContent = `₹${state.cart.totalCalculatedPrice}`;
-            document.getElementById('conf-file-name').textContent = fileName;
-
-            // Extra variables text metadata integration for Note Printing if context is active
-            let customNoteStr = "";
-            if(state.activeCategory.id === 'cat_notes') {
-                const pages = document.getElementById('notes-page-count').value;
-                const binding = document.getElementById('notes-binding-check').checked ? "Yes" : "No";
-                customNoteStr = ` [Pages: ${pages}, Spiral Binding: ${binding}]`;
-                document.getElementById('conf-subproduct').textContent += customNoteStr;
-            }
-
-            const cName = document.getElementById('cust-name').value;
-            const cMobile = document.getElementById('cust-mobile').value;
-            const cAddress = document.getElementById('cust-address').value;
-            const cRemark = document.getElementById('cust-remark').value || "None";
-
-            document.getElementById('conf-cust-details').innerHTML = `<strong>Name:</strong> ${cName}\n<strong>Mobile:</strong> ${cMobile}\n<strong>Address:</strong> ${cAddress}\n<strong>Method:</strong> ${state.selectedPaymentMethod}\n<strong>Instruction:</strong> ${cRemark}`;
-
-            // Optional Native Core Firebase Logic implementation context backup check point
-            if (typeof firebase !== 'undefined' && firebase.database) {
-                try {
-                    firebase.database().ref('orders/' + state.generatedOrderId).set({
-                        orderId: state.generatedOrderId,
-                        category: state.cart.category,
-                        product: state.cart.product,
-                        subProduct: state.cart.subProduct + customNoteStr,
-                        quantity: state.itemQty,
-                        totalPrice: state.cart.totalCalculatedPrice,
-                        fileName: fileName,
-                        customerName: cName,
-                        customerMobile: cMobile,
-                        customerAddress: cAddress,
-                        paymentMethod: state.selectedPaymentMethod,
-                        customerRemark: cRemark,
-                        timestamp: new Date().toISOString()
-                    });
-                } catch(e) { console.log("Firebase DB error fallback: ", e); }
-            }
-
-            navigateTo('confirmation');
-        }
-
-        // High Quality Premium WhatsApp Emojis Text Message layout engine format
-        function sendWhatsAppNotification() {
-            const fileName = document.getElementById('design-file').files[0] ? document.getElementById('design-file').files[0].name : "N/A";
-            const cName = document.getElementById('cust-name').value;
-            const cMobile = document.getElementById('cust-mobile').value;
-            const cAddress = document.getElementById('cust-address').value;
-            const cRemark = document.getElementById('cust-remark').value || "None";
-
-            let variantString = state.cart.subProduct;
-            if(state.activeCategory.id === 'cat_notes') {
-                const pages = document.getElementById('notes-page-count').value;
-                const binding = document.getElementById('notes-binding-check').checked ? "Yes" : "No";
-                variantString += ` (${pages} Pages, Spiral Binding: ${binding})`;
-            }
-
-            const txt = `📦 *NEW CUSTOM ORDER* 📦\n` +
-                        `-----------------------------------------\n` +
-                        `🆔 *Order ID:* #${state.generatedOrderId}\n\n` +
-                        `📂 *Category:* ${state.cart.category}\n` +
-                        `🛍️ *Product:* ${state.cart.product}\n` +
-                        `⚙️ *Variant:* ${variantString}\n` +
-                        `🔢 *Quantity:* ${state.itemQty}\n` +
-                        `💰 *Total Amount:* ₹${state.cart.totalCalculatedPrice}\n` +
-                        `💳 *Payment Method:* ${state.selectedPaymentMethod}\n` +
-                        `📄 *File Name:* _${fileName}_\n` +
-                        `-----------------------------------------\n` +
-                        `👤 *CUSTOMER DETAILS*\n` +
-                        `📝 *Name:* ${cName}\n` +
-                        `📞 *Mobile:* ${cMobile}\n` +
-                        `📍 *Address:* ${cAddress}\n` +
-                        `💭 *Special Instructions:* ${cRemark}\n` +
-                        `-----------------------------------------\n` +
-                        `⚠️ *Note:* Please review the files attached and confirm the payment status.`;
-
-            const waUrl = `https://api.whatsapp.com/send?phone=91${WHATSAPP_NUM}&text=${encodeURIComponent(txt)}`;
-            window.open(waUrl, '_blank');
         }
     </script>
 </body>
