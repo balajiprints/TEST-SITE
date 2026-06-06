@@ -227,7 +227,7 @@
 
                     <div class="pt-4 border-t border-gray-100 space-y-3">
                         <p class="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
-                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर klik करें ताकि आपका ORDER इनिशिएट (Initiate) हो सके।
+                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शनं चुनें, उसके बाद ही नीचे दिए गए बटन पर klik करें ताकि आपका ORDER इनिशिएट (Initiate) हो सके।
                         </p>
                         <button type="button" onclick="handleOrderSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
                             <i class="fa-solid fa-lock"></i> Process & Generate Receipt
@@ -504,14 +504,17 @@
             
             const grid = document.getElementById('subproducts-grid');
             grid.innerHTML = state.activeProduct.subs.map((s, index) => `
-                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden card-shadow cursor-pointer flex flex-col p-5 space-y-4" onclick="selectSubProduct(${index})">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-gray-900 text-base">${s.name}</span>
-                        <span class="text-xl font-extrabold text-indigo-600">₹${s.price}</span>
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden card-shadow cursor-pointer flex flex-col" onclick="selectSubProduct(${index})">
+                    <img src="${state.activeProduct.image}" alt="${s.name}" class="w-full h-40 object-cover">
+                    <div class="p-5 space-y-4 flex-grow flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-gray-900 text-sm sm:text-base">${s.name}</span>
+                            <span class="text-lg font-extrabold text-indigo-600 shrink-0">₹${s.price}</span>
+                        </div>
+                        <button class="w-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 font-semibold py-2 rounded-xl transition text-sm">
+                            Select Variant
+                        </button>
                     </div>
-                    <button class="w-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 font-semibold py-2 rounded-xl transition text-sm">
-                        Select Variant
-                    </button>
                 </div>
             `).join('');
             
@@ -523,7 +526,6 @@
             state.itemQty = 1;
             state.baseSelectedPrice = state.activeSubProduct.price;
             
-            // Build cart row UI
             const cartDetails = document.getElementById('cart-item-details');
             cartDetails.innerHTML = `
                 <div class="flex items-center gap-4">
@@ -540,7 +542,6 @@
                 </div>
             `;
             
-            // Toggle notes printer calculations setup box if active category is notes
             const notesBox = document.getElementById('notes-calculator-box');
             if(state.activeCategory.id === 'cat_notes') {
                 notesBox.classList.remove('hidden');
@@ -637,12 +638,10 @@
                 document.getElementById('phone-error').classList.add('hidden');
             }
             
-            // Build direct pay links or QR dynamically based on dynamic final value
             let finalPayable = document.getElementById('checkout-total-price').textContent.replace('₹','');
             const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${finalPayable}&cu=INR&tn=BalajiPrintsOrder`;
             document.getElementById('upi-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUrl)}`;
             
-            // Move block views smoothly
             document.getElementById('checkout-step-1').classList.add('step-hidden');
             document.getElementById('checkout-step-2').classList.remove('step-hidden');
             document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
@@ -709,18 +708,21 @@
             
             document.getElementById('conf-cust-details').textContent = `Name: ${name}\nMobile: ${mobile}\nDelivery Mode: ${deliveryText}\nAddress: ${address}\nRemarks: ${remark}\nMethod: ${state.selectedPaymentMethod}`;
             
-            // Push tracking log metadata securely to Firebase realtime database node
-            if(typeof firebase !== 'undefined' && firebase.database) {
-                firebase.database().ref('orders/' + state.generatedOrderId).set({
-                    category: state.activeCategory.name,
-                    product: state.activeProduct.name,
-                    subproduct: state.activeSubProduct.name,
-                    qty: state.itemQty,
-                    price: document.getElementById('checkout-total-price').textContent,
-                    customer: { name, mobile, address, remark, deliveryMode },
-                    paymentMethod: state.selectedPaymentMethod,
-                    timestamp: new Date().toISOString()
-                }).catch(err => console.log("Firebase storage tracking offline:", err));
+            try {
+                if(typeof firebase !== 'undefined' && firebase.database) {
+                    firebase.database().ref('orders/' + state.generatedOrderId).set({
+                        category: state.activeCategory.name,
+                        product: state.activeProduct.name,
+                        subproduct: state.activeSubProduct.name,
+                        qty: state.itemQty,
+                        price: document.getElementById('checkout-total-price').textContent,
+                        customer: { name, mobile, address, remark, deliveryMode },
+                        paymentMethod: state.selectedPaymentMethod,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+            } catch(err) { 
+                console.log("Firebase bypass catch status safe:", err); 
             }
 
             navigateTo('confirmation');
