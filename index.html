@@ -24,9 +24,29 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
         .step-hidden { display: none; }
+        
+        /* New Smooth Transitions for FAQ Accordion */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        .faq-item.active .faq-content {
+            max-height: 200px;
+            padding-bottom: 1rem;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
-<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+<body class="text-gray-800 antialiased min-h-screen flex flex-col relative">
+
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <a href="https://wa.me/919414350535" target="_blank" class="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-2xl shadow-lg hover:scale-110 transition duration-300">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
 
     <header class="border-b border-gray-100 bg-white sticky top-0 z-50 py-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -52,6 +72,33 @@
     </header>
 
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div id="hero-marketing-banner" class="mb-10 bg-gradient-to-r from-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-4 max-w-2xl text-center md:text-left">
+                <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Premium Quality Printing</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">High-Quality Custom Prints Delivered Fast!</h2>
+                <p class="text-slate-300 text-sm sm:text-base">Apne business cards, personalized pens, photo frames aur documents ko behtareen quality me print karwayen direct Churu se.</p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
+                    <div class="flex items-center gap-2 text-xs font-medium text-slate-200 bg-white/5 px-3 py-1.5 rounded-lg"><i class="fa-solid fa-truck text-indigo-400"></i> Fast Delivery</div>
+                    <div class="flex items-center gap-2 text-xs font-medium text-slate-200 bg-white/5 px-3 py-1.5 rounded-lg"><i class="fa-solid fa-circle-check text-emerald-400"></i> 100% Satisfaction</div>
+                </div>
+            </div>
+            <div class="hidden md:block w-64 h-48 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm p-4 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-600/30 rounded-full blur-2xl"></div>
+                <i class="fa-solid fa-print text-7xl text-indigo-400/20 absolute right-4 top-4"></i>
+                <div class="space-y-2 mt-12">
+                    <div class="text-xs font-semibold text-indigo-300">Balaji Prints Smart System</div>
+                    <div class="text-lg font-bold leading-tight">Select. Upload.<br>Order via WhatsApp.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="search-filter-container" class="mb-8 max-w-md">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+                <input type="text" id="main-search-input" onkeyup="filterCategories()" placeholder="Search categories (e.g., Frame, Pen, Card)..." class="w-full bg-white border border-gray-200 rounded-2xl pl-11 pr-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none shadow-xs transition">
+            </div>
+        </div>
         
         <div id="breadcrumb" class="mb-6 text-sm text-gray-500 flex items-center gap-2 flex-wrap">
             <span class="cursor-pointer hover:text-indigo-600 font-medium" onclick="resetToCategories()">Home</span>
@@ -183,7 +230,7 @@
 
                     <div class="pt-4 border-t border-gray-100 space-y-3">
                         <p class="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
-                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर क्लिक करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
+                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके wood ही नीचे दिए गए बटन पर क्लिक करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
                         </p>
                         <button type="button" onclick="handleOrderSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
                             <i class="fa-solid fa-lock"></i> Process & Generate Receipt
@@ -199,7 +246,7 @@
             </div>
             <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Order Initiated Successfully!</h2>
             <p class="text-sm text-red-600 font-semibold mb-8 bg-red-50 p-3 rounded-xl inline-block border border-red-100">
-                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका ऑर्डर अभी सिर्फ इनिशिएट हुआ है! कंफर्म तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
+                <i class="fa-solid fa-triangle-exclamation"></i> ध्यान दें: आपका Order अभी सिर्फ इनिशिएट हुआ है! कंफrm तब ही होगा जब आप नीचे दिए गए बटन से यह डिटेल WhatsApp पर शेयर करेंगे।
             </p>
 
             <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow text-left space-y-4 mb-8">
@@ -241,6 +288,61 @@
             <button onclick="resetToCategories()" class="mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
                 <i class="fa-solid fa-arrow-left mr-1"></i> Back to Homepage
             </button>
+        </section>
+
+        <section id="features-marketing-section" class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 border-t border-gray-100 pt-12">
+            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-sm mb-1">Premium Design</h4>
+                    <p class="text-xs text-gray-500">Expert custom template layout styles for dynamic requirements.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-sm mb-1">Secure Checkouts</h4>
+                    <p class="text-xs text-gray-500">Direct instant configuration via secure digital UPI routing paths.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-sm mb-1">Fast Execution</h4>
+                    <p class="text-xs text-gray-500">Instant order initiation modules straight to automated processing.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition">
+                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-headset"></i></div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-sm mb-1">Dedicated Support</h4>
+                    <p class="text-xs text-gray-500">Direct active assistance link modules via official WhatsApp line.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq-marketing-section" class="mt-16 max-w-3xl mx-auto border-t border-gray-100 pt-12">
+            <h3 class="text-xl font-bold text-gray-900 mb-6 text-center">Frequently Asked Questions</h3>
+            <div class="space-y-4">
+                <div class="faq-item border border-gray-100 rounded-xl bg-white card-shadow px-5 pt-4 cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between pb-4">
+                        <span class="font-semibold text-gray-800 text-sm sm:text-base">Order confirm kaise hoga?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 faq-icon transition duration-300"></i>
+                    </div>
+                    <div class="faq-content text-xs sm:text-sm text-gray-500">
+                        Website par checkout complete karne ke baad "Share Details on WhatsApp" button par click karein. Details hamare paas aate hi order confirm ho jayega.
+                    </div>
+                </div>
+                <div class="faq-item border border-gray-100 rounded-xl bg-white card-shadow px-5 pt-4 cursor-pointer" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between pb-4">
+                        <span class="font-semibold text-gray-800 text-sm sm:text-base">Kya main apni custom design file upload kar sakta hu?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 faq-icon transition duration-300"></i>
+                    </div>
+                    <div class="faq-content text-xs sm:text-sm text-gray-500">
+                        Ji haan! Checkout step 1 par aap apni tayaar design (JPG ya PNG format) high quality me upload kar sakte hain.
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -367,6 +469,17 @@
             document.getElementById('cart-layer').classList.add('step-hidden');
             document.getElementById('confirmation-layer').classList.add('step-hidden');
 
+            // NEW UI HIDING LOGIC (Hide Hero Banner & Search on deep checkout pages)
+            const heroBanner = document.getElementById('hero-marketing-banner');
+            const searchBox = document.getElementById('search-filter-container');
+            if(layerId === 'category') {
+                if(heroBanner) heroBanner.classList.remove('hidden');
+                if(searchBox) searchBox.classList.remove('hidden');
+            } else {
+                if(heroBanner) heroBanner.classList.add('hidden');
+                if(searchBox) searchBox.classList.add('hidden');
+            }
+
             document.getElementById(layerId + '-layer').classList.remove('step-hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             updateBreadcrumbs();
@@ -410,7 +523,8 @@
             grid.innerHTML = '';
             DATA.forEach(category => {
                 const card = document.createElement('div');
-                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col";
+                card.className = "bg-white border border-gray-100 rounded-2xl p-4 card-shadow cursor-pointer flex flex-col category-card-element";
+                card.setAttribute('data-name', category.name.toLowerCase());
                 card.onclick = () => selectCategory(category.id);
                 card.innerHTML = `
                     <div class="aspect-video w-full rounded-xl overflow-hidden bg-gray-100 mb-4">
@@ -486,206 +600,22 @@
             navigateTo('subproduct');
         }
 
-        function addToCart(subName, price, immediateCheckout) {
-            state.activeSubProduct = { name: subName, price: price };
-            state.cart = {
-                category: state.activeCategory.name,
-                product: state.activeProduct.name,
-                subProduct: subName,
-                price: price,
-                quantity: 1
-            };
-
-            document.getElementById('nav-cart-count').textContent = "1";
-            
-            const cartDetailsContainer = document.getElementById('cart-item-details');
-            cartDetailsContainer.innerHTML = `
-                <div class="w-20 h-20 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden shrink-0">
-                    <img src="${state.activeProduct.image}" class="w-full h-full object-cover">
-                </div>
-                <div class="flex-grow w-full">
-                    <h4 class="font-bold text-gray-900">${state.cart.product}</h4>
-                    <p class="text-xs text-gray-500">${state.cart.category} &bull; ${state.cart.subProduct}</p>
-                    <div class="flex items-center gap-4 mt-2">
-                        <span class="text-indigo-600 font-extrabold text-lg" id="cart-item-price-display">₹${state.cart.price}</span>
-                        <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-                            <button type="button" onclick="updateQty(-1)" class="px-2.5 py-1 text-gray-600 hover:bg-gray-200 font-bold transition">-</button>
-                            <span id="cart-qty-val" class="px-3 py-1 font-bold text-sm bg-white border-x border-gray-200 text-gray-900">1</span>
-                            <button type="button" onclick="updateQty(1)" class="px-2.5 py-1 text-gray-600 hover:bg-gray-200 font-bold transition">+</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Reset File and inputs
-            document.getElementById('design-file').value = "";
-            document.getElementById('file-status-text').classList.add('hidden');
-            document.getElementById('checkout-step-1').classList.remove('step-hidden');
-            document.getElementById('checkout-step-2').classList.add('step-hidden');
-
-            navigateTo('cart');
+        /* NEW JAVASCRIPT LOGIC FUNCTIONS (Bina purane functions ko disturb kiye) */
+        function filterCategories() {
+            const searchVal = document.getElementById('main-search-input').value.toLowerCase();
+            const cards = document.getElementsByClassName('category-card-element');
+            Array.from(cards).forEach(card => {
+                const name = card.getAttribute('data-name');
+                if(name.includes(searchVal)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
         }
 
-        function updateQty(amt) {
-            if(!state.cart) return;
-            let newQty = state.cart.quantity + amt;
-            if (newQty < 1) newQty = 1;
-            state.cart.quantity = newQty;
-            
-            document.getElementById('cart-qty-val').textContent = newQty;
-            document.getElementById('cart-item-price-display').textContent = `₹${state.cart.price * newQty}`;
-        }
-
-        function updateFileStatus() {
-            const fileInput = document.getElementById('design-file');
-            const statusText = document.getElementById('file-status-text');
-            if(fileInput.files.length > 0) {
-                statusText.innerHTML = `<i class="fa-solid fa-circle-check"></i> File: <strong>${fileInput.files[0].name}</strong> selected successfully.`;
-                statusText.classList.remove('hidden');
-            } else {
-                statusText.classList.add('hidden');
-            }
-        }
-
-        function validateAndGoToPayment() {
-            const fileInput = document.getElementById('design-file');
-            const name = document.getElementById('cust-name').value.trim();
-            const mobile = document.getElementById('cust-mobile').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-
-            if(fileInput.files.length === 0) {
-                alert("Please upload a Photo / JPG design file first!");
-                return;
-            }
-            if(!name || !mobile || !address) {
-                alert("Please fill all required customer details fields!");
-                return;
-            }
-            if(!/[0-9]{10}/.test(mobile)) {
-                alert("Please enter a valid 10-digit mobile number!");
-                return;
-            }
-
-            // Calculation
-            const total = state.cart.price * state.cart.quantity;
-            document.getElementById('checkout-total-price').textContent = `₹${total}`;
-
-            // Build QR Code link URL dynamically
-            const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
-            document.getElementById('upi-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
-
-            // UI step switch
-            document.getElementById('checkout-step-1').classList.add('step-hidden');
-            document.getElementById('checkout-step-2').classList.remove('step-hidden');
-            selectPaymentOption('qr'); // reset wrapper visual states to QR
-        }
-
-        function backToDetails() {
-            document.getElementById('checkout-step-1').classList.remove('step-hidden');
-            document.getElementById('checkout-step-2').classList.add('step-hidden');
-        }
-
-        function selectPaymentOption(type) {
-            state.selectedPaymentMethod = type.toUpperCase();
-            
-            document.getElementById('pay-qr').checked = (type === 'qr');
-            document.getElementById('pay-direct').checked = (type === 'direct');
-            document.getElementById('pay-cod').checked = (type === 'cod');
-
-            // Reset border design highlights
-            document.getElementById('wrapper-pay-qr').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
-            document.getElementById('wrapper-pay-direct').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
-            document.getElementById('wrapper-pay-cod').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
-
-            if(type === 'qr') {
-                document.getElementById('wrapper-pay-qr').classList.replace('border-gray-200', 'border-indigo-500');
-            } else if(type === 'direct') {
-                document.getElementById('wrapper-pay-direct').classList.replace('border-gray-200', 'border-indigo-500');
-                // Trigger Direct Device UPI Intent if supported
-                const total = state.cart.price * state.cart.quantity;
-                window.location.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR`;
-            } else if(type === 'cod') {
-                document.getElementById('wrapper-pay-cod').classList.replace('border-gray-200', 'border-amber-500');
-            }
-        }
-
-        function handleOrderSubmission() {
-            const orderId = "BP" + Math.floor(100000 + Math.random() * 900000);
-            const total = state.cart.price * state.cart.quantity;
-            const fileInput = document.getElementById('design-file');
-            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "N/A";
-
-            const orderPayload = {
-                orderId: orderId,
-                category: state.cart.category,
-                product: state.cart.product,
-                subProduct: state.cart.subProduct,
-                quantity: state.cart.quantity,
-                totalPrice: total,
-                fileName: fileName,
-                customerName: document.getElementById('cust-name').value.trim(),
-                customerMobile: document.getElementById('cust-mobile').value.trim(),
-                customerAddress: document.getElementById('cust-address').value.trim(),
-                customerRemark: document.getElementById('cust-remark').value.trim() || "None",
-                paymentMethod: state.selectedPaymentMethod,
-                status: "INITIATED"
-            };
-
-            state.lastOrder = orderPayload;
-
-            // Submit payload to Firebase Realtime Database asynchronously if initialized
-            if (typeof database !== 'undefined') {
-                database.ref('orders/' + orderId).set(orderPayload);
-            }
-
-            // Fill receipt interface elements safely
-            document.getElementById('conf-order-id').textContent = "#" + orderId;
-            document.getElementById('conf-category').textContent = orderPayload.category;
-            document.getElementById('conf-product').textContent = orderPayload.product;
-            document.getElementById('conf-subproduct').textContent = orderPayload.subProduct;
-            document.getElementById('conf-qty').textContent = orderPayload.quantity;
-            document.getElementById('conf-price').textContent = "₹" + orderPayload.totalPrice + ` (${orderPayload.paymentMethod})`;
-            document.getElementById('conf-file-name').textContent = orderPayload.fileName;
-            document.getElementById('conf-cust-details').textContent = 
-                `${orderPayload.customerName}\n📞 ${orderPayload.customerMobile}\n📍 ${orderPayload.customerAddress}\n📝 Remark: ${orderPayload.customerRemark}`;
-
-            // Switch view to Receipt Screen
-            navigateTo('confirmation');
-        }
-
-        function sendWhatsAppNotification() {
-            if(!state.lastOrder) return;
-            const o = state.lastOrder;
-            
-            // Structured message for perfect listing in your WhatsApp console
-            const textMessage = 
-`*BALAJI PRINTS - NEW INITIATED ORDER*
----------------------------------------
-*Order ID:* #${o.orderId}
-*Status:* INITIATED / PENDING
-
-*📦 PRODUCT DETAILS:*
-• *Category:* ${o.category}
-• *Product:* ${o.product}
-• *Variant:* ${o.subProduct}
-• *Quantity:* ${o.quantity}
-• *Total Payable:* ₹${o.totalPrice}
-• *Method:* ${o.paymentMethod}
-
-*📎 DESIGN FILE INFO:*
-• *File Name:* ${o.fileName}
-_(कृपया यह फोटो/फ़ाइल यहाँ अलग से भी सेंड करें)_
-
-*👤 CUSTOMER INFO:*
-• *Name:* ${o.customerName}
-• *Mobile:* ${o.customerMobile}
-• *Address:* ${o.customerAddress}
-• *Remark:* ${o.customerRemark}
----------------------------------------
-*नोट:* कृपया कस्टमर से उपर्युक्त फ़ाइल व्हाट्सएप पर प्राप्त कर ऑर्डर मैन्युफैक्चरिंग प्रक्रिया शुरू करें।`;
-
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=91${WHATSAPP_NUM}&text=${encodeURIComponent(textMessage)}`;
-            window.open(whatsappUrl, '_blank');
+        function toggleFaq(element) {
+            element.classList.toggle('active');
         }
     </script>
 </body>
