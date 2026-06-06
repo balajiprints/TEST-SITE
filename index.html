@@ -125,9 +125,7 @@
             <div id="checkout-step-1" class="space-y-6">
                 <div class="bg-white border border-gray-100 rounded-2xl p-6 card-shadow space-y-4">
                     <h3 class="text-lg font-semibold border-b border-gray-100 pb-2">Step 1: Upload Design Files</h3>
-                    
-                    <div id="dynamic-uploads-container" class="space-y-4">
-                        </div>
+                    <div id="dynamic-uploads-container" class="space-y-4"></div>
                     <p id="file-status-text" class="text-xs text-emerald-600 font-medium mt-2 hidden"><i class="fa-solid fa-circle-check"></i> All required files selected successfully.</p>
                 </div>
 
@@ -145,9 +143,9 @@
                             <p id="phone-error" class="text-xs text-red-500 font-medium mt-1 hidden"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid 10-digit mobile number.</p>
                         </div>
                     </div>
-                    
+
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Mode / Shipping Method <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Option <span class="text-red-500">*</span></label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <label class="flex items-center gap-3 border border-gray-200 rounded-xl p-3 cursor-pointer hover:bg-gray-50 transition">
                                 <input type="radio" name="delivery-mode" value="pickup" checked class="accent-indigo-600 w-4 h-4">
@@ -160,7 +158,7 @@
                                 <input type="radio" name="delivery-mode" value="delivery" class="accent-indigo-600 w-4 h-4">
                                 <div>
                                     <span class="block text-sm font-semibold text-gray-900">Home Delivery (Ship to Address)</span>
-                                    <span class="block text-xs text-amber-600 font-medium">Shipping/Delivery Charge Extra</span>
+                                    <span class="block text-xs text-amber-600 font-medium">Shipping Charge Extra</span>
                                 </div>
                             </label>
                         </div>
@@ -229,7 +227,7 @@
 
                     <div class="pt-4 border-t border-gray-100 space-y-3">
                         <p class="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
-                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर klik करें ताकि आपका ऑर्डर इनिशिएट (Initiate) हो सके।
+                            <i class="fa-solid fa-circle-info"></i> <strong>Important Note:</strong> कृपया पेमेंट पूरा करें या COD ऑप्शन चुनें, उसके बाद ही नीचे दिए गए बटन पर klik करें ताकि आपका ORDER इनिशिएट (Initiate) हो सके।
                         </p>
                         <button type="button" onclick="handleOrderSubmission()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg">
                             <i class="fa-solid fa-lock"></i> Process & Generate Receipt
@@ -402,7 +400,7 @@
             itemQty: 1,
             baseSelectedPrice: 0,
             generatedOrderId: '',
-            uploadedFilesData: [] // To keep track of multiple image inputs
+            uploadedFilesData: []
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -427,7 +425,7 @@
                 document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
                 document.getElementById('prog-step-3').className = "hidden";
                 document.getElementById('prog-line-2').classList.add('hidden');
-                generateDynamicUploadFields(); // Build uploads when viewing cart
+                generateDynamicUploadFields();
             } else if (layerId === 'confirmation') {
                 document.getElementById('checkout-progress-bar').classList.remove('hidden');
                 document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
@@ -471,10 +469,291 @@
                     <img src="${cat.image}" alt="${cat.name}" class="w-full h-48 object-cover">
                     <div class="p-5 flex-grow flex items-center justify-between bg-white border-t border-gray-50">
                         <span class="font-bold text-gray-900 tracking-tight text-base">${cat.name}</span>
-                        <span class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition"></span>
+                        <span class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </span>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function selectCategory(catId) {
+            state.activeCategory = DATA.find(c => c.id === catId);
+            state.activeProduct = null;
+            state.activeSubProduct = null;
+            
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = state.activeCategory.products.map(p => `
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden card-shadow cursor-pointer flex flex-col" onclick="selectProduct('${p.id}')">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover">
+                    <div class="p-5 flex-grow flex items-center justify-between bg-white border-t border-gray-50">
+                        <span class="font-bold text-gray-900 tracking-tight text-base">${p.name}</span>
+                        <span class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+            
+            navigateTo('product');
+        }
+
+        function selectProduct(prodId) {
+            state.activeProduct = state.activeCategory.products.find(p => p.id === prodId);
+            state.activeSubProduct = null;
+            
+            const grid = document.getElementById('subproducts-grid');
+            grid.innerHTML = state.activeProduct.subs.map((s, index) => `
+                <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden card-shadow cursor-pointer flex flex-col p-5 space-y-4" onclick="selectSubProduct(${index})">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-gray-900 text-base">${s.name}</span>
+                        <span class="text-xl font-extrabold text-indigo-600">₹${s.price}</span>
+                    </div>
+                    <button class="w-full bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-600 font-semibold py-2 rounded-xl transition text-sm">
+                        Select Variant
+                    </button>
+                </div>
+            `).join('');
+            
+            navigateTo('subproduct');
+        }
+
+        function selectSubProduct(subIndex) {
+            state.activeSubProduct = state.activeProduct.subs[subIndex];
+            state.itemQty = 1;
+            state.baseSelectedPrice = state.activeSubProduct.price;
+            
+            // Build cart row UI
+            const cartDetails = document.getElementById('cart-item-details');
+            cartDetails.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold shrink-0">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">${state.activeProduct.name}</h4>
+                        <p class="text-xs text-gray-500 font-medium">${state.activeCategory.name} &bull; ${state.activeSubProduct.name}</p>
+                    </div>
+                </div>
+                <div class="text-right mt-2 sm:mt-0">
+                    <span id="live-calculated-price" class="text-xl font-black text-indigo-600 block">₹${state.baseSelectedPrice}</span>
+                </div>
+            `;
+            
+            // Toggle notes printer calculations setup box if active category is notes
+            const notesBox = document.getElementById('notes-calculator-box');
+            if(state.activeCategory.id === 'cat_notes') {
+                notesBox.classList.remove('hidden');
+            } else {
+                notesBox.classList.add('hidden');
+            }
+            
+            calculateLivePrice();
+            navigateTo('cart');
+        }
+
+        function adjustQty(amt) {
+            state.itemQty = Math.max(1, state.itemQty + amt);
+            document.getElementById('cart-item-qty').textContent = state.itemQty;
+            calculateLivePrice();
+        }
+
+        function calculateLivePrice() {
+            let total = state.baseSelectedPrice;
+            
+            if(state.activeCategory && state.activeCategory.id === 'cat_notes') {
+                const pages = parseInt(document.getElementById('notes-page-count').value) || 1;
+                const wantsBinding = document.getElementById('notes-binding-check').checked;
+                total = (pages * 0.60) + (wantsBinding ? 30 : 0);
+            }
+            
+            let finalPayable = Math.round(total * state.itemQty);
+            document.getElementById('live-calculated-price').textContent = "₹" + finalPayable;
+            document.getElementById('checkout-total-price').textContent = "₹" + finalPayable;
+            document.getElementById('nav-cart-count').textContent = state.itemQty;
+        }
+
+        function generateDynamicUploadFields() {
+            const container = document.getElementById('dynamic-uploads-container');
+            container.innerHTML = '';
+            
+            let count = 1;
+            if (state.activeSubProduct && state.activeSubProduct.photoCount) {
+                count = state.activeSubProduct.photoCount;
+            }
+            
+            for(let i=1; i<=count; i++) {
+                container.innerHTML += `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Upload File/Image ${count > 1 ? i : ''} <span class="text-red-500">*</span></label>
+                        <input type="file" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-gray-200 rounded-xl p-1.5 bg-gray-50" onchange="checkFilesLoaded()">
+                    </div>
+                `;
+            }
+        }
+
+        function checkFilesLoaded() {
+            const inputs = document.getElementById('dynamic-uploads-container').querySelectorAll('input[type="file"]');
+            let allOk = true;
+            inputs.forEach(inp => { if(!inp.files.length) allOk = false; });
+            
+            const statusText = document.getElementById('file-status-text');
+            if(allOk && inputs.length > 0) {
+                statusText.classList.remove('hidden');
+            } else {
+                statusText.classList.add('hidden');
+            }
+        }
+
+        function resetToCategories() {
+            state.activeCategory = null;
+            state.activeProduct = null;
+            state.activeSubProduct = null;
+            document.getElementById('nav-cart-count').textContent = '0';
+            navigateTo('category');
+        }
+
+        function validateAndGoToPayment() {
+            const name = document.getElementById('cust-name').value.trim();
+            const mobile = document.getElementById('cust-mobile').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            
+            const inputs = document.getElementById('dynamic-uploads-container').querySelectorAll('input[type="file"]');
+            let filesOk = true;
+            inputs.forEach(inp => { if(!inp.files.length) filesOk = false; });
+            
+            if(!filesOk) {
+                alert('कृपया सभी आवश्यक डिज़ाइन फ़ाइलें/इमेज अपलोड करें।');
+                return;
+            }
+            if(!name || !mobile || !address) {
+                alert('कृपया सभी आवश्यक कस्टमर विवरण भरें।');
+                return;
+            }
+            if(!/^[0-9]{10}$/.test(mobile)) {
+                document.getElementById('phone-error').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('phone-error').classList.add('hidden');
+            }
+            
+            // Build direct pay links or QR dynamically based on dynamic final value
+            let finalPayable = document.getElementById('checkout-total-price').textContent.replace('₹','');
+            const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${finalPayable}&cu=INR&tn=BalajiPrintsOrder`;
+            document.getElementById('upi-qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upiUrl)}`;
+            
+            // Move block views smoothly
+            document.getElementById('checkout-step-1').classList.add('step-hidden');
+            document.getElementById('checkout-step-2').classList.remove('step-hidden');
+            document.getElementById('prog-step-1').className = "text-emerald-600 flex items-center gap-1";
+            document.getElementById('prog-step-2').className = "text-indigo-600 flex items-center gap-1 font-bold";
+        }
+
+        function backToDetails() {
+            document.getElementById('checkout-step-2').classList.add('step-hidden');
+            document.getElementById('checkout-step-1').classList.remove('step-hidden');
+            document.getElementById('prog-step-1').className = "text-indigo-600 flex items-center gap-1 font-bold";
+            document.getElementById('prog-step-2').className = "text-gray-400 flex items-center gap-1";
+        }
+
+        function selectPaymentOption(mode) {
+            state.selectedPaymentMethod = mode.toUpperCase();
+            
+            document.getElementById('wrapper-pay-qr').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-between text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-direct').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+            document.getElementById('wrapper-pay-cod').className = "border-2 border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center bg-white cursor-pointer transition";
+            
+            if(mode === 'qr') {
+                document.getElementById('wrapper-pay-qr').classList.add('border-indigo-500');
+                document.getElementById('pay-qr').checked = true;
+            } else if(mode === 'direct') {
+                document.getElementById('wrapper-pay-direct').classList.add('border-indigo-500');
+                document.getElementById('pay-direct').checked = true;
+                
+                let finalPayable = document.getElementById('checkout-total-price').textContent.replace('₹','');
+                const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${finalPayable}&cu=INR&tn=BalajiPrintsOrder`;
+                window.location.href = upiUrl; 
+            } else if(mode === 'cod') {
+                document.getElementById('wrapper-pay-cod').classList.add('border-indigo-500');
+                document.getElementById('pay-cod').checked = true;
+            }
+        }
+
+        function copyUpiId(e) {
+            e.stopPropagation();
+            navigator.clipboard.writeText(UPI_ID).then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.textContent = "Copied!";
+                setTimeout(() => { btnText.textContent = "Copy UPI ID"; }, 2000);
+            });
+        }
+
+        function handleOrderSubmission() {
+            state.generatedOrderId = 'BP' + Math.floor(10000 + Math.random() * 90000);
+            
+            const name = document.getElementById('cust-name').value;
+            const mobile = document.getElementById('cust-mobile').value;
+            const address = document.getElementById('cust-address').value;
+            const remark = document.getElementById('cust-remark').value || 'N/A';
+            const deliveryMode = document.querySelector('input[name="delivery-mode"]:checked').value;
+            
+            const deliveryText = deliveryMode === 'pickup' ? "Shop Se Lena Hai (Self-Pickup) - ₹0" : "Home Delivery (Shipping Charge Extra)";
+            
+            document.getElementById('conf-order-id').textContent = '#' + state.generatedOrderId;
+            document.getElementById('conf-category').textContent = state.activeCategory.name;
+            document.getElementById('conf-product').textContent = state.activeProduct.name;
+            document.getElementById('conf-subproduct').textContent = state.activeSubProduct.name;
+            document.getElementById('conf-qty').textContent = state.itemQty;
+            document.getElementById('conf-price').textContent = document.getElementById('checkout-total-price').textContent;
+            document.getElementById('conf-file-name').textContent = "Design Files Uploaded via Client Device";
+            
+            document.getElementById('conf-cust-details').textContent = `Name: ${name}\nMobile: ${mobile}\nDelivery Mode: ${deliveryText}\nAddress: ${address}\nRemarks: ${remark}\nMethod: ${state.selectedPaymentMethod}`;
+            
+            // Push tracking log metadata securely to Firebase realtime database node
+            if(typeof firebase !== 'undefined' && firebase.database) {
+                firebase.database().ref('orders/' + state.generatedOrderId).set({
+                    category: state.activeCategory.name,
+                    product: state.activeProduct.name,
+                    subproduct: state.activeSubProduct.name,
+                    qty: state.itemQty,
+                    price: document.getElementById('checkout-total-price').textContent,
+                    customer: { name, mobile, address, remark, deliveryMode },
+                    paymentMethod: state.selectedPaymentMethod,
+                    timestamp: new Date().toISOString()
+                }).catch(err => console.log("Firebase storage tracking offline:", err));
+            }
+
+            navigateTo('confirmation');
+        }
+
+        function sendWhatsAppNotification() {
+            const name = document.getElementById('cust-name').value;
+            const mobile = document.getElementById('cust-mobile').value;
+            const address = document.getElementById('cust-address').value;
+            const remark = document.getElementById('cust-remark').value || 'N/A';
+            const deliveryMode = document.querySelector('input[name="delivery-mode"]:checked').value;
+            
+            const deliveryText = deliveryMode === 'pickup' ? "Shop Se Lena Hai (Self-Pickup) - ₹0" : "Home Delivery (Shipping Charge Extra)";
+            let finalPayable = document.getElementById('checkout-total-price').textContent;
+
+            let msg = `*NEW CUSTOM ORDER INITIATED*\n\n`;
+            msg += `*Order ID:* #${state.generatedOrderId}\n`;
+            msg += `*Category:* ${state.activeCategory.name}\n`;
+            msg += `*Product:* ${state.activeProduct.name}\n`;
+            msg += `*Variant:* ${state.activeSubProduct.name}\n`;
+            msg += `*Quantity:* ${state.itemQty}\n`;
+            msg += `*Total Amount:* ${finalPayable}\n\n`;
+            msg += `*--- CUSTOMER DETAILS ---*\n`;
+            msg += `*Name:* ${name}\n`;
+            msg += `*Mobile:* ${mobile}\n`;
+            msg += `*Delivery Option:* ${deliveryText}\n`;
+            msg += `*Address:* ${address}\n`;
+            msg += `*Remarks:* ${remark}\n`;
+            msg += `*Payment Mode:* ${state.selectedPaymentMethod}\n\n`;
+            msg += `कृपया मेरा ऑर्डर कंफर्म करें, मैंने फाइल वेबसाइट पर अपलोड कर दी है।`;
+
+            const fullUrl = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`;
+            window.open(fullUrl, '_blank');
         }
     </script>
 </body>
